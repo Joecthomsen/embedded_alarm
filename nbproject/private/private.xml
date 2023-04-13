@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/flashInterface.c</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/state.c</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/main.c</file>
-            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/ESP8266_handler.h</file>
-            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/ESP8266_handler.c</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/state.h</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/definitions.h</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/flashInterface.h</file>
         </group>
     </open-files>
 </project-private>

@@ -1,14 +1,17 @@
 
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#ifndef STATE_H
+#define	STATE_H
 
 #include <xc.h> 
 
-enum status {ACTIVE, NOT_ACTIVE, ALARM, NO_ALARM_PERIOD, NO_WIFI};
+typedef enum {ACTIVE, NOT_ACTIVE, ALARM, NO_ALARM_PERIOD, NO_WIFI, NOT_INITIALIZED, NOT_CONNECTED_TO_DATESERVER} State;
+
+extern int state;
 
 void initStatusLED();
-void setStatus(int status);
+void setStatus(int state);
+
 //enum status getStatus();
 
-#endif	/* XC_HEADER_TEMPLATE_H */
+#endif	/* STATE_H */
 

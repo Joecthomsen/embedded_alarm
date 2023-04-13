@@ -13,8 +13,12 @@
 
 bool deviceRegistered(){
     if(FLASH_ReadWord16(DEVICE_ID_ADDRESS) == 0xFFFF){
-        return 0;
+        return false;
     }
-    return 1;
+    return true;
+}
+
+uint16_t getUserId(){
+    return FLASH_ReadWord16(DEVICE_ID_ADDRESS);
 }
 

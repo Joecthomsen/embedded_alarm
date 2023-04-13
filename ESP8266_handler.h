@@ -4,15 +4,14 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include <stdbool.h>
 #include "definitions.h"
+#include "uart_buffer.h"
 
-struct alarmPeriod{
-    int start;
-    int end;
-};
 
-void setRTCCtimeFromAPI(char uart_buffer_ptr[], int sizeOfBuffer);
-bool connected(char uart_buffer_ptr[], int sizeOfBuffer);
-struct alarmPeriod getAlarmPeriod();
+
+//void setRTCCtimeFromAPI(char uart_buffer_ptr[], int sizeOfBuffer);
+void setRTCCtimeFromAPI();
+bool connected();
+int * getPeriod();
 
 #endif	/*ESP8266_HANDLER*/
 

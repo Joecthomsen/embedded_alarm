@@ -18,6 +18,9 @@ void turnOffYellowLED();
 void turnOffGreenLED();
 void turnOffBlueLED();
 
+int globalState;
+
+
 //enum Status {ACTIVE, NOT_ACTIVE, ALARM, NO_ALARM_PERIOD, NO_WIFI, NOT_INITIALIZED, NOT_CONNECTED_TO_DATESERVER};
 //State currentState = NOT_INITIALIZED;
 
@@ -48,22 +51,39 @@ void setStatus(int state){
        
     switch(state){
         case ACTIVE: 
-             turnOnGreenLED();
-             break;
+            turnOnGreenLED();
+            globalState = ACTIVE;
+            break;
         case NOT_ACTIVE: 
             turnOnYellowLED();
+            globalState = NOT_ACTIVE;
             break;
         case NO_WIFI:
-             turnOnBlueLED();
-             turnOnRedLED();          
-             break;
+            turnOnBlueLED();
+            turnOnRedLED();
+            globalState = NO_WIFI;
+            break;
+        case NOT_CONNECTED_TO_DATESERVER:
+            turnOnBlueLED();
+            turnOnYellowLED();
+            globalState = NOT_CONNECTED_TO_DATESERVER;
+            break;
         case NOT_INITIALIZED:
             turnOnRedLED();
+            globalState = NOT_INITIALIZED;
+            break;
+        case RE_INIT: 
+            turnOnYellowLED();
+            globalState = RE_INIT;
             break;
         default: 
             initStatusLED();
             break;
     }    
+}
+
+int getState(){
+    return globalState;
 }
 
 void turnOnRedLED(){

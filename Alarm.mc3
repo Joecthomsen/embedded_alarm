@@ -75,9 +75,9 @@
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.mcu16.Mcu16PeripheralLibrary" version="1.171.1"/>
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.boardsupportlibrary.BoardSuppportLibrary" version="1.12.0"/>
       <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.foundationservices.library.FoundationServicesLibrary" version="0.2.3"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.boardsupportlibrary.BoardSuppportLibrary" version="1.12.0"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.mcu16.Mcu16PeripheralLibrary" version="1.171.1"/>
    </usedLibraries>
    <tokenMap class="java.util.TreeMap">
       <entry>
@@ -6098,7 +6098,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="callBackRate"/>
-         <value>10</value>
+         <value>5</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="clockSourceSelect"/>
@@ -6142,7 +6142,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="tickerFactor"/>
-         <value>10</value>
+         <value>5</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerBitMode"/>
@@ -6278,7 +6278,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TI" settingAlias="enable"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="TMR1" registerAlias="TI" settingAlias="flag"/>
@@ -7727,24 +7727,24 @@
          <hash>4a6b8bbd5d2fbe5f20e79db8d915e50e2cd43920940679b40db90f3789cbccd5</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\system.c</file>
-         <hash>ff0e28c7eaaadf89ed2a20ea53b12731cad083d211211c3e3d24c96816b67ddc</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files\delay.h</file>
          <hash>dda77102dba9adc0f9aef1c8c542cfee6d6cccc96446f4cd1bf07be2150a4d95</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\system.c</file>
+         <hash>d5ae0e894f926479e447db5b4b46b55ca5f41153ed4ecfe4df75f27a2523873a</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\clock.h</file>
          <hash>ebe68d674bc4f3c654828ba5c58afcbe98da51f164bd53311f9853d6f04ff885</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\memory\flash.h</file>
-         <hash>c6f91fe369478b6e401121e8e7e6318c20784da1da5976e032940cca346cdaee</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files\docs\delay.dox</file>
          <hash>13d4874d789b563dd4499efacd71882cbc38f8459da91ac17f13fa76079be93b</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files\memory\flash.h</file>
+         <hash>c6f91fe369478b6e401121e8e7e6318c20784da1da5976e032940cca346cdaee</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\mcc.c</file>
@@ -7752,7 +7752,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\mcc.h</file>
-         <hash>3733f64ea93ad8999bd79e8073c2740e13165fde7cc4a628c4f9da2e30654428</hash>
+         <hash>cc4440a8458a0f02a8b8738ce15f161154d0c294d7dc76db5b4cd5e6b5935e50</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\uart2.h</file>
@@ -7764,7 +7764,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\tmr1.h</file>
-         <hash>2cf4d3c2cad8b6fddb7d449d312c1846ff0de9b39729d06e39b9a1cf87e43ef6</hash>
+         <hash>48289f146c03a0652f412f4c2fde83dcc580c564ae5fe3cf13265e84c1dfdda1</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\uart1.c</file>
@@ -7788,7 +7788,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\tmr1.c</file>
-         <hash>87f222969ad7b75098fa8d25279856dae116b9e048710492e5165a97f6f7ed95</hash>
+         <hash>2de68b87d988a7d69a261e859b5d5691f375399f155a16bde5b0f70ba5ae5e7b</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\memory\flash.s</file>
@@ -7796,7 +7796,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\pin_manager.c</file>
-         <hash>3f59b272b5b2315ea985ef82cc51c0362d8acff9f5af8c284c9830762b97586f</hash>
+         <hash>d73b59dbaf58d630175fa714e8221410606b73741b643cbf7a162d34f3ff9cbe</hash>
       </entry>
       <entry>
          <file>mcc_generated_files\rtcc.h</file>
@@ -7812,7 +7812,7 @@
       </entry>
       <entry>
          <file>mcc_generated_files\interrupt_manager.c</file>
-         <hash>9f28eecad95dfa8a3a2e5903ff850cca7fe1eee188bccabdaed99bf62758d3b0</hash>
+         <hash>30de2bd256d5aaf6eac75007d48933647468d0a6be25b83fbce2416d58f9be2e</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

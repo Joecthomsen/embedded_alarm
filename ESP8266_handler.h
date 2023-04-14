@@ -11,7 +11,7 @@
 //void setRTCCtimeFromAPI(char uart_buffer_ptr[], int sizeOfBuffer);
 void setRTCCtimeFromAPI();
 bool connected();
-int * getPeriod();
+void getPeriod();
 
 #endif	/*ESP8266_HANDLER*/
 

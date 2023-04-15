@@ -56,7 +56,6 @@
 /**
  Section: File specific functions
 */
-void (*CN_InterruptHandler)(void) = NULL;
 
 /**
  Section: Driver Interface Function Definitions
@@ -95,50 +94,21 @@ void PIN_MANAGER_Initialize (void)
      * Setting the Analog/Digital Configuration SFR(s)
      ***************************************************************************/
     ANSA = 0x0007;
-    ANSB = 0x300C;
+    ANSB = 0x700C;
     
     /****************************************************************************
      * Set the PPS
      ***************************************************************************/
     __builtin_write_OSCCONL(OSCCON & 0xbf); // unlock PPS
 
-    RPOR3bits.RP6R = 0x0005;    //RB6->UART2:U2TX
     RPINR18bits.U1RXR = 0x0009;    //RB9->UART1:U1RX
-    RPOR4bits.RP8R = 0x0003;    //RB8->UART1:U1TX
     RPINR19bits.U2RXR = 0x0007;    //RB7->UART2:U2RX
+    RPINR0bits.INT1R = 0x000F;    //RB15->EXT_INT:INT1
+    RPOR3bits.RP6R = 0x0005;    //RB6->UART2:U2TX
+    RPOR4bits.RP8R = 0x0003;    //RB8->UART1:U1TX
 
     __builtin_write_OSCCONL(OSCCON | 0x40); // lock PPS
     
-    /****************************************************************************
-     * Interrupt On Change: any
-     ***************************************************************************/
-    CNEN1bits.CN12IE = 1;    //Pin : RB14
-    
-    /* Initialize IOC Interrupt Handler*/
-    CN_SetInterruptHandler(&CN_CallBack);
-    
-    /****************************************************************************
-     * Interrupt On Change: Interrupt Enable
-     ***************************************************************************/
-    IFS1bits.CNIF = 0; //Clear CNI interrupt flag
-    IEC1bits.CNIE = 1; //Enable CNI interrupt
-}
-
-void __attribute__ ((weak)) CN_CallBack(void)
-{
-
-}
-
-void CN_SetInterruptHandler(void (* InterruptHandler)(void))
-{ 
-    IEC1bits.CNIE = 0; //Disable CNI interrupt
-    CN_InterruptHandler = InterruptHandler; 
-    IEC1bits.CNIE = 1; //Enable CNI interrupt
-}
-
-void CN_SetIOCInterruptHandler(void *handler)
-{ 
-    CN_SetInterruptHandler(handler);
 }
 
 /* Interrupt service routine for the CNI interrupt. */
@@ -146,10 +116,6 @@ void __attribute__ (( interrupt, no_auto_psv )) _CNInterrupt ( void )
 {
     if(IFS1bits.CNIF == 1)
     {
-        if(CN_InterruptHandler) 
-        { 
-            CN_InterruptHandler(); 
-        }
         
         // Clear the flag
         IFS1bits.CNIF = 0;

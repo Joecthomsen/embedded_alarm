@@ -16,7 +16,19 @@ void uart_interrupt_handler();
 
 void init();
 void initInerrupts();
+
+//States
 void no_wifi_state();
+void activeState();
+void lost_connection_state();
+
+/*
+ * NOT_CONNECTED_TO_DATESERVER
+ * NOT_INITIALIZED
+ * NO_WIFI
+ * NO_ALARM_PERIOD
+ * ACTIVE
+ */
 
 int main(void)
 {   
@@ -32,31 +44,33 @@ int main(void)
    
     initInerrupts();
     init();
-
-    
      
     while (1)
     {
         int state = getState();
         switch (state){
-            case ACTIVE: 
+            case ACTIVE:
+                activeState();
                 break;
-            case RE_INIT:
-                _LATB13 = 1;
+            case RE_INIT:              
                 init();
                 break;
             case NO_WIFI:
                 no_wifi_state();
-                break;    
+                break;
+            case NO_ALARM_PERIOD:
+                _LATB12 = 1;
+                while(1){;}
+            break;
+            case LOST_CONNECTION: {
+                lost_connection_state();
+            }
         }
     }
-
     return 1;
 }
 
 void init(){
-    
- 
     initStatusLED();
     initESP8266();
     if(!deviceRegistered()){
@@ -70,8 +84,12 @@ void init(){
         return;
     }
 
-    setRTCCtimeFromAPI();  
-    getPeriod();
+    setRTCCtimeFromAPI();
+    if(!setAlarmPeriodFromServer()){
+        State currentState = NO_ALARM_PERIOD;
+        setStatus(currentState);
+        return;
+    }
     State currentState = ACTIVE; 
     setStatus(currentState);
     return;
@@ -79,11 +97,25 @@ void init(){
 
 void initInerrupts(){
     
+    //Function pointers for ISR
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
-    void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_NO_WIFI_interrupt_handler;    
+    void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_NO_WIFI_interrupt_handler; 
+    void (*timer2_active_state_handler_ptr)(void) = timer2_active_state_handler; 
+        
+    //Create ISR callback
     UART1_SetRxInterruptHandler(uart_interrupt_handler_ptr);
     TMR1_SetInterruptHandler(timer1_NO_WIFI_interrupt_handler_ptr);
     TMR1_Stop();
+    TMR2_SetInterruptHandler(timer2_active_state_handler_ptr);
+    TMR2_Stop();
+}
+
+void activeState(){
+    TMR2_Start();
+    while(getState() == ACTIVE){
+        ;
+    }
+    TMR2_Stop();
 }
 
 
@@ -95,3 +127,5 @@ void no_wifi_state(){
     TMR1_Stop();
     return;
 }
+
+void lost_connection_state(){}

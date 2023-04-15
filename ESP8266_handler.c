@@ -9,7 +9,6 @@
 #include "ESP8266_handler.h"
 #include "mcc_generated_files/system.h"
 #include "mcc_generated_files/uart1.h"
-#include "mcc_generated_files/switch1.h"
 #include <string.h>
 #include <stdio.h>
 #include "mcc_generated_files/delay.h"
@@ -21,15 +20,12 @@
 #include "uart_buffer.h"
 #include "state.h"
 #include "flashInterface.h"
+#include "settings.h"
 
-//void setRTCCtimeFromAPI(char uart_buffer_ptr[], int sizeOfBuffer){
 void setRTCCtimeFromAPI(){
-    
-    
+
     char * token;
-    memset(uart_buffer, '\0', UART_BUFFER_SIZE);      
-    
-//    uint8_t connect_wifi[] = "AT+CWJAP=\"TheThomsenFamily_2,4GHz\",\"22267892\"\r\n";    
+    memset(uart_buffer, '\0', UART_BUFFER_SIZE);       
     uint8_t connect_to_time_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";
     uint8_t send_size_advicer_to_API[] = "AT+CIPSEND=53\r\n";
     uint8_t send_GET_time[] = "GET /time HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";    
@@ -94,48 +90,49 @@ void setRTCCtimeFromAPI(){
     clearUartBuffer();  
 
 //TODO check if received package is valid. 
+    int u = 0;
             
-            token = strtok(dateResponse, "\"");    //Make a pointer to the buffer and tokenize it. 
-            token = strtok(NULL, "\"");
-            printf("\r\n\n");  
-            char year[4];
-            char month[2];
-            char date[2];
-            char hour[2];
-            char minute[2];
-            char second[2];
-            
-            for(int i = 0 ; i < 4 ; i++){
-                year[i] = *(token+i);
-            }
-            for(int i = 0 ; i < 2 ; i++){
-                month[i] = *(token+5+i);
-            }
-            for(int i = 0 ; i < 2 ; i++){
-                date[i] = *(token+8+i);
-            }
-            for(int i = 0 ; i < 2 ; i++){
-                hour[i] = *(token+11+i);
-            }
-            for(int i = 0 ; i < 2 ; i++){
-                minute[i] = *(token+14+i);
-            }
-            for(int i = 0 ; i < 2 ; i++){
-                second[i] = *(token+17+i);
-            }
-            
-            struct tm time; 
-            
-            time.tm_year = (1000*(year[0] - 48 ) + 100*(year[1] - 48) + 10*(year[2] - 48) + (year[3] - 48)) - 1900;
-            time.tm_mon = 10*(month[0] - 48) + month[1] - 48;
-            time.tm_mday = 10*(date[0] - 48) + date[1] - 48;
-            time.tm_hour = 10*(hour[0] - 48) + hour[1] - 48 + 2; //TODO Enable timezone managment
-            time.tm_min = 10*(minute[0] - 48) + minute[1] - 48;
-            time.tm_sec = 10*(second[0] - 48) + second[1] - 48;
-            time.tm_wday=1;
-            time.tm_yday=1;
-            
-            RTCC_TimeSet(&time); 
+    token = strtok(dateResponse, "\"");    //Make a pointer to the buffer and tokenize it. 
+    token = strtok(NULL, "\"");
+    printf("\r\n\n");  
+    char year[4];
+    char month[2];
+    char date[2];
+    char hour[2];
+    char minute[2];
+    char second[2];
+
+    for(int i = 0 ; i < 4 ; i++){
+        year[i] = *(token+i);
+    }
+    for(int i = 0 ; i < 2 ; i++){
+        month[i] = *(token+5+i);
+    }
+    for(int i = 0 ; i < 2 ; i++){
+        date[i] = *(token+8+i);
+    }
+    for(int i = 0 ; i < 2 ; i++){
+        hour[i] = *(token+11+i);
+    }
+    for(int i = 0 ; i < 2 ; i++){
+        minute[i] = *(token+14+i);
+    }
+    for(int i = 0 ; i < 2 ; i++){
+        second[i] = *(token+17+i);
+    }
+
+    struct tm time; 
+
+    time.tm_year = (1000*(year[0] - 48 ) + 100*(year[1] - 48) + 10*(year[2] - 48) + (year[3] - 48)) - 1900;
+    time.tm_mon = 10*(month[0] - 48) + month[1] - 48;
+    time.tm_mday = 10*(date[0] - 48) + date[1] - 48;
+    time.tm_hour = 10*(hour[0] - 48) + hour[1] - 48 + 2; //TODO Enable timezone managment
+    time.tm_min = 10*(minute[0] - 48) + minute[1] - 48;
+    time.tm_sec = 10*(second[0] - 48) + second[1] - 48;
+    time.tm_wday=1;
+    time.tm_yday=1;
+    int test2 = 0;
+    RTCC_TimeSet(&time); 
 }
 
 bool connected(){
@@ -167,7 +164,7 @@ bool connected(){
     return false;
 }
 
-void getPeriod(){
+bool setAlarmPeriodFromServer(){
     
     //char command[70];
     char command[] = "GET /period/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";
@@ -212,7 +209,80 @@ void getPeriod(){
     for(int i = 0 ; i < 512; i++){
         response[i] = uart_buffer[i];
     }
-    int test = 0;
+    char needle[] = "1 200";
+    char *ptr_to_200_OK;
+    ptr_to_200_OK = strstr(response, needle);
+    
+    if(ptr_to_200_OK != NULL){  //If everything is okay, we need to destructure the json object containing the values.
+        char startTime[5];
+        char endTime[5];
+        char * ptr_to_value = strstr(response, "startTime");
+        ptr_to_value = strtok(ptr_to_value, ":");
+        ptr_to_value = strtok(NULL, ":");
+        for(size_t i = 0 ; *(ptr_to_value+i) != ',' ; i++){
+            startTime[i] = *(ptr_to_value+i);
+        }
+        ptr_to_value = strtok(NULL, ":");
+        for(size_t i = 0 ; *(ptr_to_value+i) != '}' ; i++){
+            endTime[i] = *(ptr_to_value+i);
+        }
+        
+        uint8_t lenghtStartTime = 0;
+        uint8_t lenghtEndTime = 0;
+        
+        while(startTime[lenghtStartTime] != '\0'){
+            lenghtStartTime++;
+        }
+        while(endTime[lenghtEndTime] != '\0'){
+            lenghtEndTime++;
+        }
+        int startTimeConverted;
+        int endTimeConverted;
+        
+        
+        switch(lenghtStartTime){
+            case 4: {
+                startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);
+                break;
+            }
+            case 3:{
+                startTimeConverted = 100*(startTime[0] - 48) + 10*(startTime[1] - 48) + (startTime[2] - 48);
+                break;
+            }
+            case 2:{
+                startTimeConverted = (10*startTime[0] - 48) + (startTime[1] - 48);
+                break;
+            }
+            case 1:{
+                startTimeConverted = (startTime[0] - 48);
+                break;
+            }
+                
+        }
+        
+        switch(lenghtEndTime){
+            case 4: {
+                endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);
+                break;
+            }
+            case 3:{
+                endTimeConverted = 100*(endTime[0] - 48) + 10*(endTime[1] - 48) + (endTime[2] - 48);
+                break;
+            }
+            case 2:{
+                endTimeConverted = 10*(endTime[0] - 48) + (endTime[1] - 48);
+                break;
+            }
+            case 1:{
+                endTimeConverted = (endTime[0] - 48);
+                break;
+            }                
+        }
+        int g = 0;
+        setAlarmPeriod(startTime, endTime);
+        return true;
+    }
+    return false;
 }
 
 void hardResetWifiModule(){

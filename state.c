@@ -20,15 +20,8 @@ void turnOffBlueLED();
 
 int globalState;
 
-
-//enum Status {ACTIVE, NOT_ACTIVE, ALARM, NO_ALARM_PERIOD, NO_WIFI, NOT_INITIALIZED, NOT_CONNECTED_TO_DATESERVER};
-//State currentState = NOT_INITIALIZED;
-
-//int state = NOT_INITIALIZED;
-
 void initStatusLED(){
     
-
     
     _TRISB13 = 0;
     _TRISB12 = 0;
@@ -43,7 +36,7 @@ void initStatusLED(){
 }
 
 void setStatus(int state){
-    
+  
     turnOffRedLED();
     turnOffYellowLED();
     turnOffGreenLED();
@@ -51,7 +44,7 @@ void setStatus(int state){
        
     switch(state){
         case ACTIVE: 
-            turnOnGreenLED();
+            //turnOnGreenLED();
             globalState = ACTIVE;
             break;
         case NOT_ACTIVE: 

@@ -11,21 +11,20 @@
 #include "state.h"
 #include "mcc_generated_files/tmr1.h"
 #include "mcc_generated_files/interrupt_manager.h"
+#include "mcc_generated_files/delay.h"
 
 
 void timer1_NO_WIFI_interrupt_handler() {
-    
-    _LATB12 = ~ _LATB12;
-    
- /*   
-    int k = 0;
+   
+    turnOnYellowLED();
+    DELAY_milliseconds(50);
+    turnOffYellowLED();
+    hardResetWifiModule(); 
     if(connected()){
-        //TMR1_Stop();
         State currentState = RE_INIT;
         setStatus(currentState);
     }
-  * */
-    //return;
+    return;
 }
 
 

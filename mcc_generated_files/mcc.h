@@ -51,14 +51,14 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "delay.h"
-#include "tmr1.h"
-#include "memory/flash.h"
 #include "interrupt_manager.h"
 #include "traps.h"
 #include "rtcc.h"
-#include "uart2.h"
+#include "memory/flash.h"
 #include "uart1.h"
+#include "uart2.h"
+#include "tmr1.h"
+#include "delay.h"
 
 #warning "This file will be removed in future MCC releases. Use system.h instead."
 

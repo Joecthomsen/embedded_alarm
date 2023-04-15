@@ -58,7 +58,6 @@ void setRTCCtimeFromAPI(){
     }
     int compaireConnect = strcmp(stringConnect, stringConnect);
     int compaireAlready = strcmp(stringConnect, stringAlready);
-    int k = 0;
     if(!compaireConnect){
         if(!compaireAlready){
             State currentState = NOT_CONNECTED_TO_DATESERVER;
@@ -137,55 +136,41 @@ void setRTCCtimeFromAPI(){
             time.tm_yday=1;
             
             RTCC_TimeSet(&time); 
-            int u = 0;
 }
 
 bool connected(){
     
     clearUartBuffer();
     uint8_t AT_status_cmd[] = "AT+CIPSTATUS\r\n";
-    for(int i = 0 ; i < sizeof(AT_status_cmd) ; i++){
-        UART1_Write(AT_status_cmd[i]);
+    if(UART1_IsTxReady()){
+        for(int i = 0 ; i < sizeof(AT_status_cmd) ; i++){
+            UART1_Write(AT_status_cmd[i]);
+        }
     }
     
     char response[256];  
-    DELAY_milliseconds(250);   //Wait for wifi-module to stablish connection to AP
+    DELAY_milliseconds(500);   //Wait for wifi-module to respond
     
     for(int i = 0 ; i < sizeof(response); i++){
         response[i] = *(uart_buffer+i);
     }
-    
-    char * token = strtok(response, "O");    //Make a pointer to the first value "O" buffer and tokenize it. 
-    token = strtok(NULL, "O");
-    
+    char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
+    token = strtok(NULL, ":");
     while(token != NULL){
-        int t = *(token);
-        int test = 0;
-        if(*(token) == 'K'){
+        if(*(token) == '2'){
             return true;
         }
         else{
-            token = strtok(NULL, "O");
+            token = strtok(NULL, ":");
         }
     }
     return false;
-    /*  
-    char responseOK[1];
-    for(int i = 0 ; i < 2 ; i++){
-        responseOK[i] = *(token+i);
-    }
-    int k = 0;
-    if(*token != NULL && responseOK[0] == "K"){
-        return true;
-    }
-    return false;
-    */
 }
 
 void getPeriod(){
     
-    char command[70];
-    //char command[] = "GET /period/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";
+    //char command[70];
+    char command[] = "GET /period/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";
     char connect_to_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";   
     char send_size_advicer_to_API[] = "AT+CIPSEND=59\r\n";
     
@@ -194,7 +179,7 @@ void getPeriod(){
     arrayToConvert[0]= rawUserId & 0xff;
     arrayToConvert[1]=(rawUserId >> 8);  
     uint8_t userId = arrayToConvert[0];    
-    snprintf(command, sizeof(command), "GET /period/%u HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", userId);
+    //snprintf(command, sizeof(command), "GET /period/%u HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", userId);
     
     printf("Sending Connect command ..\r\n");
     for(size_t i = 0 ; i < sizeof(connect_to_API) ; i++){
@@ -227,10 +212,18 @@ void getPeriod(){
     for(int i = 0 ; i < 512; i++){
         response[i] = uart_buffer[i];
     }
-    
-    int k = 0;
-    
+    int test = 0;
+}
 
-    
+void hardResetWifiModule(){
+    _LATB5 = 0;
+    DELAY_milliseconds(25);
+    _LATB5 = 1;
+    DELAY_milliseconds(2000);
+}
+
+void initESP8266(){
+    _TRISB5 = 0;
+    _LATB5 = 1;
 }
  

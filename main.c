@@ -12,9 +12,6 @@
 #include "mcc_generated_files/tmr1.h"
 #include "timer_interrupt_handlers.h"
 
-//void setRTCCtimeFromAPI(char  uart_buffer_ptr[], int sizeOfBuffer);
-
-
 void uart_interrupt_handler();
 
 void init();
@@ -44,7 +41,8 @@ int main(void)
         switch (state){
             case ACTIVE: 
                 break;
-            case RE_INIT: 
+            case RE_INIT:
+                _LATB13 = 1;
                 init();
                 break;
             case NO_WIFI:
@@ -60,7 +58,7 @@ void init(){
     
  
     initStatusLED();
-    
+    initESP8266();
     if(!deviceRegistered()){
         State currentState = NOT_INITIALIZED;
         setStatus(currentState);
@@ -84,15 +82,16 @@ void initInerrupts(){
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
     void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_NO_WIFI_interrupt_handler;    
     UART1_SetRxInterruptHandler(uart_interrupt_handler_ptr);
-    //TMR1_SetInterruptHandler(timer1_NO_WIFI_interrupt_handler_ptr);
-    //TMR1_Stop();
+    TMR1_SetInterruptHandler(timer1_NO_WIFI_interrupt_handler_ptr);
+    TMR1_Stop();
 }
 
 
 void no_wifi_state(){
-   // TMR1_Start();
+    TMR1_Start();
     while(getState() == NO_WIFI){
-        
+        ;
     }
-  //  TMR1_Stop();
+    TMR1_Stop();
+    return;
 }

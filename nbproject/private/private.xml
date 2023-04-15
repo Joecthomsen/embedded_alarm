@@ -5,10 +5,13 @@
         <group>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/timer_interrupt_handlers.c</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/state.c</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/uart_buffer.h</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/main.c</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/mcc_generated_files/uart1.c</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/ESP8266_handler.c</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/state.h</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/mcc_generated_files/tmr1.h</file>
+            <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/mcc_generated_files/uart1.h</file>
             <file>file:/C:/Users/Joect/MPLABXProjects/Alarm.X/uart_buffer.c</file>
         </group>
     </open-files>

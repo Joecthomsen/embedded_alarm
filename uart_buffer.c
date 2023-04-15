@@ -15,7 +15,6 @@ void uart_interrupt_handler(){
         printf("%c", data);
         uart_buffer[uart_buffer_index] = data;
         uart_buffer_index++;
-        int x = 0;
     }
 }
 

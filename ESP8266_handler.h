@@ -9,9 +9,11 @@
 
 
 //void setRTCCtimeFromAPI(char uart_buffer_ptr[], int sizeOfBuffer);
+void initESP8266();
 void setRTCCtimeFromAPI();
 bool connected();
 void getPeriod();
+void hardResetWifiModule();
 
 #endif	/*ESP8266_HANDLER*/
 

@@ -11,6 +11,14 @@ extern int globalState;
 void initStatusLED();
 void setStatus(int state);
 int getState();
+void turnOnRedLED();
+void turnOnYellowLED();
+void turnOnGreenLED();
+void turnOnBlueLED();
+void turnOffRedLED();
+void turnOffYellowLED();
+void turnOffGreenLED();
+void turnOffBlueLED();
 
 //enum status getStatus();
 

@@ -1,6 +1,6 @@
 
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#ifndef PIR_SENSOR_H
+#define	PIR_SENSOR_H
 
 #include <xc.h> 
 #include <stdbool.h>
@@ -10,5 +10,5 @@
 void initPir();
 bool PirIsActive();
 
-#endif	/* XC_HEADER_TEMPLATE_H */
+#endif	/* PIR_SENSOR_H */
 

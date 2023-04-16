@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
+#include "../stateManager.h"
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

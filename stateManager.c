@@ -7,7 +7,7 @@
 
 
 #include <xc.h>
-#include "state.h"
+#include "stateManager.h"
 
 void turnOnRedLED();
 void turnOnYellowLED();
@@ -35,7 +35,7 @@ void initStatusLED(){
     
 }
 
-void setStatus(int state){
+void setState(int state){
   
     turnOffRedLED();
     turnOffYellowLED();
@@ -43,8 +43,10 @@ void setStatus(int state){
     turnOffBlueLED();
        
     switch(state){
+        case ALARM:
+            globalState = ALARM;
+            break;
         case ACTIVE: 
-            //turnOnGreenLED();
             globalState = ACTIVE;
             break;
         case NOT_ACTIVE: 
@@ -56,6 +58,11 @@ void setStatus(int state){
             turnOnRedLED();
             globalState = NO_WIFI;
             break;
+        case LOST_CONNECTION: 
+            turnOnBlueLED();
+            turnOnGreenLED();
+            globalState = LOST_CONNECTION;
+            break;        
         case NOT_CONNECTED_TO_DATESERVER:
             turnOnBlueLED();
             turnOnYellowLED();
@@ -73,6 +80,19 @@ void setStatus(int state){
             initStatusLED();
             break;
     }    
+}
+
+bool alarmActive(){
+    struct tm currentTime;    
+    RTCC_TimeGet(&currentTime);
+    
+    int * alarmTime = getStoredAlarmPeriod();
+    int currentTimeConverted = 100*currentTime.tm_hour + currentTime.tm_min;
+    
+    if( ( *(alarmTime) >= currentTimeConverted && *(alarmTime+1) >= currentTimeConverted ) || ( *(alarmTime) < currentTimeConverted && *(alarmTime+1) <= currentTimeConverted ) ){
+        return true;
+    }
+    return false;   
 }
 
 int getState(){

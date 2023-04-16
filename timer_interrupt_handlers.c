@@ -7,42 +7,93 @@
 
 #include <xc.h>
 #include "ESP8266_handler.h"
-#include "state.h"
-#include "mcc_generated_files/tmr1.h"
+#include "stateManager.h"
 #include "mcc_generated_files/interrupt_manager.h"
 #include "mcc_generated_files/delay.h"
 
 #define CONECTION_CHECK_SECONDS 30
 
-int activeCounter = 0;
+int counterActive = 0;
+int counterLostConnection = 0;
 
 
-void timer1_NO_WIFI_interrupt_handler() {   
+//run every 4 second
+void timer1_interrupt_handler() {
+    
     turnOnYellowLED();
     DELAY_milliseconds(50);
     turnOffYellowLED();
     hardResetWifiModule(); 
     if(connected()){
         State currentState = RE_INIT;
-        setStatus(currentState);
+        setState(currentState);
     }
     return;
 }
 
-// Run every second second
-void timer2_active_state_handler(){
-    turnOnGreenLED();
-    DELAY_milliseconds(100);
-    turnOffGreenLED();
-    if(activeCounter == CONECTION_CHECK_SECONDS/2){
-        if(!connected()){
-            State currentState = LOST_CONNECTION;
-            setStatus(currentState);
-            return;
+// Run every 2 second
+void timer2_interrupt_handler(){
+    
+    switch(getState()){
+        case ACTIVE: {
+            turnOnGreenLED();
+            DELAY_milliseconds(100);
+            turnOffGreenLED();
+            if(counterActive == 15){
+                if(!connected()){
+                    State currentState = LOST_CONNECTION;
+                    setState(currentState);
+                }
+                counterActive = -1;
+            }
+            counterActive++;
         }
-        activeCounter = -1;
+        break;
+        case LOST_CONNECTION: {
+            turnOnYellowLED();
+            DELAY_milliseconds(100);
+            turnOffYellowLED();
+            if(!connected()){
+                if(counterLostConnection == 7){
+                    hardResetWifiModule();
+                    counterLostConnection = 0;
+                }
+                else{
+                    counterLostConnection++;
+                }
+            }
+            else{
+                counterLostConnection = 0;
+                State currentState = ACTIVE;
+                setState(currentState);
+            }
+        }
+        break;
     }
-    activeCounter++;
 }
+
+void timer3_interrupt_handler(){
+
+    turnOnBlueLED();
+    DELAY_milliseconds(50);
+    turnOffBlueLED();
+    if(alarmActive() && getState() == NOT_ACTIVE){
+        State state = ACTIVE;
+        setState(state);
+    }
+    else if(!alarmActive() && getState() == ACTIVE){
+        State state = NOT_ACTIVE;
+        setState(state);
+    }
+    return;
+}
+
+
+
+
+
+
+
+
 
 

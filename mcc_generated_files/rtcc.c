@@ -30,6 +30,15 @@ void RTCC_Initialize(void)
        RTCVAL = 0x2155;    // MINUTES/SECONDS
    }
 
+   // set Alarm time 2023-04-03 14-21-55
+   ALCFGRPTbits.ALRMEN = 0;
+   ALCFGRPTbits.ALRMPTR = 2;
+   ALRMVAL = 0x403;
+   ALRMVAL = 0x114;
+   ALRMVAL = 0x2155;
+
+   // ALRMPTR MIN_SEC; AMASK Every Minute; ARPT 0; CHIME disabled; ALRMEN enabled; 
+   ALCFGRPT = 0x8C00;
 
    // RTCOUT Alarm Pulse; PWSPRE disabled; RTCLK SOSC; PWCPRE disabled; PWCEN disabled; PWCPOL disabled; 
    RTCPWC = 0x00;
@@ -184,7 +193,20 @@ static uint8_t ConvertBCDToHex(uint8_t bcdvalue)
 
 void __attribute__ ((weak)) RTCC_CallBack(void)
 {
-    // Add your custom callback code here
+    /*
+    turnOnBlueLED();
+    DELAY_milliseconds(50);
+    turnOffBlueLED();
+    if(alarmActive() && getState() == NOT_ACTIVE){
+        State state = ACTIVE;
+        setState(state);
+    }
+    else if(!alarmActive && getState == ACTIVE){
+        State state = NOT_ACTIVE;
+        setState(state);
+    }
+    return;
+    */
 }
 
 /* Function:

@@ -77,7 +77,10 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _INT0Interrupt(void)
 }
  void __attribute__ ((weak)) EX_INT1_CallBack(void)
 {
-    // Add your custom callback code here
+     //_LATB11 = ~_LATB11;
+     State state = ALARM;
+     setState(state);
+     return;
 }
 
 /**

@@ -18,7 +18,7 @@
 #include <time.h>
 #include "mcc_generated_files/rtcc.h"
 #include "uart_buffer.h"
-#include "state.h"
+#include "stateManager.h"
 #include "flashInterface.h"
 #include "settings.h"
 
@@ -57,7 +57,7 @@ void setRTCCtimeFromAPI(){
     if(!compaireConnect){
         if(!compaireAlready){
             State currentState = NOT_CONNECTED_TO_DATESERVER;
-            setStatus(currentState);
+            setState(currentState);
             return;
         }          
     } 
@@ -90,7 +90,6 @@ void setRTCCtimeFromAPI(){
     clearUartBuffer();  
 
 //TODO check if received package is valid. 
-    int u = 0;
             
     token = strtok(dateResponse, "\"");    //Make a pointer to the buffer and tokenize it. 
     token = strtok(NULL, "\"");
@@ -121,7 +120,8 @@ void setRTCCtimeFromAPI(){
         second[i] = *(token+17+i);
     }
 
-    struct tm time; 
+    struct tm time;
+
 
     time.tm_year = (1000*(year[0] - 48 ) + 100*(year[1] - 48) + 10*(year[2] - 48) + (year[3] - 48)) - 1900;
     time.tm_mon = 10*(month[0] - 48) + month[1] - 48;
@@ -131,8 +131,13 @@ void setRTCCtimeFromAPI(){
     time.tm_sec = 10*(second[0] - 48) + second[1] - 48;
     time.tm_wday=1;
     time.tm_yday=1;
-    int test2 = 0;
     RTCC_TimeSet(&time); 
+    
+    /*
+    struct tm getTimeStruct;
+    RTCC_TimeGet(&getTimeStruct);
+    int test2 = 0;
+    */
 }
 
 bool connected(){
@@ -219,67 +224,20 @@ bool setAlarmPeriodFromServer(){
         char * ptr_to_value = strstr(response, "startTime");
         ptr_to_value = strtok(ptr_to_value, ":");
         ptr_to_value = strtok(NULL, ":");
-        for(size_t i = 0 ; *(ptr_to_value+i) != ',' ; i++){
-            startTime[i] = *(ptr_to_value+i);
+        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
+            startTime[i] = *(ptr_to_value+i+1);
         }
         ptr_to_value = strtok(NULL, ":");
-        for(size_t i = 0 ; *(ptr_to_value+i) != '}' ; i++){
-            endTime[i] = *(ptr_to_value+i);
+        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
+            endTime[i] = *(ptr_to_value+i+1);
         }
         
-        uint8_t lenghtStartTime = 0;
-        uint8_t lenghtEndTime = 0;
-        
-        while(startTime[lenghtStartTime] != '\0'){
-            lenghtStartTime++;
-        }
-        while(endTime[lenghtEndTime] != '\0'){
-            lenghtEndTime++;
-        }
         int startTimeConverted;
         int endTimeConverted;
-        
-        
-        switch(lenghtStartTime){
-            case 4: {
-                startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);
-                break;
-            }
-            case 3:{
-                startTimeConverted = 100*(startTime[0] - 48) + 10*(startTime[1] - 48) + (startTime[2] - 48);
-                break;
-            }
-            case 2:{
-                startTimeConverted = (10*startTime[0] - 48) + (startTime[1] - 48);
-                break;
-            }
-            case 1:{
-                startTimeConverted = (startTime[0] - 48);
-                break;
-            }
-                
-        }
-        
-        switch(lenghtEndTime){
-            case 4: {
-                endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);
-                break;
-            }
-            case 3:{
-                endTimeConverted = 100*(endTime[0] - 48) + 10*(endTime[1] - 48) + (endTime[2] - 48);
-                break;
-            }
-            case 2:{
-                endTimeConverted = 10*(endTime[0] - 48) + (endTime[1] - 48);
-                break;
-            }
-            case 1:{
-                endTimeConverted = (endTime[0] - 48);
-                break;
-            }                
-        }
-        int g = 0;
-        setAlarmPeriod(startTime, endTime);
+
+        startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);     
+        endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);        
+        setAlarmPeriod(startTimeConverted, endTimeConverted);
         return true;
     }
     return false;

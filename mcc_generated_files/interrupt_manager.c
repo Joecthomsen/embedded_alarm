@@ -62,22 +62,22 @@ void INTERRUPT_Initialize (void)
     //    Priority: 1
         IPC16bits.U1ERIP = 1;
     //    UTXI: U1TX - UART1 Transmitter
-    //    Priority: 2
-        IPC3bits.U1TXIP = 2;
+    //    Priority: 3
+        IPC3bits.U1TXIP = 3;
     //    URXI: U1RX - UART1 Receiver
-    //    Priority: 2
-        IPC2bits.U1RXIP = 2;
-    //    INT0I: INT0 - External Interrupt 0
-    //    Priority: 1
-        IPC0bits.INT0IP = 1;
+    //    Priority: 3
+        IPC2bits.U1RXIP = 3;
     //    INT1I: INT1 - External Interrupt 1
     //    Priority: 1
         IPC5bits.INT1IP = 1;
+    //    TI: T3 - Timer3
+    //    Priority: 2
+        IPC2bits.T3IP = 2;
     //    TI: T2 - Timer2
-    //    Priority: 1
-        IPC1bits.T2IP = 1;
+    //    Priority: 2
+        IPC1bits.T2IP = 2;
     //    TI: T1 - Timer1
-    //    Priority: 1
-        IPC0bits.T1IP = 1;
+    //    Priority: 2
+        IPC0bits.T1IP = 2;
 
 }

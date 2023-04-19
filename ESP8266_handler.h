@@ -12,8 +12,9 @@
 void initESP8266();
 void setRTCCtimeFromAPI();
 bool connected();
-bool setAlarmPeriodFromServer();
+bool syncAlarmPeriodFromServer();
 void hardResetWifiModule();
+bool setAlarm();
 
 #endif	/*ESP8266_HANDLER*/
 

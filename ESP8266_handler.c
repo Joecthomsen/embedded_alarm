@@ -169,7 +169,7 @@ bool connected(){
     return false;
 }
 
-bool setAlarmPeriodFromServer(){
+bool syncAlarmPeriodFromServer(){
     
     //char command[70];
     char command[] = "GET /period/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";
@@ -255,3 +255,53 @@ void initESP8266(){
     _LATB5 = 1;
 }
  
+bool setAlarm(){
+    
+     //char command[70];
+    char command[] = "POST /alarm/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";    
+    char connect_to_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";   
+    char send_size_advicer_to_API[] = "AT+CIPSEND=59\r\n";
+    
+    uint16_t rawUserId = getUserId();
+    uint8_t arrayToConvert[2];
+    arrayToConvert[0]= rawUserId & 0xff;
+    arrayToConvert[1]=(rawUserId >> 8);  
+    uint8_t userId = arrayToConvert[0];    
+    
+    printf("Sending Connect command ..\r\n");
+    for(size_t i = 0 ; i < sizeof(connect_to_API) ; i++){
+        UART1_Write(connect_to_API[i]);                
+    }
+    DELAY_milliseconds(100);
+    
+    printf("Sending Size command ..\r\n");
+    for(size_t i = 0 ; i < sizeof(send_size_advicer_to_API) ; i++){
+        UART1_Write(send_size_advicer_to_API[i]);                
+    }
+    DELAY_milliseconds(100);   
+    
+    clearUartBuffer();
+    
+    printf("Sending GET command 1..\r\n");
+    for(size_t i = 0 ; i < sizeof(command) ; i++){
+        UART1_Write(command[i]);                
+    }
+    DELAY_milliseconds(100);
+    
+    printf("Sending GET command 2..\r\n");
+    for(size_t i = 0 ; i < sizeof(command) ; i++){
+        UART1_Write(command[i]);                
+    }
+    DELAY_milliseconds(1000);
+    
+    char response[512] = "\0";
+    
+    for(int i = 0 ; i < 512; i++){
+        response[i] = uart_buffer[i];
+    }
+    char needle[] = "1 200";
+    char *ptr_to_200_OK;
+    ptr_to_200_OK = strstr(response, needle);
+    int k = 0;
+    return true;
+}   //TODO make error check/handling

@@ -15,12 +15,14 @@
 #include "timer_interrupt_handlers.h"
 #include "mcc_generated_files/ext_int.h"
 #include "mcc_generated_files/interrupt_manager.h"
+#include "mcc_generated_files/delay.h"
 
 
 void uart_interrupt_handler();
 
 void init();
 void initInerrupts();
+void enterIdleMode();
 
 //States
 void alarmState();
@@ -37,13 +39,13 @@ int main(void)
      */
     //Start of pseudo init code
     FLASH_Unlock(FLASH_UNLOCK_KEY);
-        FLASH_WriteWord16(DEVICE_ID_ADDRESS, 0x1);
+        FLASH_WriteWord16(DEVICE_ID_ADDRESS, 0x1);  //Write the number "1" as device id. 
     FLASH_Lock();
     //End of pseudo init code
    
     initInerrupts();
     init();
-     
+  
     while (1)
     {
         int state = getState();
@@ -76,6 +78,7 @@ int main(void)
 }
 
 void init(){
+    
     initStatusLED();
     initESP8266();
     if(!deviceRegistered()){
@@ -89,8 +92,8 @@ void init(){
         return;
     }
 
-    setRTCCtimeFromAPI();
-    if(!setAlarmPeriodFromServer()){
+    setRTCCtimeFromAPI();   //TODO make bool to check that everything went as expected
+    if(!syncAlarmPeriodFromServer()){
         State currentState = NO_ALARM_PERIOD;
         setState(currentState);
         return;
@@ -105,13 +108,15 @@ void init(){
         setState(currentState);
         TMR3_Start();
     }
+    T2CONbits.TSIDL = 0;    //continue timer operation during idle mode. 
+    DSCONbits.DSEN = 0; // Set the power saving mode to "Normal Sleep on execution of PWRSAV #0"
     return;
 }
 
 void initInerrupts(){
     
     //Turn off sensor interrupt until the system is in the alarm state
-    //EX_INT1_InterruptDisable();
+    EX_INT1_InterruptDisable();
     
     //Function pointers for ISR
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
@@ -129,14 +134,13 @@ void initInerrupts(){
     TMR3_Stop();
 }
 
-void alarmState(){
-    //INTERRUPT_GlobalDisable();
-    //turnOffGreenLED();
-    //turnOffYellowLED();
-    //turnOffBlueLED();
+void alarmState(){    
     turnOnRedLED();
+    setAlarm();
+    INTERRUPT_GlobalDisable();
     DELAY_milliseconds(10000);  //Change to some clear condition from app.
-    //INTERRUPT_GlobalEnable();
+    enterIdleMode();
+    INTERRUPT_GlobalEnable();
     turnOffRedLED();
     State state = ACTIVE;
     setState(state);
@@ -145,7 +149,9 @@ void alarmState(){
 void activeState(){
     EX_INT1_InterruptEnable();
     TMR2_Start();
-    while(getState() == ACTIVE){;}
+    while(getState() == ACTIVE){
+        enterIdleMode();
+    }
     EX_INT1_InterruptDisable();
     TMR2_Stop();
     return;
@@ -153,17 +159,27 @@ void activeState(){
 
 void no_wifi_state(){
     TMR1_Start();
-    while(getState() == NO_WIFI){;}
+    while(getState() == NO_WIFI){
+        enterIdleMode();
+    }
     TMR1_Stop();
     return;
 }
 
 void lost_connection_state(){
     TMR2_Start();
-    while(getState() == LOST_CONNECTION){;}
+    while(getState() == LOST_CONNECTION){
+        enterIdleMode();
+    }
     TMR2_Stop();
 }
 
 void not_active_state(){
     while(getState() == NOT_ACTIVE){;}
+}
+
+void enterIdleMode(){
+    __asm__(
+        "PWRSAV #1\n"   //1=idle ; 0=sleep
+    );
 }

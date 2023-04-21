@@ -59,8 +59,6 @@ void setState(int state){
             globalState = NO_WIFI;
             break;
         case LOST_CONNECTION: 
-            //turnOnBlueLED();
-            //turnOnGreenLED();
             globalState = LOST_CONNECTION;
             break;        
         case NOT_CONNECTED_TO_DATESERVER:
@@ -91,12 +89,30 @@ bool alarmActive(){
     RTCC_TimeGet(&currentTime);
     
     int * alarmTime = getStoredAlarmPeriod();
+    int start = *alarmTime;
+    int end = *(alarmTime+1);
     int currentTimeConverted = 100*currentTime.tm_hour + currentTime.tm_min;
-    
-    if( ( *(alarmTime) >= currentTimeConverted && *(alarmTime+1) >= currentTimeConverted ) || ( *(alarmTime) < currentTimeConverted && *(alarmTime+1) <= currentTimeConverted ) ){
-        return true;
+    if(*alarmTime > *(alarmTime+1)){
+        if( (currentTimeConverted >= start && currentTimeConverted >= end) || (currentTimeConverted <= start && currentTimeConverted <= end) ){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
-    return false;   
+    else{
+        if(currentTimeConverted > start && currentTimeConverted < end){
+            return true;
+        }
+        else{
+            return false; 
+        }
+    }
+
+//    if( ( *(alarmTime) >= currentTimeConverted && *(alarmTime+1) >= currentTimeConverted ) || ( *(alarmTime) < currentTimeConverted && *(alarmTime+1) <= currentTimeConverted ) ){
+//        return true;
+//    }
+//    return false;   
 }
 
 int getState(){

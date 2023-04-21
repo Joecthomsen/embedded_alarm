@@ -104,7 +104,7 @@ void init(){
     if(alarmActive()){
         State currentState = ACTIVE; 
         setState(currentState);
-        TMR3_Start();
+        //TMR3_Start();
     }
     else{
         State currentState = NOT_ACTIVE; 
@@ -113,7 +113,7 @@ void init(){
     }
     T2CONbits.TSIDL = 0;    //continue timer operation during idle mode. 
     DSCONbits.DSEN = 0; // Set the power saving mode to "Normal Sleep on execution of PWRSAV #0"
-    turnOffYellowLED();
+    //turnOffYellowLED();
     return;
 }
 
@@ -151,13 +151,12 @@ void alarmState(){
 }
 
 void activeState(){
+    turnOnGreenLED();
     EX_INT1_InterruptEnable();
-    TMR2_Start();
-    while(getState() == ACTIVE){
+    TMR3_Start();
         enterIdleMode();
-    }
     EX_INT1_InterruptDisable();
-    TMR2_Stop();
+    TMR3_Stop();
     return;
 }
 

@@ -73,7 +73,8 @@ void timer2_interrupt_handler(){
 }
 
 void timer3_interrupt_handler(){
-
+    int k = 0;
+    syncAlarmPeriodFromServer();
     turnOnBlueLED();
     DELAY_milliseconds(50);
     turnOffBlueLED();

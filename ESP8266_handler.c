@@ -209,7 +209,6 @@ bool syncAlarmPeriodFromServer(){
         startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);     
         endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);        
         setAlarmPeriod(startTimeConverted, endTimeConverted);   
-        int k = 0;
         return true;
     }   
     return false;

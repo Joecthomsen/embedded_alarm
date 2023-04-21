@@ -86,8 +86,7 @@ void setState(int state){
 
 bool alarmActive(){
     struct tm currentTime;    
-    RTCC_TimeGet(&currentTime);
-    
+    RTCC_TimeGet(&currentTime);   
     int * alarmTime = getStoredAlarmPeriod();
     int start = *alarmTime;
     int end = *(alarmTime+1);
@@ -108,11 +107,6 @@ bool alarmActive(){
             return false; 
         }
     }
-
-//    if( ( *(alarmTime) >= currentTimeConverted && *(alarmTime+1) >= currentTimeConverted ) || ( *(alarmTime) < currentTimeConverted && *(alarmTime+1) <= currentTimeConverted ) ){
-//        return true;
-//    }
-//    return false;   
 }
 
 int getState(){

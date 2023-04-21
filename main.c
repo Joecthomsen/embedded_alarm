@@ -160,6 +160,13 @@ void activeState(){
     return;
 }
 
+void not_active_state(){   
+        TMR3_Start();
+        enterIdleMode();
+        TMR3_Stop();
+    //while(getState() == NOT_ACTIVE){;}
+}
+
 void no_wifi_state(){
     TMR1_Start();
     while(getState() == NO_WIFI){
@@ -175,10 +182,6 @@ void lost_connection_state(){
         enterIdleMode();
     }
     TMR2_Stop();
-}
-
-void not_active_state(){
-    while(getState() == NOT_ACTIVE){;}
 }
 
 void enterIdleMode(){

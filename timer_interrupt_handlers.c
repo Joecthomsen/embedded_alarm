@@ -54,7 +54,7 @@ void timer2_interrupt_handler(){
             DELAY_milliseconds(100);
             turnOffYellowLED();
             if(!connected()){
-                if(counterLostConnection == 7){
+                if(counterLostConnection == 2){
                     hardResetWifiModule();
                     counterLostConnection = 0;
                 }

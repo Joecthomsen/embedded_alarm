@@ -9,6 +9,7 @@
 
 
 //void setRTCCtimeFromAPI(char uart_buffer_ptr[], int sizeOfBuffer);
+void sendHttpRequest(char * request, int sizeOfRequest, char * requestResponse);
 void initESP8266();
 void setRTCCtimeFromAPI();
 bool connected();

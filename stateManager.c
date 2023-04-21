@@ -59,8 +59,8 @@ void setState(int state){
             globalState = NO_WIFI;
             break;
         case LOST_CONNECTION: 
-            turnOnBlueLED();
-            turnOnGreenLED();
+            //turnOnBlueLED();
+            //turnOnGreenLED();
             globalState = LOST_CONNECTION;
             break;        
         case NOT_CONNECTED_TO_DATESERVER:
@@ -70,6 +70,9 @@ void setState(int state){
             break;
         case NOT_INITIALIZED:
             turnOnRedLED();
+            turnOnYellowLED();
+            turnOnBlueLED();
+            turnOnGreenLED();
             globalState = NOT_INITIALIZED;
             break;
         case RE_INIT: 
@@ -79,7 +82,8 @@ void setState(int state){
         default: 
             initStatusLED();
             break;
-    }    
+    } 
+    return;
 }
 
 bool alarmActive(){

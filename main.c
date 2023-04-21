@@ -16,6 +16,7 @@
 #include "mcc_generated_files/ext_int.h"
 #include "mcc_generated_files/interrupt_manager.h"
 #include "mcc_generated_files/delay.h"
+#include <string.h>
 
 
 void uart_interrupt_handler();
@@ -43,9 +44,10 @@ int main(void)
     FLASH_Lock();
     //End of pseudo init code
    
-    initInerrupts();
     init();
-  
+    
+
+
     while (1)
     {
         int state = getState();
@@ -78,8 +80,9 @@ int main(void)
 }
 
 void init(){
-    
+    initInerrupts();
     initStatusLED();
+    turnOnYellowLED();
     initESP8266();
     if(!deviceRegistered()){
         State currentState = NOT_INITIALIZED;
@@ -110,6 +113,7 @@ void init(){
     }
     T2CONbits.TSIDL = 0;    //continue timer operation during idle mode. 
     DSCONbits.DSEN = 0; // Set the power saving mode to "Normal Sleep on execution of PWRSAV #0"
+    turnOffYellowLED();
     return;
 }
 

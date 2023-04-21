@@ -22,15 +22,16 @@
 #include "flashInterface.h"
 #include "settings.h"
 
-void setRTCCtimeFromAPI(){
-
+void sendHttpRequest(char * request, int sizeOfRequest, char * requestResponse){
+    
+    char send_size_to_API[24];
+    memset(send_size_to_API,'\0', sizeof(send_size_to_API));    
+    sprintf(send_size_to_API, "AT+CIPSEND=%d\r\n", sizeOfRequest);
     char * token;
     memset(uart_buffer, '\0', UART_BUFFER_SIZE);       
     uint8_t connect_to_time_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";
-    uint8_t send_size_advicer_to_API[] = "AT+CIPSEND=53\r\n";
-    uint8_t send_GET_time[] = "GET /time HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";    
-    
-    //Clear buffer.  
+
+// CONNECT TO API
     clearUartBuffer();
     printf("Sending AT connect to API command..\r\n");
     for(size_t i = 0 ; i < sizeof(connect_to_time_API) ; i++){
@@ -60,36 +61,44 @@ void setRTCCtimeFromAPI(){
             setState(currentState);
             return;
         }          
-    } 
+    }
+
+// Send size advice of GET/POST/PUT request
     clearUartBuffer();
     printf("Sending AT size of msg command..\r\n");
-    for(size_t i = 0 ; i < sizeof(send_size_advicer_to_API) ; i++){
-        UART1_Write(send_size_advicer_to_API[i]);                
+    for(size_t i = 0 ; send_size_to_API[i] != '\0' ; i++){
+        UART1_Write(send_size_to_API[i]);                
     }
     clearUartBuffer();  
     DELAY_milliseconds(100);
+
+//Send first http request 
     
     printf("Sending GET command 1..\r\n");
-    for(size_t i = 0 ; i < sizeof(send_GET_time) ; i++){
-        UART1_Write(send_GET_time[i]);                
+    for(size_t i = 0 ; i < sizeOfRequest ; i++){
+        UART1_Write(*(request+i));                
     }
-    clearUartBuffer();
+    //clearUartBuffer();
+    char response[512];
+    memset(response, '\0', sizeof(response));
     DELAY_milliseconds(100);
-    
-    printf("Sending GET command 2..\r\n");
-    for(size_t i = 0 ; i < sizeof(send_GET_time) ; i++){
-        UART1_Write(send_GET_time[i]);                
-    } 
-
-    DELAY_milliseconds(1000);
-    
-    char dateResponse[512]; 
-    for(int i = 0 ; i < sizeof(dateResponse); i++){
-        dateResponse[i] = *(uart_buffer+i);
+    for(int i = 0 ; *(uart_buffer+i) != '\0' ; i++){
+        *(requestResponse+i) = *(uart_buffer+i);
+        response[i] = *(uart_buffer+i);
     }
-    clearUartBuffer();  
+    clearUartBuffer();     
+}
 
-//TODO check if received package is valid. 
+void setRTCCtimeFromAPI(){
+
+    char * token;
+    char dateResponse[512];
+    memset(dateResponse, '\0', sizeof(dateResponse));
+    char send_GET_time[] = "GET /time HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n"; 
+        //snprintf(command, sizeof(command), "GET /period/%u HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", userId);
+    sendHttpRequest(send_GET_time, 53, dateResponse);
+
+    //TODO check if received package is valid. 
             
     token = strtok(dateResponse, "\"");    //Make a pointer to the buffer and tokenize it. 
     token = strtok(NULL, "\"");
@@ -122,7 +131,6 @@ void setRTCCtimeFromAPI(){
 
     struct tm time;
 
-
     time.tm_year = (1000*(year[0] - 48 ) + 100*(year[1] - 48) + 10*(year[2] - 48) + (year[3] - 48)) - 1900;
     time.tm_mon = 10*(month[0] - 48) + month[1] - 48;
     time.tm_mday = 10*(date[0] - 48) + date[1] - 48;
@@ -136,7 +144,6 @@ void setRTCCtimeFromAPI(){
     /*
     struct tm getTimeStruct;
     RTCC_TimeGet(&getTimeStruct);
-    int test2 = 0;
     */
 }
 
@@ -151,69 +158,33 @@ bool connected(){
     }
     
     char response[256];  
-    DELAY_milliseconds(500);   //Wait for wifi-module to respond
+    DELAY_milliseconds(50);   //Wait for wifi-module to respond
     
     for(int i = 0 ; i < sizeof(response); i++){
         response[i] = *(uart_buffer+i);
     }
     char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
-    token = strtok(NULL, ":");
+    token = strtok(NULL, ":"); 
     while(token != NULL){
-        if(*(token) == '2'){
-            return true;
+        if(*(token) == '5'){
+            return false;
         }
         else{
             token = strtok(NULL, ":");
         }
     }
-    return false;
+    return true;
 }
 
 bool syncAlarmPeriodFromServer(){
     
-    //char command[70];
-    char command[] = "GET /period/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";
-    char connect_to_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";   
-    char send_size_advicer_to_API[] = "AT+CIPSEND=59\r\n";
-    
-    uint16_t rawUserId = getUserId();
-    uint8_t arrayToConvert[2];
-    arrayToConvert[0]= rawUserId & 0xff;
-    arrayToConvert[1]=(rawUserId >> 8);  
-    uint8_t userId = arrayToConvert[0];    
-    //snprintf(command, sizeof(command), "GET /period/%u HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", userId);
-    
-    printf("Sending Connect command ..\r\n");
-    for(size_t i = 0 ; i < sizeof(connect_to_API) ; i++){
-        UART1_Write(connect_to_API[i]);                
-    }
-    DELAY_milliseconds(100);
-    
-    printf("Sending Size command ..\r\n");
-    for(size_t i = 0 ; i < sizeof(send_size_advicer_to_API) ; i++){
-        UART1_Write(send_size_advicer_to_API[i]);                
-    }
-    DELAY_milliseconds(100);   
-    
-    clearUartBuffer();
-    
-    printf("Sending GET command 1..\r\n");
-    for(size_t i = 0 ; i < sizeof(command) ; i++){
-        UART1_Write(command[i]);                
-    }
-    DELAY_milliseconds(100);
-    
-    printf("Sending GET command 2..\r\n");
-    for(size_t i = 0 ; i < sizeof(command) ; i++){
-        UART1_Write(command[i]);                
-    }
-    DELAY_milliseconds(1000);
-    
-    char response[512] = "\0";
-    
-    for(int i = 0 ; i < 512; i++){
-        response[i] = uart_buffer[i];
-    }
+    int sizeOfRequest = 59;  
+    char response[512];
+    char request[sizeOfRequest];
+       
+    snprintf(request, sizeof(request), "GET /period/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());  //Build the request with unique device ID
+    sendHttpRequest(request, sizeOfRequest, response);
+        
     char needle[] = "1 200";
     char *ptr_to_200_OK;
     ptr_to_200_OK = strstr(response, needle);
@@ -237,9 +208,10 @@ bool syncAlarmPeriodFromServer(){
 
         startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);     
         endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);        
-        setAlarmPeriod(startTimeConverted, endTimeConverted);
+        setAlarmPeriod(startTimeConverted, endTimeConverted);   
+        int k = 0;
         return true;
-    }
+    }   
     return false;
 }
 
@@ -257,51 +229,18 @@ void initESP8266(){
  
 bool setAlarm(){
     
-     //char command[70];
-    char command[] = "POST /alarm/1 HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n";    
-    char connect_to_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";   
-    char send_size_advicer_to_API[] = "AT+CIPSEND=59\r\n";
+    int sizeOfRequest = 59;
+    char request[sizeOfRequest];      
+    char response[512];// = "\0";
     
-    uint16_t rawUserId = getUserId();
-    uint8_t arrayToConvert[2];
-    arrayToConvert[0]= rawUserId & 0xff;
-    arrayToConvert[1]=(rawUserId >> 8);  
-    uint8_t userId = arrayToConvert[0];    
-    
-    printf("Sending Connect command ..\r\n");
-    for(size_t i = 0 ; i < sizeof(connect_to_API) ; i++){
-        UART1_Write(connect_to_API[i]);                
-    }
-    DELAY_milliseconds(100);
-    
-    printf("Sending Size command ..\r\n");
-    for(size_t i = 0 ; i < sizeof(send_size_advicer_to_API) ; i++){
-        UART1_Write(send_size_advicer_to_API[i]);                
-    }
-    DELAY_milliseconds(100);   
-    
-    clearUartBuffer();
-    
-    printf("Sending GET command 1..\r\n");
-    for(size_t i = 0 ; i < sizeof(command) ; i++){
-        UART1_Write(command[i]);                
-    }
-    DELAY_milliseconds(100);
-    
-    printf("Sending GET command 2..\r\n");
-    for(size_t i = 0 ; i < sizeof(command) ; i++){
-        UART1_Write(command[i]);                
-    }
-    DELAY_milliseconds(1000);
-    
-    char response[512] = "\0";
-    
-    for(int i = 0 ; i < 512; i++){
-        response[i] = uart_buffer[i];
-    }
+    snprintf(request, sizeof(request), "POST /alarm/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());
+    sendHttpRequest(request, sizeOfRequest, response);
+
     char needle[] = "1 200";
     char *ptr_to_200_OK;
     ptr_to_200_OK = strstr(response, needle);
-    int k = 0;
-    return true;
-}   //TODO make error check/handling
+    if(ptr_to_200_OK != NULL){
+        return true;
+    }
+    return false;
+}   

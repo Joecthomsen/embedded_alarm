@@ -24,7 +24,7 @@ void timer1_interrupt_handler() {
     DELAY_milliseconds(50);
     turnOffYellowLED();
     hardResetWifiModule(); 
-    if(connected()){
+    if(connectedToWiFi()){
         State currentState = RE_INIT;
         setState(currentState);
     }
@@ -40,7 +40,7 @@ void timer2_interrupt_handler(){
             DELAY_milliseconds(100);
             turnOffGreenLED();
             if(counterActive == 15){
-                if(!connected()){
+                if(!connectedToWiFi()){
                     State currentState = LOST_CONNECTION;
                     setState(currentState);
                 }
@@ -53,7 +53,7 @@ void timer2_interrupt_handler(){
             turnOnYellowLED();
             DELAY_milliseconds(100);
             turnOffYellowLED();
-            if(!connected()){
+            if(!connectedToWiFi()){
                 if(counterLostConnection == 2){
                     hardResetWifiModule();
                     counterLostConnection = 0;

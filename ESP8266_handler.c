@@ -89,7 +89,7 @@ void sendHttpRequest(char * request, int sizeOfRequest, char * requestResponse){
     clearUartBuffer();     
 }
 
-void setRTCCtimeFromAPI(){
+void setRTCCtimeFromServer(){
 
     char * token;
     char dateResponse[512];
@@ -147,7 +147,7 @@ void setRTCCtimeFromAPI(){
     */
 }
 
-bool connected(){
+bool connectedToWiFi(){
     
     clearUartBuffer();
     uint8_t AT_status_cmd[] = "AT+CIPSTATUS\r\n";
@@ -163,17 +163,23 @@ bool connected(){
     for(int i = 0 ; i < sizeof(response); i++){
         response[i] = *(uart_buffer+i);
     }
+    
+        int k = 0;
+    
     char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
-    token = strtok(NULL, ":"); 
+    token = strtok(NULL, ":");
+    
+    
     while(token != NULL){
-        if(*(token) == '5'){
-            return false;
+        if(*(token) == '4'  || *(token) == '3'  || *(token) == '2'){
+            return true;
         }
         else{
-            token = strtok(NULL, ":");
-        }
+            int test2 = 0;
+            token = strtok(NULL, ":");}
     }
-    return true;
+    int te3st = 0;
+    return false;;
 }
 
 bool syncAlarmPeriodFromServer(){
@@ -243,3 +249,77 @@ bool setAlarm(){
     }
     return false;
 }   
+
+bool connectToSocket(){
+    
+    char connectToSocketCmd[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",9090\r\n";
+    char cipModeCmd[] = "AT+CIPMODE=1\r\n";
+    char atCipSend[] = "AT+CIPSEND\r\n";
+    memset(uart_buffer, '\0', UART_BUFFER_SIZE);  
+    
+    // CONNECT TO SOCKET
+    clearUartBuffer();
+    printf("Sending AT connect to socket command..\r\n");
+    for(size_t i = 0 ; i < sizeof(connectToSocketCmd) ; i++){
+        UART1_Write(connectToSocketCmd[i]);                
+    }
+    
+    DELAY_milliseconds(100);    
+    char connectResponse[128] = "\0";
+    
+    for(int i = 0 ; i < 128; i++){
+        connectResponse[i] = uart_buffer[i];
+    }
+    
+    char *ptr_to_OK;
+    char needle[] = "OK";
+    ptr_to_OK = strstr(connectResponse, needle);
+    if(*ptr_to_OK == NULL){
+        return false;
+    }
+    
+    //Set transfer mode to transparent transmission
+    clearUartBuffer();
+    printf("Sending transfer mode command to socket..\r\n");
+    for(size_t i = 0 ; i < sizeof(cipModeCmd) ; i++){
+        UART1_Write(cipModeCmd[i]);                
+    }
+    
+    DELAY_milliseconds(100);    
+    
+    for(int i = 0 ; i < sizeof(atCipSend); i++){
+        UART1_Write(atCipSend[i]);
+    }
+    
+//    char registerResponse[128];
+//    memset(registerResponse, '\0', sizeof(registerResponse));
+//    
+//    for(int i = 0 ; i < 128; i++){
+//        connectResponse[i] = uart_buffer[i];
+//    }
+//    int k = 0;
+    return true; 
+}
+
+bool registerDevice(){
+    
+    memset(uart_buffer, '\0', UART_BUFFER_SIZE);  
+    //char request[159]; 
+    //snprintf(request, sizeof(request), "{\"request\":\"register\",\"type\":\"node\",\"deviceId\":\"%d\",\"owner\":\"4321\",\"nicName\":\"stuen\",\"startTime\":\"2000\",\"endTime\":\"0700\"}\r\n", getUserId());  //Build the request with unique device ID
+    char request[] = "{\"request\":\"register\",\"type\":\"node\",\"deviceId\":\"1\",\"owner\":\"4321\",\"nicName\":\"stuen\",\"startTime\":\"2000\",\"endTime\":\"0700\"}\r\n";
+    // Send register command
+    clearUartBuffer();
+    printf("Sending AT connect to API command..\r\n");
+    for(size_t i = 0 ; i < sizeof(request) ; i++){
+        UART1_Write(request[i]);                
+    }
+    
+    DELAY_milliseconds(500);    
+    char connectResponse[256] = "\0";
+    
+    for(int i = 0 ; i < sizeof(connectResponse); i++){
+        connectResponse[i] = uart_buffer[i];
+    }
+    
+    int test = 0;
+}

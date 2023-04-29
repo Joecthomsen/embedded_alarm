@@ -89,13 +89,19 @@ void init(){
         setState(currentState);
         return;
     }
-    if(!connected()){
+    if(!connectedToWiFi()){
         State currentState = NO_WIFI;
         setState(currentState);
         return;
     }
+    if(!connectToSocket()){
+        State state = NOT_CONNECTED_TO_SOCKET;
+        setState(state);
+    }
+    
+    registerDevice();
 
-    setRTCCtimeFromAPI();   //TODO make bool to check that everything went as expected
+    setRTCCtimeFromServer();   //TODO make bool to check that everything went as expected
     if(!syncAlarmPeriodFromServer()){
         State currentState = NO_ALARM_PERIOD;
         setState(currentState);
@@ -120,8 +126,7 @@ void init(){
 void initInerrupts(){
     
     //Turn off sensor interrupt until the system is in the alarm state
-    EX_INT1_InterruptDisable();
-    
+    EX_INT1_InterruptDisable();    
     //Function pointers for ISR
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
     void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_interrupt_handler; 

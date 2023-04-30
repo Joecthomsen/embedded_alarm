@@ -97,11 +97,17 @@ void init(){
     if(!connectToSocket()){
         State state = NOT_CONNECTED_TO_SOCKET;
         setState(state);
+        return;
     }
     
-    registerDevice();
+    if(!registerDevice()){
+        State state = NOT_REGISTERED_WITH_SERVER;
+        setState(state);
+        return;
+    }
 
     setRTCCtimeFromServer();   //TODO make bool to check that everything went as expected
+    
     if(!syncAlarmPeriodFromServer()){
         State currentState = NO_ALARM_PERIOD;
         setState(currentState);

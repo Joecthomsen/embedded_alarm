@@ -20,13 +20,25 @@ int counterLostConnection = 0;
 //run every 4 second
 void timer1_interrupt_handler() {
     
-    turnOnYellowLED();
-    DELAY_milliseconds(50);
-    turnOffYellowLED();
-    hardResetWifiModule(); 
-    if(connectedToWiFi()){
-        State currentState = RE_INIT;
-        setState(currentState);
+    if(getState() == NOT_CONNECTED_TO_SOCKET){
+        turnOnGreenLED();
+        DELAY_milliseconds(50);
+        turnOffGreenLED();
+        hardResetWifiModule(); 
+        if(connectToSocket()){
+            State currentState = CONNECTED_TO_SOCKET;
+            setState(currentState);
+        }
+    }
+    else if(getState() == NO_WIFI){
+        turnOnGreenLED();
+        DELAY_milliseconds(50);
+        turnOffGreenLED();
+        hardResetWifiModule(); 
+        if(connectedToWiFi()){
+            State state = CONNECTED_TO_WIFI;
+            setState(CONNECTED_TO_WIFI);
+        }
     }
     return;
 }

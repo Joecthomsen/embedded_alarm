@@ -22,72 +22,72 @@
 #include "flashInterface.h"
 #include "settings.h"
 
-void sendHttpRequest(char * request, int sizeOfRequest, char * requestResponse){
-    
-    char send_size_to_API[24];
-    memset(send_size_to_API,'\0', sizeof(send_size_to_API));    
-    sprintf(send_size_to_API, "AT+CIPSEND=%d\r\n", sizeOfRequest);
-    char * token;
-    memset(uart_buffer, '\0', UART_BUFFER_SIZE);       
-    uint8_t connect_to_time_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";
-
-// CONNECT TO API
-    clearUartBuffer();
-    printf("Sending AT connect to API command..\r\n");
-    for(size_t i = 0 ; i < sizeof(connect_to_time_API) ; i++){
-        UART1_Write(connect_to_time_API[i]);                
-    }
-    
-    DELAY_milliseconds(100);    
-    char firstResponse[128] = "\0";
-    
-    for(int i = 0 ; i < 128; i++){
-        firstResponse[i] = uart_buffer[i];
-    }
-    
-    token = strtok(firstResponse, "\n");
-    token = strtok(NULL, "\n");    
-    char stringConnect[7] = "CONNECT";
-    char stringAlready[7] = "ALREADY";
-    char readStringFromBuffer[sizeof(stringConnect)];
-    for(int i = 0 ; i < sizeof(stringConnect) ; i++){
-        readStringFromBuffer[i] = *(token+i);
-    }
-    int compaireConnect = strcmp(stringConnect, stringConnect);
-    int compaireAlready = strcmp(stringConnect, stringAlready);
-    if(!compaireConnect){
-        if(!compaireAlready){
-            State currentState = NOT_CONNECTED_TO_DATESERVER;
-            setState(currentState);
-            return;
-        }          
-    }
-
-// Send size advice of GET/POST/PUT request
-    clearUartBuffer();
-    printf("Sending AT size of msg command..\r\n");
-    for(size_t i = 0 ; send_size_to_API[i] != '\0' ; i++){
-        UART1_Write(send_size_to_API[i]);                
-    }
-    clearUartBuffer();  
-    DELAY_milliseconds(100);
-
-//Send first http request 
-    
-    printf("Sending GET command 1..\r\n");
-    for(size_t i = 0 ; i < sizeOfRequest ; i++){
-        UART1_Write(*(request+i));                
-    }
-    //clearUartBuffer();
-    char response[512];
-    memset(response, '\0', sizeof(response));
-    DELAY_milliseconds(100);
-    for(int i = 0 ; *(uart_buffer+i) != '\0' ; i++){
-        *(requestResponse+i) = *(uart_buffer+i);
-        response[i] = *(uart_buffer+i);
-    }
-    clearUartBuffer();     
-}
+//void sendHttpRequest(char * request, int sizeOfRequest, char * requestResponse){
+//    
+//    char send_size_to_API[24];
+//    memset(send_size_to_API,'\0', sizeof(send_size_to_API));    
+//    sprintf(send_size_to_API, "AT+CIPSEND=%d\r\n", sizeOfRequest);
+//    char * token;
+//    memset(uart_buffer, '\0', UART_BUFFER_SIZE);       
+//    uint8_t connect_to_time_API[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",8080\r\n";
+//
+//// CONNECT TO API
+//    clearUartBuffer();
+//    printf("Sending AT connect to API command..\r\n");
+//    for(size_t i = 0 ; i < sizeof(connect_to_time_API) ; i++){
+//        UART1_Write(connect_to_time_API[i]);                
+//    }
+//    
+//    DELAY_milliseconds(100);    
+//    char firstResponse[128] = "\0";
+//    
+//    for(int i = 0 ; i < 128; i++){
+//        firstResponse[i] = uart_buffer[i];
+//    }
+//    
+//    token = strtok(firstResponse, "\n");
+//    token = strtok(NULL, "\n");    
+//    char stringConnect[7] = "CONNECT";
+//    char stringAlready[7] = "ALREADY";
+//    char readStringFromBuffer[sizeof(stringConnect)];
+//    for(int i = 0 ; i < sizeof(stringConnect) ; i++){
+//        readStringFromBuffer[i] = *(token+i);
+//    }
+//    int compaireConnect = strcmp(stringConnect, stringConnect);
+//    int compaireAlready = strcmp(stringConnect, stringAlready);
+//    if(!compaireConnect){
+//        if(!compaireAlready){
+//            State currentState = NOT_CONNECTED_TO_DATESERVER;
+//            setState(currentState);
+//            return;
+//        }          
+//    }
+//
+//// Send size advice of GET/POST/PUT request
+//    clearUartBuffer();
+//    printf("Sending AT size of msg command..\r\n");
+//    for(size_t i = 0 ; send_size_to_API[i] != '\0' ; i++){
+//        UART1_Write(send_size_to_API[i]);                
+//    }
+//    clearUartBuffer();  
+//    DELAY_milliseconds(100);
+//
+////Send first http request 
+//    
+//    printf("Sending GET command 1..\r\n");
+//    for(size_t i = 0 ; i < sizeOfRequest ; i++){
+//        UART1_Write(*(request+i));                
+//    }
+//    //clearUartBuffer();
+//    char response[512];
+//    memset(response, '\0', sizeof(response));
+//    DELAY_milliseconds(100);
+//    for(int i = 0 ; *(uart_buffer+i) != '\0' ; i++){
+//        *(requestResponse+i) = *(uart_buffer+i);
+//        response[i] = *(uart_buffer+i);
+//    }
+//    clearUartBuffer();     
+//}
 
 void setRTCCtimeFromServer(){
 
@@ -174,13 +174,12 @@ bool connectedToWiFi(){
     for(int i = 0 ; i < sizeof(response); i++){
         response[i] = *(uart_buffer+i);
     }
-    
     char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
     token = strtok(NULL, ":");
     
     
     while(token != NULL){
-        if(*(token) == '4'  || *(token) == '3'  || *(token) == '2'){
+        if(*(token) == '4'  || *(token) == '3'  || *(token) == '2' || *(token) == '1'){
     clearUartBuffer();
             return true;
         }
@@ -190,44 +189,6 @@ bool connectedToWiFi(){
     clearUartBuffer();
     return false;;
 }
-
-//bool syncAlarmPeriodFromServer(){
-//    
-//    int sizeOfRequest = 59;  
-//    char response[512];
-//    char request[sizeOfRequest];
-//       
-//    snprintf(request, sizeof(request), "GET /period/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());  //Build the request with unique device ID
-//    sendHttpRequest(request, sizeOfRequest, response);
-//        
-//    char needle[] = "1 200";
-//    char *ptr_to_200_OK;
-//    ptr_to_200_OK = strstr(response, needle);
-//    
-//    if(ptr_to_200_OK != NULL){  //If everything is okay, we need to destructure the json object containing the values.
-//        char startTime[5];
-//        char endTime[5];
-//        char * ptr_to_value = strstr(response, "startTime");
-//        ptr_to_value = strtok(ptr_to_value, ":");
-//        ptr_to_value = strtok(NULL, ":");
-//        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
-//            startTime[i] = *(ptr_to_value+i+1);
-//        }
-//        ptr_to_value = strtok(NULL, ":");
-//        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
-//            endTime[i] = *(ptr_to_value+i+1);
-//        }
-//        
-//        int startTimeConverted;
-//        int endTimeConverted;
-//
-//        startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);     
-//        endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);        
-//        setAlarmPeriod(startTimeConverted, endTimeConverted);   
-//        return true;
-//    }   
-//    return false;
-//}
 
 void hardResetWifiModule(){
     _LATB5 = 0;

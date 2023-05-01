@@ -59,14 +59,22 @@ void setState(int state){
             turnOnRedLED();
             globalState = NO_WIFI;
             break;
+        case CONNECTED_TO_WIFI:
+            globalState = CONNECTED_TO_WIFI;
+            turnOnBlueLED();
+            turnOnGreenLED();
+            break;
+        case CONNECTED_TO_SOCKET:
+            globalState = CONNECTED_TO_SOCKET;
+            break;
+        case NOT_CONNECTED_TO_SOCKET:
+            turnOnBlueLED();
+            turnOnYellowLED();
+            globalState = NOT_CONNECTED_TO_SOCKET;
+            break;
         case LOST_CONNECTION: 
             globalState = LOST_CONNECTION;
             break;        
-        case NOT_CONNECTED_TO_DATESERVER:
-            turnOnBlueLED();
-            turnOnYellowLED();
-            globalState = NOT_CONNECTED_TO_DATESERVER;
-            break;
         case NOT_INITIALIZED:
             turnOnRedLED();
             turnOnYellowLED();

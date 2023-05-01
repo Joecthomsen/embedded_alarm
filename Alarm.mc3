@@ -84,8 +84,8 @@
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
       <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.mcu16.Mcu16PeripheralLibrary" version="1.171.1"/>
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.boardsupportlibrary.BoardSuppportLibrary" version="1.12.0"/>
       <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.foundationservices.library.FoundationServicesLibrary" version="0.2.3"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.boardsupportlibrary.BoardSuppportLibrary" version="1.12.0"/>
    </usedLibraries>
    <tokenMap class="java.util.TreeMap">
       <entry>
@@ -6286,7 +6286,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="callBackRate"/>
-         <value>4</value>
+         <value>5</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="clockSourceSelect"/>
@@ -6330,7 +6330,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="tickerFactor"/>
-         <value>4</value>
+         <value>5</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="TMR1" name="timerBitMode"/>
@@ -8341,134 +8341,134 @@
          <value>disabled</value>
       </entry>
    </tokenMap>
-   <generatedFileHashHistoryMap class="java.util.TreeMap">
+   <generatedFileHashHistoryMap class="java.util.HashMap">
+      <entry>
+         <file>mcc_generated_files/interrupt_manager.h</file>
+         <hash>6abef6602525b0db237cc12a0178f672b0e20d9606c240c2ab8b1cdaad829efe</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/uart1.h</file>
+         <hash>f8ef0e48a60398adade598e8cd885cf57fe46ae5685400a3e9f287d3c06c01f0</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/uart2.h</file>
+         <hash>323457e24d1bf4bcde7ea0e38f3cbd9fb0ada8719718240cb48fe8c7930eb8b0</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/system.c</file>
+         <hash>e2145f38d667d7ba2d200d28d50ad392aef5ce619fcce483ac3c0db4717aad50</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/ext_int.h</file>
+         <hash>cd4b19cd96451bfaf3298240409574827a74bdfc1e8b435eef749de6507f9eab</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/clock.h</file>
+         <hash>ebe68d674bc4f3c654828ba5c58afcbe98da51f164bd53311f9853d6f04ff885</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/clock.c</file>
+         <hash>c253b8741b6a55ea41e73e32d13f48c7a8c83427c8b8a095fdd05effc92940e7</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/delay.h</file>
+         <hash>dda77102dba9adc0f9aef1c8c542cfee6d6cccc96446f4cd1bf07be2150a4d95</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/memory/flash.h</file>
+         <hash>c6f91fe369478b6e401121e8e7e6318c20784da1da5976e032940cca346cdaee</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/ext_int.c</file>
+         <hash>190dc817073a6278eab5c45f5af07a8f49f5cf69d125e762ce793d4696edbbbb</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/mcc.h</file>
+         <hash>bb7584cd4afff46088979fcfb527c9d787eea7041788f90f13bade9d8d96492a</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/interrupt_manager.c</file>
+         <hash>356613fa167b16f110321be4d47478ae130419d7799e191805b09ae1123047fc</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/mcc.c</file>
+         <hash>ac41f7aef1a4c010eed3332c03bc6eff5be97a5be0f05649436c6c6281068973</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/pin_manager.c</file>
+         <hash>79f11bac5a180652543d72b2244eda34c87801a5813c2ae60a3c349caa9e43a8</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/rtcc.h</file>
+         <hash>ad0df2822d8075225d70b38053ea439b8f611fce8df4caebddd8d80940d54b48</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/pin_manager.h</file>
+         <hash>6526c58ee70de105993e8741e33b0eb94b2999ec9b49ae10cf926755dc365cba</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/tmr1.c</file>
+         <hash>842527985658a605d4dc4f204f14efaa12a6597c94aa4aea9b457a16deb53ecc</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/rtcc.c</file>
+         <hash>c1eb05500b3beac9f6718b746dfca6f91539adbc78299d9fe291598f75936049</hash>
+      </entry>
       <entry>
          <file>main.c</file>
          <hash>410f83e11708053a33be53552698e1d330e2024175303ebd40da9534a430ebd0</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\clock.c</file>
-         <hash>c253b8741b6a55ea41e73e32d13f48c7a8c83427c8b8a095fdd05effc92940e7</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\clock.h</file>
-         <hash>ebe68d674bc4f3c654828ba5c58afcbe98da51f164bd53311f9853d6f04ff885</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\delay.c</file>
-         <hash>4a6b8bbd5d2fbe5f20e79db8d915e50e2cd43920940679b40db90f3789cbccd5</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\delay.h</file>
-         <hash>dda77102dba9adc0f9aef1c8c542cfee6d6cccc96446f4cd1bf07be2150a4d95</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\docs\delay.dox</file>
-         <hash>13d4874d789b563dd4499efacd71882cbc38f8459da91ac17f13fa76079be93b</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\ext_int.c</file>
-         <hash>0f58fe8a481885c2390287c4c010d1b456b8227b114e2fd219ab52fba49121c4</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\ext_int.h</file>
-         <hash>edf50cbae4eb3f50e5dcd4d0d3643b996b8a2b26a78d1d082016895574b786ce</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\interrupt_manager.c</file>
-         <hash>356613fa167b16f110321be4d47478ae130419d7799e191805b09ae1123047fc</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\interrupt_manager.h</file>
-         <hash>6abef6602525b0db237cc12a0178f672b0e20d9606c240c2ab8b1cdaad829efe</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\mcc.c</file>
-         <hash>ac41f7aef1a4c010eed3332c03bc6eff5be97a5be0f05649436c6c6281068973</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\mcc.h</file>
-         <hash>303db2d71ffd56982e36da791b84595cff267a11214b2abd004a4ed3873f5aad</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\memory\flash.h</file>
-         <hash>c6f91fe369478b6e401121e8e7e6318c20784da1da5976e032940cca346cdaee</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\memory\flash.s</file>
+         <file>mcc_generated_files/memory/flash.s</file>
          <hash>cea210b6cccd71e172c1cdb89b1412fd5c6f7e4944d85ab66767eea629d9792e</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\pin_manager.c</file>
-         <hash>f56fe65ce90364e61a169c311177b029faa0e5df1a621c8a11ca502cbe054401</hash>
+         <file>mcc_generated_files/tmr1.h</file>
+         <hash>81acc1cb019d8ee002b06b957cb75eeb29e613a720941a05bafddb962fd35175</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\pin_manager.h</file>
-         <hash>6526c58ee70de105993e8741e33b0eb94b2999ec9b49ae10cf926755dc365cba</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\rtcc.c</file>
-         <hash>c1eb05500b3beac9f6718b746dfca6f91539adbc78299d9fe291598f75936049</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\rtcc.h</file>
-         <hash>ad0df2822d8075225d70b38053ea439b8f611fce8df4caebddd8d80940d54b48</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\system.c</file>
-         <hash>bfe6eefd0def7c6131f0c79d6b5fd39f6b5c62eabbe9fb94809140026f5d86e1</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\system.h</file>
-         <hash>dcbd187ca4edb2c55b79936795bf64e7b7cb2be9666062761a675338821d7e0f</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\tmr1.c</file>
-         <hash>55eb40e7fa9bf4bf0d40a2e7b92446c03e0ac9d759dee05d126bf85ee20ba28c</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\tmr1.h</file>
-         <hash>a492a6eef0fa78144f76b7a44dddf23903993718c2ec5e54d4e7329c0b1e5281</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\tmr2.c</file>
-         <hash>f1ade82d2a8874ff1933f0e0220878cbdf6e7085a8f3d37180697e45193b55f8</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\tmr2.h</file>
+         <file>mcc_generated_files/tmr2.h</file>
          <hash>b91e2da2405f7e697f2a53daa97c9be3747b62c887023c3b8be3d1ca26145c1c</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\tmr3.c</file>
-         <hash>1fbc20472fe628e13b808468b45939ec939b0f35a8eb2877878efa609d47bece</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\tmr3.h</file>
-         <hash>ba62c1f1aaf206023a344365dd1710de87bcd88756bf748ed630c5c2b81118bd</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\traps.c</file>
-         <hash>5429da5cf99d19e9a099834b544d948d05dd2bf1b26bfefcf93bf12f9fa8a6a4</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\traps.h</file>
+         <file>mcc_generated_files/traps.h</file>
          <hash>eb7f4df48d10211dd3206772f628e275e44e230494c11f27273691d9245865c0</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\uart1.c</file>
+         <file>mcc_generated_files/tmr3.h</file>
+         <hash>ba62c1f1aaf206023a344365dd1710de87bcd88756bf748ed630c5c2b81118bd</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/tmr2.c</file>
+         <hash>f1ade82d2a8874ff1933f0e0220878cbdf6e7085a8f3d37180697e45193b55f8</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/traps.c</file>
+         <hash>5429da5cf99d19e9a099834b544d948d05dd2bf1b26bfefcf93bf12f9fa8a6a4</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/tmr3.c</file>
+         <hash>1fbc20472fe628e13b808468b45939ec939b0f35a8eb2877878efa609d47bece</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/delay.c</file>
+         <hash>4a6b8bbd5d2fbe5f20e79db8d915e50e2cd43920940679b40db90f3789cbccd5</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/system.h</file>
+         <hash>dcbd187ca4edb2c55b79936795bf64e7b7cb2be9666062761a675338821d7e0f</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/uart1.c</file>
          <hash>b7055a609f2882484539ad2b7db1fbd902b467ac591ec91ad1efd430e6812037</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\uart1.h</file>
-         <hash>f8ef0e48a60398adade598e8cd885cf57fe46ae5685400a3e9f287d3c06c01f0</hash>
-      </entry>
-      <entry>
-         <file>mcc_generated_files\uart2.c</file>
+         <file>mcc_generated_files/uart2.c</file>
          <hash>aa19ffd673630b85624353e5012d7ba1f53485faf9d5939894d1833d2ec502cc</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files\uart2.h</file>
-         <hash>323457e24d1bf4bcde7ea0e38f3cbd9fb0ada8719718240cb48fe8c7930eb8b0</hash>
+         <file>mcc_generated_files/docs/delay.dox</file>
+         <hash>13d4874d789b563dd4499efacd71882cbc38f8459da91ac17f13fa76079be93b</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

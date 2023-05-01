@@ -32,6 +32,7 @@ void no_wifi_state();
 void activeState();
 void lost_connection_state();
 void not_active_state();
+void not_connected_to_socket_state();
 
 int main(void)
 {   
@@ -64,6 +65,15 @@ int main(void)
             case NOT_ACTIVE:
                 not_active_state();
                 break;
+            case CONNECTED_TO_WIFI:
+                init();
+                break;
+            case CONNECTED_TO_SOCKET:
+                init();
+                break;
+            case NOT_CONNECTED_TO_SOCKET:
+                not_connected_to_socket_state();
+                break;
             case RE_INIT:              
                 init();
                 break;
@@ -84,26 +94,30 @@ int main(void)
 }
 
 void init(){
-    initInerrupts();
-    initStatusLED();
-    turnOnYellowLED();
-    initESP8266();
-    if(!deviceHasId()){
-        State currentState = NOT_INITIALIZED;
-        setState(currentState);
-        return;
+    //Only do the first init if not already connected to socket.
+    if(getState() != CONNECTED_TO_SOCKET){
+        if(getState() != CONNECTED_TO_WIFI){
+            initInerrupts();
+            initStatusLED();
+            turnOnYellowLED();
+            initESP8266();
+            if(!deviceHasId()){
+                State currentState = NOT_INITIALIZED;
+                setState(currentState);
+                return;
+            }
+            if(!connectedToWiFi()){            
+                State currentState = NO_WIFI;
+                setState(currentState);
+                return;
+            }
+        }
+        if(!connectToSocket()){
+            State state = NOT_CONNECTED_TO_SOCKET;
+            setState(state);
+            return;
+        }
     }
-    if(!connectedToWiFi()){
-        State currentState = NO_WIFI;
-        setState(currentState);
-        return;
-    }
-    if(!connectToSocket()){
-        State state = NOT_CONNECTED_TO_SOCKET;
-        setState(state);
-        return;
-    }
-    
     if(!registerDevice()){
         State state = NOT_REGISTERED_WITH_SERVER;
         setState(state);
@@ -134,17 +148,26 @@ void initInerrupts(){
     //Function pointers for ISR
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
     void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_interrupt_handler; 
-    void (*timer2_active_state_handler_ptr)(void) = timer2_interrupt_handler;
+//    void (*timer2_active_state_handler_ptr)(void) = timer2_interrupt_handler;
     //void (*timer3_active_state_handler_ptr)(void) = timer3_interrupt_handler;
         
     //Create ISR callback
     UART1_SetRxInterruptHandler(uart_interrupt_handler_ptr);
     TMR1_SetInterruptHandler(timer1_NO_WIFI_interrupt_handler_ptr);
     TMR1_Stop();
-    TMR2_SetInterruptHandler(timer2_active_state_handler_ptr);
-    TMR2_Stop();
+//    TMR2_SetInterruptHandler(timer2_active_state_handler_ptr);
+    //TMR2_Stop();
 //    TMR3_SetInterruptHandler(timer3_active_state_handler_ptr);
 //    TMR3_Stop();
+}
+
+void not_connected_to_socket_state(){
+    TMR1_Start();
+    while(getState() == NOT_CONNECTED_TO_SOCKET){
+        enterIdleMode();
+    }
+    TMR1_Stop();
+   
 }
 
 void alarmState(){    
@@ -183,11 +206,11 @@ void no_wifi_state(){
 }
 
 void lost_connection_state(){
-    TMR2_Start();
+    //TMR2_Start();
     while(getState() == LOST_CONNECTION){
         enterIdleMode();
     }
-    TMR2_Stop();
+    //TMR2_Stop();
 }
 
 void enterIdleMode(){

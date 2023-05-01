@@ -117,7 +117,7 @@ void __attribute__ ( ( interrupt, no_auto_psv ) ) _T1Interrupt (  )
     //***User Area Begin
     static volatile unsigned int CountCallBack = 0;
 
-    // callback function - called every 4th pass
+    // callback function - called every 5th pass
     if (++CountCallBack >= TMR1_INTERRUPT_TICKER_FACTOR)
     {
         // ticker function call

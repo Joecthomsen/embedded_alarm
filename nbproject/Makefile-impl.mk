@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Alarm.X
+PROJECTNAME=Alarm
 
 # Active Configuration
 DEFAULTCONF=default

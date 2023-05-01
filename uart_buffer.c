@@ -5,6 +5,7 @@
 #include <string.h>
 
 char uart_buffer[UART_BUFFER_SIZE*2];
+//char uart_buffer_copy[UART_BUFFER_SIZE*2];
 //int uart_buffer_size = 0;
 int uart_buffer_index = 0;   
 
@@ -16,6 +17,19 @@ void uart_interrupt_handler(){
         uart_buffer[uart_buffer_index] = data;
         uart_buffer_index++;
     }
+    
+            
+//    char *ptr_to_result;
+//    char needle[] = "setPeriod";
+//    ptr_to_result = strstr(uart_buffer, needle);
+//    if(ptr_to_result != NULL){
+//        int k = 0;
+//    }
+
+    
+    
+    
+    
 }
 
 void clearUartBuffer(){

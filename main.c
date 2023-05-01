@@ -24,6 +24,7 @@ void uart_interrupt_handler();
 void init();
 void initInerrupts();
 void enterIdleMode();
+void handleIncommingMessage();
 
 //States
 void alarmState();
@@ -36,18 +37,21 @@ int main(void)
 {   
     SYSTEM_Initialize(); 
     /* This is code pseudo for pseudo setting deviceID as the ID is getting deleted every time the PIC24 is reflashed.
-     * This is to be deleted in production
+     * 
+     * This code can be thinked aboute similar to what an application, NFC or bluetooth
+     * has to do, in order for the endnode to establish connection to the right owner
+     * 
+     * THIS CODE HAS TO BE DELETED IN PRODUCTION
      */
     //Start of pseudo init code
     FLASH_Unlock(FLASH_UNLOCK_KEY);
         FLASH_WriteWord16(DEVICE_ID_ADDRESS, 0x1);  //Write the number "1" as device id. 
     FLASH_Lock();
+    setAlarmPeriod(1200, 2000);
     //End of pseudo init code
    
     init();
     
-
-
     while (1)
     {
         int state = getState();
@@ -84,7 +88,7 @@ void init(){
     initStatusLED();
     turnOnYellowLED();
     initESP8266();
-    if(!deviceRegistered()){
+    if(!deviceHasId()){
         State currentState = NOT_INITIALIZED;
         setState(currentState);
         return;
@@ -105,20 +109,14 @@ void init(){
         setState(state);
         return;
     }
-
     setRTCCtimeFromServer();   //TODO make bool to check that everything went as expected
     
-    if(!syncAlarmPeriodFromServer()){
-        State currentState = NO_ALARM_PERIOD;
-        setState(currentState);
-        return;
-    }
     if(alarmActive()){
         State currentState = ACTIVE; 
         setState(currentState);
         //TMR3_Start();
     }
-    else{
+    else if(!alarmActive()){
         State currentState = NOT_ACTIVE; 
         setState(currentState);
         TMR3_Start();
@@ -137,7 +135,7 @@ void initInerrupts(){
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
     void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_interrupt_handler; 
     void (*timer2_active_state_handler_ptr)(void) = timer2_interrupt_handler;
-    void (*timer3_active_state_handler_ptr)(void) = timer3_interrupt_handler;
+    //void (*timer3_active_state_handler_ptr)(void) = timer3_interrupt_handler;
         
     //Create ISR callback
     UART1_SetRxInterruptHandler(uart_interrupt_handler_ptr);
@@ -145,17 +143,17 @@ void initInerrupts(){
     TMR1_Stop();
     TMR2_SetInterruptHandler(timer2_active_state_handler_ptr);
     TMR2_Stop();
-    TMR3_SetInterruptHandler(timer3_active_state_handler_ptr);
-    TMR3_Stop();
+//    TMR3_SetInterruptHandler(timer3_active_state_handler_ptr);
+//    TMR3_Stop();
 }
 
 void alarmState(){    
     turnOnRedLED();
-    setAlarm();
-    INTERRUPT_GlobalDisable();
+    alarmTriggered();
+    //setAlarm();
+    //INTERRUPT_GlobalDisable();
     DELAY_milliseconds(10000);  //Change to some clear condition from app.
-    enterIdleMode();
-    INTERRUPT_GlobalEnable();
+    //enterIdleMode();
     turnOffRedLED();
     State state = ACTIVE;
     setState(state);
@@ -164,18 +162,15 @@ void alarmState(){
 void activeState(){
     turnOnGreenLED();
     EX_INT1_InterruptEnable();
-    TMR3_Start();
         enterIdleMode();
+        handleIncommingMessage();  
     EX_INT1_InterruptDisable();
-    TMR3_Stop();
     return;
 }
 
 void not_active_state(){   
-        TMR3_Start();
         enterIdleMode();
-        TMR3_Stop();
-    //while(getState() == NOT_ACTIVE){;}
+        handleIncommingMessage();        
 }
 
 void no_wifi_state(){
@@ -200,3 +195,36 @@ void enterIdleMode(){
         "PWRSAV #1\n"   //1=idle ; 0=sleep
     );
 }
+
+void handleIncommingMessage(){
+        char message[256];
+        DELAY_milliseconds(1000);   //Give time for the UART message to arrive
+        for(size_t i = 0 ; i < sizeof(message) ; i++){
+            message[i] = uart_buffer[i];
+        }
+        char *ptr_to_search_result;
+        char needle[] = "setPeriod";
+        ptr_to_search_result = strstr(uart_buffer, needle);
+        if(ptr_to_search_result != NULL){
+            //get new startTime
+            char needleStart[] = "startTime";    //12 fremme er tiden
+            char needleEnd[] = "endTime";    //10 fremme er tiden
+            ptr_to_search_result = strstr(message, needleStart);
+            int startTime = (*(ptr_to_search_result+12)-48)*1000 + (*(ptr_to_search_result+13)-48)*100 + (*(ptr_to_search_result + 14)-48)*10 + (*(ptr_to_search_result+15)-48);
+            //get new endTime
+            ptr_to_search_result = strstr(message, needleEnd);
+            int endTime = (*(ptr_to_search_result+10)-48)*1000 + (*(ptr_to_search_result+11)-48)*100 + (*(ptr_to_search_result + 12)-48)*10 + (*(ptr_to_search_result+13)-48);
+            setAlarmPeriod(startTime, endTime);
+            if(alarmActive()){
+                State state = ACTIVE;
+                setState(state);
+            }
+            else{
+                State state = NOT_ACTIVE;
+                setState(state);
+            }
+            memset(message, '\0', sizeof(message));
+            clearUartBuffer();
+        }
+}
+

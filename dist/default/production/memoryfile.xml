@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/Alarm.X.production.elf">
+  <executable name="dist/default/production/Alarm.production.elf">
     <memory name="data">
       <units>bytes</units>
       <length>8192</length>
@@ -11,8 +11,8 @@
     <memory name="program">
       <units>bytes</units>
       <length>131316</length>
-      <used>21357</used>
-      <free>109959</free>
+      <used>20748</used>
+      <free>110568</free>
     </memory>
   </executable>
 </project>

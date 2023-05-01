@@ -16,7 +16,7 @@ bool connectedToWiFi();
 bool connectToSocket();
 bool syncAlarmPeriodFromServer();
 void hardResetWifiModule();
-bool setAlarm();
+bool alarmTriggered();
 bool registerDevice();
 
 #endif	/*ESP8266_HANDLER*/

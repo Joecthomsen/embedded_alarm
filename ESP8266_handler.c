@@ -89,67 +89,8 @@ void sendHttpRequest(char * request, int sizeOfRequest, char * requestResponse){
     clearUartBuffer();     
 }
 
-//void setRTCCtimeFromServer(){
-//
-//    char * token;
-//    char dateResponse[512];
-//    memset(dateResponse, '\0', sizeof(dateResponse));
-//    char send_GET_time[] = "GET /time HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n"; 
-//        //snprintf(command, sizeof(command), "GET /period/%u HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", userId);
-//    sendHttpRequest(send_GET_time, 53, dateResponse);
-//
-//    //TODO check if received package is valid. 
-//            
-//    token = strtok(dateResponse, "\"");    //Make a pointer to the buffer and tokenize it. 
-//    token = strtok(NULL, "\"");
-//    printf("\r\n\n");  
-//    char year[4];
-//    char month[2];
-//    char date[2];
-//    char hour[2];
-//    char minute[2];
-//    char second[2];
-//
-//    for(int i = 0 ; i < 4 ; i++){
-//        year[i] = *(token+i);
-//    }
-//    for(int i = 0 ; i < 2 ; i++){
-//        month[i] = *(token+5+i);
-//    }
-//    for(int i = 0 ; i < 2 ; i++){
-//        date[i] = *(token+8+i);
-//    }
-//    for(int i = 0 ; i < 2 ; i++){
-//        hour[i] = *(token+11+i);
-//    }
-//    for(int i = 0 ; i < 2 ; i++){
-//        minute[i] = *(token+14+i);
-//    }
-//    for(int i = 0 ; i < 2 ; i++){
-//        second[i] = *(token+17+i);
-//    }
-//
-//    struct tm time;
-//
-//    time.tm_year = (1000*(year[0] - 48 ) + 100*(year[1] - 48) + 10*(year[2] - 48) + (year[3] - 48)) - 1900;
-//    time.tm_mon = 10*(month[0] - 48) + month[1] - 48;
-//    time.tm_mday = 10*(date[0] - 48) + date[1] - 48;
-//    time.tm_hour = 10*(hour[0] - 48) + hour[1] - 48 + 2; //TODO Enable timezone managment
-//    time.tm_min = 10*(minute[0] - 48) + minute[1] - 48;
-//    time.tm_sec = 10*(second[0] - 48) + second[1] - 48;
-//    time.tm_wday=1;
-//    time.tm_yday=1;
-//    RTCC_TimeSet(&time); 
-//    
-//    /*
-//    struct tm getTimeStruct;
-//    RTCC_TimeGet(&getTimeStruct);
-//    */
-//}
-
 void setRTCCtimeFromServer(){
 
-    char * token;
     char dateResponse[512];
     memset(dateResponse, '\0', sizeof(dateResponse));
     uint8_t send_GET_time[] = "{\"request\":\"getDate\"}\r\n"; 
@@ -162,44 +103,40 @@ void setRTCCtimeFromServer(){
     for(size_t i = 0 ; i < sizeof(send_GET_time) ; i++){
         UART1_Write(send_GET_time[i]);
     }
-    char response[256];  
-    DELAY_milliseconds(50);   //Wait for wifi-module to respond
+    char response[56];  
+    DELAY_milliseconds(500);   //Wait for wifi-module to respond
     
-    for(int i = 0 ; i < sizeof(response); i++){
+    for(size_t i = 0 ; i < sizeof(response); i++){
         response[i] = *(uart_buffer+i);
     }
     
-    int k = 0;
-    
     //TODO check if received package is valid. 
             
-    token = strtok(dateResponse, "\"");    //Make a pointer to the buffer and tokenize it. 
-    token = strtok(NULL, "\"");
-    printf("\r\n\n");  
     char year[4];
     char month[2];
     char date[2];
     char hour[2];
     char minute[2];
     char second[2];
-
+    
+    for(int i = 0 ; i < 2 ; i++){
+        date[i] = response[i+1];
+    }
+    for(int i = 0 ; i < 2 ; i++){
+        month[i] = response[i+4];
+    }
     for(int i = 0 ; i < 4 ; i++){
-        year[i] = *(token+i);
+        year[i] = response[i+7];
+    } 
+    
+    for(int i = 0 ; i < 2 ; i++){
+        hour[i] = response[i+12];
     }
     for(int i = 0 ; i < 2 ; i++){
-        month[i] = *(token+5+i);
+        minute[i] = response[i+15];
     }
     for(int i = 0 ; i < 2 ; i++){
-        date[i] = *(token+8+i);
-    }
-    for(int i = 0 ; i < 2 ; i++){
-        hour[i] = *(token+11+i);
-    }
-    for(int i = 0 ; i < 2 ; i++){
-        minute[i] = *(token+14+i);
-    }
-    for(int i = 0 ; i < 2 ; i++){
-        second[i] = *(token+17+i);
+        second[i] = response[i+18];
     }
 
     struct tm time;
@@ -207,17 +144,18 @@ void setRTCCtimeFromServer(){
     time.tm_year = (1000*(year[0] - 48 ) + 100*(year[1] - 48) + 10*(year[2] - 48) + (year[3] - 48)) - 1900;
     time.tm_mon = 10*(month[0] - 48) + month[1] - 48;
     time.tm_mday = 10*(date[0] - 48) + date[1] - 48;
-    time.tm_hour = 10*(hour[0] - 48) + hour[1] - 48 + 2; //TODO Enable timezone managment
+    time.tm_hour = 10*(hour[0] - 48) + hour[1] - 48; //TODO Enable timezone managment
     time.tm_min = 10*(minute[0] - 48) + minute[1] - 48;
     time.tm_sec = 10*(second[0] - 48) + second[1] - 48;
     time.tm_wday=1;
     time.tm_yday=1;
-    RTCC_TimeSet(&time); 
+    RTCC_TimeSet(&time);    
     
-    /*
-    struct tm getTimeStruct;
-    RTCC_TimeGet(&getTimeStruct);
-    */
+//    struct tm getTimeStruct;
+//    RTCC_TimeGet(&getTimeStruct);
+//    int k = 0;
+    clearUartBuffer();
+    
 }
 
 bool connectedToWiFi(){
@@ -237,61 +175,59 @@ bool connectedToWiFi(){
         response[i] = *(uart_buffer+i);
     }
     
-        int k = 0;
-    
     char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
     token = strtok(NULL, ":");
     
     
     while(token != NULL){
         if(*(token) == '4'  || *(token) == '3'  || *(token) == '2'){
+    clearUartBuffer();
             return true;
         }
         else{
-            int test2 = 0;
             token = strtok(NULL, ":");}
     }
-    int te3st = 0;
+    clearUartBuffer();
     return false;;
 }
 
-bool syncAlarmPeriodFromServer(){
-    
-    int sizeOfRequest = 59;  
-    char response[512];
-    char request[sizeOfRequest];
-       
-    snprintf(request, sizeof(request), "GET /period/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());  //Build the request with unique device ID
-    sendHttpRequest(request, sizeOfRequest, response);
-        
-    char needle[] = "1 200";
-    char *ptr_to_200_OK;
-    ptr_to_200_OK = strstr(response, needle);
-    
-    if(ptr_to_200_OK != NULL){  //If everything is okay, we need to destructure the json object containing the values.
-        char startTime[5];
-        char endTime[5];
-        char * ptr_to_value = strstr(response, "startTime");
-        ptr_to_value = strtok(ptr_to_value, ":");
-        ptr_to_value = strtok(NULL, ":");
-        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
-            startTime[i] = *(ptr_to_value+i+1);
-        }
-        ptr_to_value = strtok(NULL, ":");
-        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
-            endTime[i] = *(ptr_to_value+i+1);
-        }
-        
-        int startTimeConverted;
-        int endTimeConverted;
-
-        startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);     
-        endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);        
-        setAlarmPeriod(startTimeConverted, endTimeConverted);   
-        return true;
-    }   
-    return false;
-}
+//bool syncAlarmPeriodFromServer(){
+//    
+//    int sizeOfRequest = 59;  
+//    char response[512];
+//    char request[sizeOfRequest];
+//       
+//    snprintf(request, sizeof(request), "GET /period/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());  //Build the request with unique device ID
+//    sendHttpRequest(request, sizeOfRequest, response);
+//        
+//    char needle[] = "1 200";
+//    char *ptr_to_200_OK;
+//    ptr_to_200_OK = strstr(response, needle);
+//    
+//    if(ptr_to_200_OK != NULL){  //If everything is okay, we need to destructure the json object containing the values.
+//        char startTime[5];
+//        char endTime[5];
+//        char * ptr_to_value = strstr(response, "startTime");
+//        ptr_to_value = strtok(ptr_to_value, ":");
+//        ptr_to_value = strtok(NULL, ":");
+//        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
+//            startTime[i] = *(ptr_to_value+i+1);
+//        }
+//        ptr_to_value = strtok(NULL, ":");
+//        for(size_t i = 0 ; *(ptr_to_value+i+1) != '\"' ; i++){
+//            endTime[i] = *(ptr_to_value+i+1);
+//        }
+//        
+//        int startTimeConverted;
+//        int endTimeConverted;
+//
+//        startTimeConverted = 1000*(startTime[0] - 48) + 100*(startTime[1] - 48) + 10*(startTime[2] - 48) + (startTime[3] - 48);     
+//        endTimeConverted = 1000*(endTime[0] - 48) + 100*(endTime[1] - 48) + 10*(endTime[2] - 48) + (endTime[3] - 48);        
+//        setAlarmPeriod(startTimeConverted, endTimeConverted);   
+//        return true;
+//    }   
+//    return false;
+//}
 
 void hardResetWifiModule(){
     _LATB5 = 0;
@@ -305,27 +241,34 @@ void initESP8266(){
     _LATB5 = 1;
 }
  
-bool setAlarm(){
+bool alarmTriggered(){
     
-    int sizeOfRequest = 59;
-    char request[sizeOfRequest];      
+    char alarmRequest[] = "{\"request\":\"alarm\",\"owner\":\"4321\"}\r\n";
     char response[512];// = "\0";
     
-    snprintf(request, sizeof(request), "POST /alarm/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());
-    sendHttpRequest(request, sizeOfRequest, response);
-
-    char needle[] = "1 200";
-    char *ptr_to_200_OK;
-    ptr_to_200_OK = strstr(response, needle);
-    if(ptr_to_200_OK != NULL){
-        return true;
+    for(size_t i = 0 ; i < sizeof(alarmRequest) ; i++){
+        UART1_Write(alarmRequest[i]);
     }
-    return false;
+    
+    int k = 0;
+    return true;
+    
+    // snprintf(request, sizeof(request), "POST /alarm/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());
+    //sendHttpRequest(request, sizeOfRequest, response);
+
+   // char needle[] = "1 200";
+   // char *ptr_to_200_OK;
+//    ptr_to_200_OK = strstr(response, needle);
+//    if(ptr_to_200_OK != NULL){
+//        return true;
+//    }
+//    return false;
 }   
 
 bool connectToSocket(){
     
     char connectToSocketCmd[] = "AT+CIPSTART=\"TCP\",\"65.109.143.74\",9090\r\n";
+    //char connectToSocketCmd[] = "AT+CIPSTART=\"TCP\",\"127.0.0.1\",9090\r\n";
     char cipModeCmd[] = "AT+CIPMODE=1\r\n";
     char atCipSend[] = "AT+CIPSEND\r\n";
     memset(uart_buffer, '\0', UART_BUFFER_SIZE);  
@@ -343,7 +286,6 @@ bool connectToSocket(){
     for(int i = 0 ; i < 128; i++){
         connectResponse[i] = uart_buffer[i];
     }
-    
     char *ptr_to_OK;
     char needle[] = "OK";
     ptr_to_OK = strstr(connectResponse, needle);
@@ -363,6 +305,7 @@ bool connectToSocket(){
     for(int i = 0 ; i < sizeof(atCipSend); i++){
         UART1_Write(atCipSend[i]);
     }
+    clearUartBuffer();
     return true; 
 }
 
@@ -392,8 +335,9 @@ bool registerDevice(){
     char needle[] = "Device node registered: OK";
     ptr_to_OK = strstr(registerResponse, needle);
     if(ptr_to_OK == NULL){
+        clearUartBuffer();
         return false;
     }
-    int k = 0;
+    clearUartBuffer();
     return true;
 }

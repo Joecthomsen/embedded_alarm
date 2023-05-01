@@ -15,9 +15,9 @@ int * getStoredAlarmPeriod(){
     return period;
 }
 
-void setAlarmPeriod(int startTime, int endTime){
-    period[0] = startTime;
-    period[1] = endTime;
-
-}
+//void setAlarmPeriod(int startTime, int endTime){
+//    period[0] = startTime;
+//    period[1] = endTime;
+//
+//}
 

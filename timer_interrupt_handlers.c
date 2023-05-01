@@ -72,21 +72,21 @@ void timer2_interrupt_handler(){
     }
 }
 
-void timer3_interrupt_handler(){
-    syncAlarmPeriodFromServer();
-    turnOnBlueLED();
-    DELAY_milliseconds(50);
-    turnOffBlueLED();
-    if(alarmActive() && getState() == NOT_ACTIVE){
-        State state = ACTIVE;
-        setState(state);
-    }
-    else if(!alarmActive() && getState() == ACTIVE){
-        State state = NOT_ACTIVE;
-        setState(state);
-    }
-    return;
-}
+//void timer3_interrupt_handler(){
+//    syncAlarmPeriodFromServer();
+//    turnOnBlueLED();
+//    DELAY_milliseconds(50);
+//    turnOffBlueLED();
+//    if(alarmActive() && getState() == NOT_ACTIVE){
+//        State state = ACTIVE;
+//        setState(state);
+//    }
+//    else if(!alarmActive() && getState() == ACTIVE){
+//        State state = NOT_ACTIVE;
+//        setState(state);
+//    }
+//    return;
+//}
 
 
 

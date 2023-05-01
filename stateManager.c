@@ -8,6 +8,7 @@
 
 #include <xc.h>
 #include "stateManager.h"
+#include "flashInterface.h"
 
 void turnOnRedLED();
 void turnOnYellowLED();
@@ -87,11 +88,12 @@ void setState(int state){
 bool alarmActive(){
     struct tm currentTime;    
     RTCC_TimeGet(&currentTime);   
-    int * alarmTime = getStoredAlarmPeriod();
-    int start = *alarmTime;
-    int end = *(alarmTime+1);
+//    int * alarmTime = getStoredAlarmPeriod();
+    int start = getStartTime();
+    int end = getEndTime();
     int currentTimeConverted = 100*currentTime.tm_hour + currentTime.tm_min;
-    if(*alarmTime > *(alarmTime+1)){
+    int k = 0;
+    if(start > end){
         if( (currentTimeConverted >= start && currentTimeConverted >= end) || (currentTimeConverted <= start && currentTimeConverted <= end) ){
             return true;
         }

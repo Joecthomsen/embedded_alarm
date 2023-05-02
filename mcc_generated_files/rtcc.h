@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <time.h>
 #include "../stateManager.h"
+#include "interrupt_manager.h"
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

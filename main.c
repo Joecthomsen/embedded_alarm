@@ -48,7 +48,7 @@ int main(void)
     FLASH_Unlock(FLASH_UNLOCK_KEY);
         FLASH_WriteWord16(DEVICE_ID_ADDRESS, 0x1);  //Write the number "1" as device id. 
     FLASH_Lock();
-    setAlarmPeriod(1200, 2000);
+    setAlarmPeriod(1200, 1738);
     //End of pseudo init code
    
     init();
@@ -149,7 +149,7 @@ void initInerrupts(){
     void (*uart_interrupt_handler_ptr)(void) = uart_interrupt_handler;
     void (*timer1_NO_WIFI_interrupt_handler_ptr)(void) = timer1_interrupt_handler; 
 //    void (*timer2_active_state_handler_ptr)(void) = timer2_interrupt_handler;
-    //void (*timer3_active_state_handler_ptr)(void) = timer3_interrupt_handler;
+    void (*timer3_active_state_handler_ptr)(void) = timer3_interrupt_handler;
         
     //Create ISR callback
     UART1_SetRxInterruptHandler(uart_interrupt_handler_ptr);
@@ -157,8 +157,8 @@ void initInerrupts(){
     TMR1_Stop();
 //    TMR2_SetInterruptHandler(timer2_active_state_handler_ptr);
     //TMR2_Stop();
-//    TMR3_SetInterruptHandler(timer3_active_state_handler_ptr);
-//    TMR3_Stop();
+    TMR3_SetInterruptHandler(timer3_active_state_handler_ptr);
+    TMR3_Stop();
 }
 
 void not_connected_to_socket_state(){
@@ -184,16 +184,20 @@ void alarmState(){
 
 void activeState(){
     turnOnGreenLED();
+    TMR3_Start();
     EX_INT1_InterruptEnable();
         enterIdleMode();
         handleIncommingMessage();  
     EX_INT1_InterruptDisable();
+    TMR3_Stop();
     return;
 }
 
-void not_active_state(){   
+void not_active_state(){
+        TMR3_Start();
         enterIdleMode();
-        handleIncommingMessage();        
+        handleIncommingMessage();
+        TMR3_Stop();        
 }
 
 void no_wifi_state(){

@@ -160,6 +160,21 @@ void setRTCCtimeFromServer(){
 
 bool connectedToWiFi(){
     
+//    char plus[] = "+++";
+//    char cipMode0[] = "AT+CIPMODE=0\r\n";
+//    char cipMode1[] = "AT+CIPMODE=1\r\n";
+//    char cipSend[] = "AT+CIPSEND\r\n";
+//    
+//    if(getState() == CONNECTED_TO_SOCKET || getState() == ACTIVE || getState() == NOT_ACTIVE){     
+//        for(size_t i = 0 ; i < sizeof(plus) ; i++){
+//            UART1_Write(plus[i]);
+//        }
+//        
+//        for(size_t i = 0 ; i < sizeof(cipMode0) ; i++){
+//            UART1_Write(cipMode0[i]);
+//        }                    
+//    }
+//    DELAY_milliseconds(50); 
     clearUartBuffer();
     uint8_t AT_status_cmd[] = "AT+CIPSTATUS\r\n";
     if(UART1_IsTxReady()){
@@ -174,18 +189,28 @@ bool connectedToWiFi(){
     for(int i = 0 ; i < sizeof(response); i++){
         response[i] = *(uart_buffer+i);
     }
+    int k = 0;
     char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
     token = strtok(NULL, ":");
     
     
     while(token != NULL){
         if(*(token) == '4'  || *(token) == '3'  || *(token) == '2' || *(token) == '1'){
-    clearUartBuffer();
+            clearUartBuffer();
+//                if(getState() == CONNECTED_TO_SOCKET || getState() == ACTIVE || getState() == NOT_ACTIVE){
+//                    for(size_t i = 0 ; i < sizeof(cipMode1) ; i++){
+//                        UART1_Write(cipMode1[i]);
+//                    }
+//                    for(size_t i = 0 ; i < sizeof(cipSend) ; i++){
+//                        UART1_Write(cipSend[i]);
+//                    }                 
+//                }           
             return true;
         }
         else{
             token = strtok(NULL, ":");}
     }
+    int test = 0;
     clearUartBuffer();
     return false;;
 }

@@ -4,13 +4,13 @@ Tool Name:
   /opt/microchip/xc16/v2.00/bin/bin/../bin/elf-ld
 
 Command:
-  -T/tmp/tmp0001db78.00 \
-  -T/tmp/tmp0001db78.01 \
-  -T/tmp/tmp0001db78.02 \
-  -T/tmp/tmp0001db78.03 \
-  -T/tmp/tmp0001db78.04 \
-  -T/tmp/tmp0001db78.05 \
-  -T/tmp/tmp0001db78.06 \
+  -T/tmp/tmp00009af5.00 \
+  -T/tmp/tmp00009af5.01 \
+  -T/tmp/tmp00009af5.02 \
+  -T/tmp/tmp00009af5.03 \
+  -T/tmp/tmp00009af5.04 \
+  -T/tmp/tmp00009af5.05 \
+  -T/tmp/tmp00009af5.06 \
   -p24FJ128GA202 \
   --mdfp=/opt/microchip/mplabx/v6.05/packs/Microchip/PIC24F-GA-GB_DFP/1.8.217/xc16 \
   -o \
@@ -47,6 +47,8 @@ Command:
   build/default/debug/settings.o \
   build/default/debug/stateManager.o \
   build/default/debug/interrupt_handlers.o \
+  build/default/debug/PIR_sensor_handler.o \
+  build/default/debug/LED_handler.o \
   --local-stack \
   --defsym=__MPLAB_BUILD=1 \
   --defsym=__MPLAB_DEBUG=1 \
@@ -87,13 +89,13 @@ Archive member included because of file (symbol)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
                               build/default/debug/mcc_generated_files/delay.o (___delay32)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memset.DA_o)
-                              build/default/debug/main.o (_memset)
+                              build/default/debug/ESP8266_handler.o (_memset)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(puts.DA_o)
                               build/default/debug/ESP8266_handler.o (_puts)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(stdout.DA_o)
                               /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(puts.DA_o) (__stdout)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strstr.DA_o)
-                              build/default/debug/main.o (_strstr)
+                              build/default/debug/ESP8266_handler.o (_strstr)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strtok.DA_o)
                               build/default/debug/ESP8266_handler.o (_strtok)
 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__out.DA_o)
@@ -149,16 +151,16 @@ Default Scalar Model: Small
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0xbe4          0x11d6  (4566)
-.const                       0xde4               0x244           0x366  (870)
-.text                       0x1028              0x10d8          0x1944  (6468)
-.NVM_flash                  0x2100               0x12e           0x1c5  (453)
-.text                       0x222e               0x39e           0x56d  (1389)
-.dinit                      0x25cc                0xa6            0xf9  (249)
-.text                       0x2672               0x250           0x378  (888)
-.init.delay32               0x28c2                0x1c            0x2a  (42)
-.text                       0x28de                0x56            0x81  (129)
+.const                       0xde4               0x252           0x37b  (891)
+.text                       0x1036              0x1238          0x1b54  (6996)
+.NVM_flash                  0x226e               0x12e           0x1c5  (453)
+.text                       0x239c               0x396           0x561  (1377)
+.dinit                      0x2732                0xa6            0xf9  (249)
+.text                       0x27d8               0x2a6           0x3f9  (1017)
+.init.delay32               0x2a7e                0x1c            0x2a  (42)
+.text                       0x2a9a                0x6e            0xa5  (165)
 
-                 Total "program" memory used (bytes):         0x3ace  (15054) 11%
+                 Total "program" memory used (bytes):         0x3d8c  (15756) 11%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -272,222 +274,226 @@ External Symbols in Program Memory (by address):
                   0x000dd0                  ___mulp32eds3
                   0x000dd0                  ___mulp32peds3
                   0x000dd0                  ___mulsi3
-                  0x001028                  _setRTCCtimeFromServer
-                  0x00130e                  _connectedToWiFi
-                  0x0013e2                  _hardResetWifiModule
-                  0x0013f4                  _initESP8266
-                  0x0013fe                  _alarmTriggered
-                  0x00142c                  _connectToSocket
-                  0x001552                  _registerDevice
-                  0x00160a                  _UART1_Initialize
-                  0x00164a                  _UART1_SetTxInterruptHandler
-                  0x001668                  _UART1_SetRxInterruptHandler
-                  0x001686                  _UART1_Read
-                  0x0016b2                  _UART1_Write
-                  0x0016dc                  _UART1_IsRxReady
-                  0x0016f2                  _UART1_IsTxReady
-                  0x00172e                  _UART1_IsTxDone
-                  0x0017cc                  _UART1_ReadBuffer
-                  0x00181a                  _UART1_WriteBuffer
-                  0x001868                  _UART1_TransferStatusGet
-                  0x0018b4                  _UART1_Peek
-                  0x0018d8                  _UART1_ReceiveBufferIsEmpty
-                  0x0018e8                  _UART1_TransmitBufferIsFull
-                  0x0018f8                  _UART1_StatusGet
-                  0x001900                  _UART1_TransmitBufferSizeGet
-                  0x00192e                  _UART1_ReceiveBufferSizeGet
-                  0x00195c                  _UART1_Enable
-                  0x001966                  _UART1_Disable
-                  0x001970                  _main
-                  0x0019e6                  _init
-                  0x001a86                  _initInerrupts
-                  0x001ab2                  _not_connected_to_socket_state
-                  0x001ac6                  _alarmState
-                  0x001ade                  _activeState
-                  0x001af2                  _not_active_state
-                  0x001b00                  _no_wifi_state
-                  0x001b14                  _lost_connection_state
-                  0x001b24                  _enterIdleMode
-                  0x001b2c                  _handleIncommingMessage
-                  0x001c9e                  _RTCC_Initialize
-                  0x001cf6                  _RTCC_TimeReset
-                  0x001d0c                  _RTCC_TimeGet
-                  0x001db2                  _RTCC_TimeSet
-                  0x001e42                  _RTCC_BCDTimeGet
-                  0x001ed0                  _RTCC_BCDTimeSet
-                  0x001f92                  _initStatusLED
-                  0x001fa8                  _setState
-                  0x002034                  _alarmActive
-                  0x0020b8                  _getState
-                  0x0020c0                  _turnOnRedLED
-                  0x0020c8                  _turnOnYellowLED
-                  0x0020d0                  _turnOnGreenLED
-                  0x0020d8                  _turnOnBlueLED
-                  0x0020e0                  _turnOffRedLED
-                  0x0020e8                  _turnOffYellowLED
-                  0x0020f0                  _turnOffGreenLED
-                  0x0020f8                  _turnOffBlueLED
-                  0x002102                  _FLASH_Unlock
-                  0x00210c                  _FLASH_Lock
-                  0x002134                  _FLASH_ReadWord24
-                  0x002140                  _FLASH_ReadWord16
-                  0x00214c                  _FLASH_ErasePage
-                  0x002172                  _FLASH_WriteWord24
-                  0x002198                  _FLASH_WriteWord16
-                  0x0021c0                  _FLASH_WriteRow24
-                  0x0021ee                  _FLASH_WriteRow16
-                  0x00221e                  _FLASH_GetErasePageOffset
-                  0x002224                  _FLASH_GetErasePageAddress
-                  0x00222e                  _UART2_Initialize
-                  0x00224e                  _UART2_Read
-                  0x00226c                  _UART2_Write
-                  0x002284                  _UART2_IsRxReady
-                  0x00229c                  _UART2_IsTxReady
-                  0x0022be                  _UART2_IsTxDone
-                  0x0022d6                  _UART2_StatusGet
-                  0x0022de                  _UART2_Enable
-                  0x0022e8                  _UART2_Disable
-                  0x0022f2                  _TMR1_Initialize
-                  0x002316                  _TMR1_Period16BitSet
-                  0x002328                  _TMR1_Period16BitGet
-                  0x002330                  _TMR1_Counter16BitSet
-                  0x002342                  _TMR1_Counter16BitGet
-                  0x002350                  _TMR1_SetInterruptHandler
-                  0x002360                  _TMR1_Start
-                  0x002370                  _TMR1_Stop
-                  0x00237a                  _TMR1_GetElapsedThenClear
-                  0x002392                  _TMR1_SoftwareCounterGet
-                  0x00239e                  _TMR1_SoftwareCounterClear
-                  0x0023aa                  _TMR2_Initialize
-                  0x0023ce                  _TMR2_Period16BitSet
-                  0x0023e0                  _TMR2_Period16BitGet
-                  0x0023e8                  _TMR2_Counter16BitSet
-                  0x0023fa                  _TMR2_Counter16BitGet
-                  0x002408                  _TMR2_SetInterruptHandler
-                  0x002418                  _TMR2_Start
-                  0x002428                  _TMR2_Stop
-                  0x002432                  _TMR2_GetElapsedThenClear
-                  0x00244a                  _TMR2_SoftwareCounterGet
-                  0x002456                  _TMR2_SoftwareCounterClear
-                  0x002462                  _TMR3_Initialize
-                  0x002486                  _TMR3_Period16BitSet
-                  0x002498                  _TMR3_Period16BitGet
-                  0x0024a0                  _TMR3_Counter16BitSet
-                  0x0024b2                  _TMR3_Counter16BitGet
-                  0x0024c0                  _TMR3_SetInterruptHandler
-                  0x0024d0                  _TMR3_Start
-                  0x0024e0                  _TMR3_Stop
-                  0x0024ea                  _TMR3_GetElapsedThenClear
-                  0x002502                  _TMR3_SoftwareCounterGet
-                  0x00250e                  _TMR3_SoftwareCounterClear
-                  0x00251a                  _RTCC_InterrurpHandler
-                  0x00256c                  _timer1_interrupt_handler
-                  0x0025c6                  _timer3_interrupt_handler
-                  0x002672                  _PIN_MANAGER_Initialize
-                  0x0026f8                  _deviceHasId
-                  0x00270e                  _getUserId
-                  0x00271a                  _getStartTime
-                  0x002726                  _getEndTime
-                  0x002732                  _setAlarmPeriod
-                  0x00277c                  _INTERRUPT_Initialize
-                  0x0027de                  _DELAY_milliseconds
-                  0x002800                  _DELAY_microseconds
-                  0x002834                  _CLOCK_Initialize
-                  0x002886                  _uart_interrupt_handler
-                  0x0028ac                  _clearUartBuffer
-                  0x0028c2                  ___delay32
-                  0x0028de                  _SYSTEM_Initialize
-                  0x002920                  _EXT_INT_Initialize
-                  0x00292c                  _getStoredAlarmPeriod
+                  0x001036                  _setRTCCtimeFromServer
+                  0x001328                  _connectedToWiFi
+                  0x001402                  _hardResetWifiModule
+                  0x001414                  _initESP8266
+                  0x00141e                  _alarmTriggered
+                  0x00144c                  _connectToSocket
+                  0x001572                  _registerDevice
+                  0x00162a                  _getSocketStatus
+                  0x0017d2                  _handleIncommingMessage
+                  0x001944                  _UART1_Initialize
+                  0x001984                  _UART1_SetTxInterruptHandler
+                  0x0019a2                  _UART1_SetRxInterruptHandler
+                  0x0019c0                  _UART1_Read
+                  0x0019ec                  _UART1_Write
+                  0x001a16                  _UART1_IsRxReady
+                  0x001a2c                  _UART1_IsTxReady
+                  0x001a68                  _UART1_IsTxDone
+                  0x001b06                  _UART1_ReadBuffer
+                  0x001b54                  _UART1_WriteBuffer
+                  0x001ba2                  _UART1_TransferStatusGet
+                  0x001bee                  _UART1_Peek
+                  0x001c12                  _UART1_ReceiveBufferIsEmpty
+                  0x001c22                  _UART1_TransmitBufferIsFull
+                  0x001c32                  _UART1_StatusGet
+                  0x001c3a                  _UART1_TransmitBufferSizeGet
+                  0x001c68                  _UART1_ReceiveBufferSizeGet
+                  0x001c96                  _UART1_Enable
+                  0x001ca0                  _UART1_Disable
+                  0x001caa                  _RTCC_Initialize
+                  0x001d02                  _RTCC_TimeReset
+                  0x001d18                  _RTCC_TimeGet
+                  0x001dbe                  _RTCC_TimeSet
+                  0x001e4e                  _RTCC_BCDTimeGet
+                  0x001edc                  _RTCC_BCDTimeSet
+                  0x001f9e                  _setState
+                  0x00202a                  _alarmActive
+                  0x0020a8                  _getState
+                  0x0020b0                  _not_connected_to_socket_state
+                  0x0020c4                  _alarmState
+                  0x0020dc                  _activeState
+                  0x0020f0                  _not_active_state
+                  0x0020fa                  _no_wifi_state
+                  0x00210e                  _lost_connection_state
+                  0x00211e                  _enterIdleMode
+                  0x002126                  _main
+                  0x00219e                  _init
+                  0x002242                  _initInerrupts
+                  0x002270                  _FLASH_Unlock
+                  0x00227a                  _FLASH_Lock
+                  0x0022a2                  _FLASH_ReadWord24
+                  0x0022ae                  _FLASH_ReadWord16
+                  0x0022ba                  _FLASH_ErasePage
+                  0x0022e0                  _FLASH_WriteWord24
+                  0x002306                  _FLASH_WriteWord16
+                  0x00232e                  _FLASH_WriteRow24
+                  0x00235c                  _FLASH_WriteRow16
+                  0x00238c                  _FLASH_GetErasePageOffset
+                  0x002392                  _FLASH_GetErasePageAddress
+                  0x00239c                  _UART2_Initialize
+                  0x0023bc                  _UART2_Read
+                  0x0023da                  _UART2_Write
+                  0x0023f2                  _UART2_IsRxReady
+                  0x00240a                  _UART2_IsTxReady
+                  0x00242c                  _UART2_IsTxDone
+                  0x002444                  _UART2_StatusGet
+                  0x00244c                  _UART2_Enable
+                  0x002456                  _UART2_Disable
+                  0x002460                  _TMR1_Initialize
+                  0x002484                  _TMR1_Period16BitSet
+                  0x002496                  _TMR1_Period16BitGet
+                  0x00249e                  _TMR1_Counter16BitSet
+                  0x0024b0                  _TMR1_Counter16BitGet
+                  0x0024be                  _TMR1_SetInterruptHandler
+                  0x0024ce                  _TMR1_Start
+                  0x0024de                  _TMR1_Stop
+                  0x0024e8                  _TMR1_GetElapsedThenClear
+                  0x002500                  _TMR1_SoftwareCounterGet
+                  0x00250c                  _TMR1_SoftwareCounterClear
+                  0x002518                  _TMR2_Initialize
+                  0x00253c                  _TMR2_Period16BitSet
+                  0x00254e                  _TMR2_Period16BitGet
+                  0x002556                  _TMR2_Counter16BitSet
+                  0x002568                  _TMR2_Counter16BitGet
+                  0x002576                  _TMR2_SetInterruptHandler
+                  0x002586                  _TMR2_Start
+                  0x002596                  _TMR2_Stop
+                  0x0025a0                  _TMR2_GetElapsedThenClear
+                  0x0025b8                  _TMR2_SoftwareCounterGet
+                  0x0025c4                  _TMR2_SoftwareCounterClear
+                  0x0025d0                  _TMR3_Initialize
+                  0x0025f4                  _TMR3_Period16BitSet
+                  0x002606                  _TMR3_Period16BitGet
+                  0x00260e                  _TMR3_Counter16BitSet
+                  0x002620                  _TMR3_Counter16BitGet
+                  0x00262e                  _TMR3_SetInterruptHandler
+                  0x00263e                  _TMR3_Start
+                  0x00264e                  _TMR3_Stop
+                  0x002658                  _TMR3_GetElapsedThenClear
+                  0x002670                  _TMR3_SoftwareCounterGet
+                  0x00267c                  _TMR3_SoftwareCounterClear
+                  0x002688                  _RTCC_InterrurpHandler
+                  0x0026da                  _timer1_interrupt_handler
+                  0x002724                  _timer3_interrupt_handler
+                  0x0027d8                  _PIN_MANAGER_Initialize
+                  0x00285e                  _deviceHasId
+                  0x002874                  _getUserId
+                  0x002880                  _getStartTime
+                  0x00288c                  _getEndTime
+                  0x002898                  _setAlarmPeriod
+                  0x0028e2                  _INTERRUPT_Initialize
+                  0x002944                  _DELAY_milliseconds
+                  0x002966                  _DELAY_microseconds
+                  0x00299a                  _turnOnRedLED
+                  0x0029a2                  _turnOnYellowLED
+                  0x0029aa                  _turnOnGreenLED
+                  0x0029b2                  _turnOnBlueLED
+                  0x0029ba                  _turnOffRedLED
+                  0x0029c2                  _turnOffYellowLED
+                  0x0029ca                  _turnOffGreenLED
+                  0x0029d2                  _turnOffBlueLED
+                  0x0029da                  _initStatusLED
+                  0x0029f0                  _CLOCK_Initialize
+                  0x002a42                  _uart_interrupt_handler
+                  0x002a68                  _clearUartBuffer
+                  0x002a7e                  ___delay32
+                  0x002a9a                  _SYSTEM_Initialize
+                  0x002adc                  _EXT_INT_Initialize
+                  0x002ae8                  _initPIR
+                  0x002af0                  _turnPIROn
+                  0x002af8                  _turnPIROff
+                  0x002b00                  _getStoredAlarmPeriod
 
 External Symbols in Program Memory (by name):
 
-                  0x002834                  _CLOCK_Initialize
-                  0x002800                  _DELAY_microseconds
-                  0x0027de                  _DELAY_milliseconds
-                  0x002920                  _EXT_INT_Initialize
-                  0x00214c                  _FLASH_ErasePage
-                  0x002224                  _FLASH_GetErasePageAddress
-                  0x00221e                  _FLASH_GetErasePageOffset
-                  0x00210c                  _FLASH_Lock
-                  0x002140                  _FLASH_ReadWord16
-                  0x002134                  _FLASH_ReadWord24
-                  0x002102                  _FLASH_Unlock
-                  0x0021ee                  _FLASH_WriteRow16
-                  0x0021c0                  _FLASH_WriteRow24
-                  0x002198                  _FLASH_WriteWord16
-                  0x002172                  _FLASH_WriteWord24
-                  0x00277c                  _INTERRUPT_Initialize
-                  0x002672                  _PIN_MANAGER_Initialize
-                  0x001e42                  _RTCC_BCDTimeGet
-                  0x001ed0                  _RTCC_BCDTimeSet
-                  0x001c9e                  _RTCC_Initialize
-                  0x00251a                  _RTCC_InterrurpHandler
-                  0x001d0c                  _RTCC_TimeGet
-                  0x001cf6                  _RTCC_TimeReset
-                  0x001db2                  _RTCC_TimeSet
-                  0x0028de                  _SYSTEM_Initialize
-                  0x002342                  _TMR1_Counter16BitGet
-                  0x002330                  _TMR1_Counter16BitSet
-                  0x00237a                  _TMR1_GetElapsedThenClear
-                  0x0022f2                  _TMR1_Initialize
-                  0x002328                  _TMR1_Period16BitGet
-                  0x002316                  _TMR1_Period16BitSet
-                  0x002350                  _TMR1_SetInterruptHandler
-                  0x00239e                  _TMR1_SoftwareCounterClear
-                  0x002392                  _TMR1_SoftwareCounterGet
-                  0x002360                  _TMR1_Start
-                  0x002370                  _TMR1_Stop
-                  0x0023fa                  _TMR2_Counter16BitGet
-                  0x0023e8                  _TMR2_Counter16BitSet
-                  0x002432                  _TMR2_GetElapsedThenClear
-                  0x0023aa                  _TMR2_Initialize
-                  0x0023e0                  _TMR2_Period16BitGet
-                  0x0023ce                  _TMR2_Period16BitSet
-                  0x002408                  _TMR2_SetInterruptHandler
-                  0x002456                  _TMR2_SoftwareCounterClear
-                  0x00244a                  _TMR2_SoftwareCounterGet
-                  0x002418                  _TMR2_Start
-                  0x002428                  _TMR2_Stop
-                  0x0024b2                  _TMR3_Counter16BitGet
-                  0x0024a0                  _TMR3_Counter16BitSet
-                  0x0024ea                  _TMR3_GetElapsedThenClear
-                  0x002462                  _TMR3_Initialize
-                  0x002498                  _TMR3_Period16BitGet
-                  0x002486                  _TMR3_Period16BitSet
-                  0x0024c0                  _TMR3_SetInterruptHandler
-                  0x00250e                  _TMR3_SoftwareCounterClear
-                  0x002502                  _TMR3_SoftwareCounterGet
-                  0x0024d0                  _TMR3_Start
-                  0x0024e0                  _TMR3_Stop
-                  0x001966                  _UART1_Disable
-                  0x00195c                  _UART1_Enable
-                  0x00160a                  _UART1_Initialize
-                  0x0016dc                  _UART1_IsRxReady
-                  0x00172e                  _UART1_IsTxDone
-                  0x0016f2                  _UART1_IsTxReady
-                  0x0018b4                  _UART1_Peek
-                  0x001686                  _UART1_Read
-                  0x0017cc                  _UART1_ReadBuffer
-                  0x0018d8                  _UART1_ReceiveBufferIsEmpty
-                  0x00192e                  _UART1_ReceiveBufferSizeGet
-                  0x001668                  _UART1_SetRxInterruptHandler
-                  0x00164a                  _UART1_SetTxInterruptHandler
-                  0x0018f8                  _UART1_StatusGet
-                  0x001868                  _UART1_TransferStatusGet
-                  0x0018e8                  _UART1_TransmitBufferIsFull
-                  0x001900                  _UART1_TransmitBufferSizeGet
-                  0x0016b2                  _UART1_Write
-                  0x00181a                  _UART1_WriteBuffer
-                  0x0022e8                  _UART2_Disable
-                  0x0022de                  _UART2_Enable
-                  0x00222e                  _UART2_Initialize
-                  0x002284                  _UART2_IsRxReady
-                  0x0022be                  _UART2_IsTxDone
-                  0x00229c                  _UART2_IsTxReady
-                  0x00224e                  _UART2_Read
-                  0x0022d6                  _UART2_StatusGet
-                  0x00226c                  _UART2_Write
+                  0x0029f0                  _CLOCK_Initialize
+                  0x002966                  _DELAY_microseconds
+                  0x002944                  _DELAY_milliseconds
+                  0x002adc                  _EXT_INT_Initialize
+                  0x0022ba                  _FLASH_ErasePage
+                  0x002392                  _FLASH_GetErasePageAddress
+                  0x00238c                  _FLASH_GetErasePageOffset
+                  0x00227a                  _FLASH_Lock
+                  0x0022ae                  _FLASH_ReadWord16
+                  0x0022a2                  _FLASH_ReadWord24
+                  0x002270                  _FLASH_Unlock
+                  0x00235c                  _FLASH_WriteRow16
+                  0x00232e                  _FLASH_WriteRow24
+                  0x002306                  _FLASH_WriteWord16
+                  0x0022e0                  _FLASH_WriteWord24
+                  0x0028e2                  _INTERRUPT_Initialize
+                  0x0027d8                  _PIN_MANAGER_Initialize
+                  0x001e4e                  _RTCC_BCDTimeGet
+                  0x001edc                  _RTCC_BCDTimeSet
+                  0x001caa                  _RTCC_Initialize
+                  0x002688                  _RTCC_InterrurpHandler
+                  0x001d18                  _RTCC_TimeGet
+                  0x001d02                  _RTCC_TimeReset
+                  0x001dbe                  _RTCC_TimeSet
+                  0x002a9a                  _SYSTEM_Initialize
+                  0x0024b0                  _TMR1_Counter16BitGet
+                  0x00249e                  _TMR1_Counter16BitSet
+                  0x0024e8                  _TMR1_GetElapsedThenClear
+                  0x002460                  _TMR1_Initialize
+                  0x002496                  _TMR1_Period16BitGet
+                  0x002484                  _TMR1_Period16BitSet
+                  0x0024be                  _TMR1_SetInterruptHandler
+                  0x00250c                  _TMR1_SoftwareCounterClear
+                  0x002500                  _TMR1_SoftwareCounterGet
+                  0x0024ce                  _TMR1_Start
+                  0x0024de                  _TMR1_Stop
+                  0x002568                  _TMR2_Counter16BitGet
+                  0x002556                  _TMR2_Counter16BitSet
+                  0x0025a0                  _TMR2_GetElapsedThenClear
+                  0x002518                  _TMR2_Initialize
+                  0x00254e                  _TMR2_Period16BitGet
+                  0x00253c                  _TMR2_Period16BitSet
+                  0x002576                  _TMR2_SetInterruptHandler
+                  0x0025c4                  _TMR2_SoftwareCounterClear
+                  0x0025b8                  _TMR2_SoftwareCounterGet
+                  0x002586                  _TMR2_Start
+                  0x002596                  _TMR2_Stop
+                  0x002620                  _TMR3_Counter16BitGet
+                  0x00260e                  _TMR3_Counter16BitSet
+                  0x002658                  _TMR3_GetElapsedThenClear
+                  0x0025d0                  _TMR3_Initialize
+                  0x002606                  _TMR3_Period16BitGet
+                  0x0025f4                  _TMR3_Period16BitSet
+                  0x00262e                  _TMR3_SetInterruptHandler
+                  0x00267c                  _TMR3_SoftwareCounterClear
+                  0x002670                  _TMR3_SoftwareCounterGet
+                  0x00263e                  _TMR3_Start
+                  0x00264e                  _TMR3_Stop
+                  0x001ca0                  _UART1_Disable
+                  0x001c96                  _UART1_Enable
+                  0x001944                  _UART1_Initialize
+                  0x001a16                  _UART1_IsRxReady
+                  0x001a68                  _UART1_IsTxDone
+                  0x001a2c                  _UART1_IsTxReady
+                  0x001bee                  _UART1_Peek
+                  0x0019c0                  _UART1_Read
+                  0x001b06                  _UART1_ReadBuffer
+                  0x001c12                  _UART1_ReceiveBufferIsEmpty
+                  0x001c68                  _UART1_ReceiveBufferSizeGet
+                  0x0019a2                  _UART1_SetRxInterruptHandler
+                  0x001984                  _UART1_SetTxInterruptHandler
+                  0x001c32                  _UART1_StatusGet
+                  0x001ba2                  _UART1_TransferStatusGet
+                  0x001c22                  _UART1_TransmitBufferIsFull
+                  0x001c3a                  _UART1_TransmitBufferSizeGet
+                  0x0019ec                  _UART1_Write
+                  0x001b54                  _UART1_WriteBuffer
+                  0x002456                  _UART2_Disable
+                  0x00244c                  _UART2_Enable
+                  0x00239c                  _UART2_Initialize
+                  0x0023f2                  _UART2_IsRxReady
+                  0x00242c                  _UART2_IsTxDone
+                  0x00240a                  _UART2_IsTxReady
+                  0x0023bc                  _UART2_Read
+                  0x002444                  _UART2_StatusGet
+                  0x0023da                  _UART2_Write
                   0x000386                  __AddressError
                   0x000330                  __CNInterrupt
                   0x0005a8                  __DefaultInterrupt
@@ -502,7 +508,7 @@ External Symbols in Program Memory (by name):
                   0x0004a6                  __U1ErrInterrupt
                   0x000440                  __U1RXInterrupt
                   0x0003e4                  __U1TXInterrupt
-                  0x0028c2                  ___delay32
+                  0x002a7e                  ___delay32
                   0x000dca                  ___init_stdio
                   0x000700                  ___init_stdout
                   0x000dd0                  ___mulp32eds3
@@ -517,61 +523,65 @@ External Symbols in Program Memory (by name):
                   0x000252                  __data_init_da
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x001ade                  _activeState
-                  0x002034                  _alarmActive
-                  0x001ac6                  _alarmState
-                  0x0013fe                  _alarmTriggered
-                  0x0028ac                  _clearUartBuffer
-                  0x00142c                  _connectToSocket
-                  0x00130e                  _connectedToWiFi
-                  0x0026f8                  _deviceHasId
-                  0x001b24                  _enterIdleMode
+                  0x0020dc                  _activeState
+                  0x00202a                  _alarmActive
+                  0x0020c4                  _alarmState
+                  0x00141e                  _alarmTriggered
+                  0x002a68                  _clearUartBuffer
+                  0x00144c                  _connectToSocket
+                  0x001328                  _connectedToWiFi
+                  0x00285e                  _deviceHasId
+                  0x00211e                  _enterIdleMode
                   0x000b32                  _fputs
                   0x000b5e                  _fwrite
-                  0x002726                  _getEndTime
-                  0x00271a                  _getStartTime
-                  0x0020b8                  _getState
-                  0x00292c                  _getStoredAlarmPeriod
-                  0x00270e                  _getUserId
-                  0x001b2c                  _handleIncommingMessage
-                  0x0013e2                  _hardResetWifiModule
-                  0x0019e6                  _init
-                  0x0013f4                  _initESP8266
-                  0x001a86                  _initInerrupts
-                  0x001f92                  _initStatusLED
-                  0x001b14                  _lost_connection_state
-                  0x001970                  _main
+                  0x00288c                  _getEndTime
+                  0x00162a                  _getSocketStatus
+                  0x002880                  _getStartTime
+                  0x0020a8                  _getState
+                  0x002b00                  _getStoredAlarmPeriod
+                  0x002874                  _getUserId
+                  0x0017d2                  _handleIncommingMessage
+                  0x001402                  _hardResetWifiModule
+                  0x00219e                  _init
+                  0x001414                  _initESP8266
+                  0x002242                  _initInerrupts
+                  0x002ae8                  _initPIR
+                  0x0029da                  _initStatusLED
+                  0x00210e                  _lost_connection_state
+                  0x002126                  _main
                   0x000b8a                  _memchr
                   0x000bea                  _memcmp
                   0x000c06                  _memcpy
                   0x00061a                  _memset
-                  0x001b00                  _no_wifi_state
-                  0x001af2                  _not_active_state
-                  0x001ab2                  _not_connected_to_socket_state
+                  0x0020fa                  _no_wifi_state
+                  0x0020f0                  _not_active_state
+                  0x0020b0                  _not_connected_to_socket_state
                   0x000c44                  _putc
                   0x000db0                  _putchar
                   0x0006e0                  _puts
-                  0x001552                  _registerDevice
-                  0x002732                  _setAlarmPeriod
-                  0x001028                  _setRTCCtimeFromServer
-                  0x001fa8                  _setState
+                  0x001572                  _registerDevice
+                  0x002898                  _setAlarmPeriod
+                  0x001036                  _setRTCCtimeFromServer
+                  0x001f9e                  _setState
                   0x000db6                  _strchr
                   0x000c46                  _strcspn
                   0x000cb8                  _strlen
                   0x000ce8                  _strspn
                   0x0009b6                  _strstr
                   0x000a10                  _strtok
-                  0x00256c                  _timer1_interrupt_handler
-                  0x0025c6                  _timer3_interrupt_handler
-                  0x0020f8                  _turnOffBlueLED
-                  0x0020f0                  _turnOffGreenLED
-                  0x0020e0                  _turnOffRedLED
-                  0x0020e8                  _turnOffYellowLED
-                  0x0020d8                  _turnOnBlueLED
-                  0x0020d0                  _turnOnGreenLED
-                  0x0020c0                  _turnOnRedLED
-                  0x0020c8                  _turnOnYellowLED
-                  0x002886                  _uart_interrupt_handler
+                  0x0026da                  _timer1_interrupt_handler
+                  0x002724                  _timer3_interrupt_handler
+                  0x0029d2                  _turnOffBlueLED
+                  0x0029ca                  _turnOffGreenLED
+                  0x0029ba                  _turnOffRedLED
+                  0x0029c2                  _turnOffYellowLED
+                  0x0029b2                  _turnOnBlueLED
+                  0x0029aa                  _turnOnGreenLED
+                  0x00299a                  _turnOnRedLED
+                  0x0029a2                  _turnOnYellowLED
+                  0x002af8                  _turnPIROff
+                  0x002af0                  _turnPIROn
+                  0x002a42                  _uart_interrupt_handler
                   0x0005e2                  _write
 
 Memory Configuration
@@ -648,6 +658,8 @@ LOAD build/default/debug/uart_buffer.o
 LOAD build/default/debug/settings.o
 LOAD build/default/debug/stateManager.o
 LOAD build/default/debug/interrupt_handlers.o
+LOAD build/default/debug/PIR_sensor_handler.o
+LOAD build/default/debug/LED_handler.o
                     0x0001                  __MPLAB_BUILD = 0x1
                     0x0001                  __MPLAB_DEBUG = 0x1
                     0x0001                  __DEBUG = 0x1
@@ -830,7 +842,7 @@ __CONFIG1
 .comment
  *(.comment)
 
-.debug_info       0x000000       0xa1b5
+.debug_info       0x000000       0xa8ee
  *(.debug_info)
  .debug_info      0x000000         0x8d build/default/debug/mcc_generated_files/memory/flash.o
  .debug_info      0x00008d        0x31a build/default/debug/mcc_generated_files/system.o
@@ -838,25 +850,27 @@ __CONFIG1
  .debug_info      0x000812        0xe90 build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_info      0x0016a2        0xcc9 build/default/debug/mcc_generated_files/pin_manager.o
  .debug_info      0x00236b        0x37b build/default/debug/mcc_generated_files/traps.o
- .debug_info      0x0026e6        0xd46 build/default/debug/mcc_generated_files/rtcc.o
- .debug_info      0x00342c       0x11a9 build/default/debug/mcc_generated_files/uart1.o
- .debug_info      0x0045d5        0x7f2 build/default/debug/mcc_generated_files/uart2.o
- .debug_info      0x004dc7        0x1b4 build/default/debug/mcc_generated_files/delay.o
- .debug_info      0x004f7b        0x990 build/default/debug/mcc_generated_files/tmr1.o
- .debug_info      0x00590b        0x953 build/default/debug/mcc_generated_files/tmr2.o
- .debug_info      0x00625e        0x7cf build/default/debug/mcc_generated_files/ext_int.o
- .debug_info      0x006a2d        0x920 build/default/debug/mcc_generated_files/tmr3.o
- .debug_info      0x00734d        0xd07 build/default/debug/main.o
- .debug_info      0x008054        0xce0 build/default/debug/ESP8266_handler.o
- .debug_info      0x008d34        0x21c build/default/debug/flashInterface.o
- .debug_info      0x008f50        0x1d9 build/default/debug/uart_buffer.o
- .debug_info      0x009129        0x167 build/default/debug/settings.o
- .debug_info      0x009290        0x995 build/default/debug/stateManager.o
- .debug_info      0x009c25        0x504 build/default/debug/interrupt_handlers.o
- .debug_info      0x00a129         0x8c /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_info      0x0026e6        0xd20 build/default/debug/mcc_generated_files/rtcc.o
+ .debug_info      0x003406       0x11a9 build/default/debug/mcc_generated_files/uart1.o
+ .debug_info      0x0045af        0x7f2 build/default/debug/mcc_generated_files/uart2.o
+ .debug_info      0x004da1        0x1b4 build/default/debug/mcc_generated_files/delay.o
+ .debug_info      0x004f55        0x990 build/default/debug/mcc_generated_files/tmr1.o
+ .debug_info      0x0058e5        0x953 build/default/debug/mcc_generated_files/tmr2.o
+ .debug_info      0x006238        0x7cf build/default/debug/mcc_generated_files/ext_int.o
+ .debug_info      0x006a07        0x920 build/default/debug/mcc_generated_files/tmr3.o
+ .debug_info      0x007327        0xaa0 build/default/debug/main.o
+ .debug_info      0x007dc7       0x109e build/default/debug/ESP8266_handler.o
+ .debug_info      0x008e65        0x21c build/default/debug/flashInterface.o
+ .debug_info      0x009081        0x1d9 build/default/debug/uart_buffer.o
+ .debug_info      0x00925a        0x167 build/default/debug/settings.o
+ .debug_info      0x0093c1        0x7cd build/default/debug/stateManager.o
+ .debug_info      0x009b8e        0x517 build/default/debug/interrupt_handlers.o
+ .debug_info      0x00a0a5        0x29c build/default/debug/PIR_sensor_handler.o
+ .debug_info      0x00a341        0x521 build/default/debug/LED_handler.o
+ .debug_info      0x00a862         0x8c /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000       0x1662
+.debug_abbrev     0x000000       0x1770
  *(.debug_abbrev)
  .debug_abbrev    0x000000         0x14 build/default/debug/mcc_generated_files/memory/flash.o
  .debug_abbrev    0x000014         0xb4 build/default/debug/mcc_generated_files/system.o
@@ -865,24 +879,26 @@ __CONFIG1
  .debug_abbrev    0x000241         0xd6 build/default/debug/mcc_generated_files/pin_manager.o
  .debug_abbrev    0x000317        0x10d build/default/debug/mcc_generated_files/traps.o
  .debug_abbrev    0x000424          0x1 build/default/debug/mcc_generated_files/mcc.o
- .debug_abbrev    0x000425        0x1b6 build/default/debug/mcc_generated_files/rtcc.o
- .debug_abbrev    0x0005db        0x22b build/default/debug/mcc_generated_files/uart1.o
- .debug_abbrev    0x000806        0x131 build/default/debug/mcc_generated_files/uart2.o
- .debug_abbrev    0x000937         0x67 build/default/debug/mcc_generated_files/delay.o
- .debug_abbrev    0x00099e        0x18f build/default/debug/mcc_generated_files/tmr1.o
- .debug_abbrev    0x000b2d        0x18f build/default/debug/mcc_generated_files/tmr2.o
- .debug_abbrev    0x000cbc         0xf0 build/default/debug/mcc_generated_files/ext_int.o
- .debug_abbrev    0x000dac        0x18f build/default/debug/mcc_generated_files/tmr3.o
- .debug_abbrev    0x000f3b        0x160 build/default/debug/main.o
- .debug_abbrev    0x00109b        0x1a4 build/default/debug/ESP8266_handler.o
- .debug_abbrev    0x00123f         0x74 build/default/debug/flashInterface.o
- .debug_abbrev    0x0012b3         0xa0 build/default/debug/uart_buffer.o
- .debug_abbrev    0x001353         0x71 build/default/debug/settings.o
- .debug_abbrev    0x0013c4        0x179 build/default/debug/stateManager.o
- .debug_abbrev    0x00153d        0x111 build/default/debug/interrupt_handlers.o
- .debug_abbrev    0x00164e         0x14 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_abbrev    0x000425        0x1a0 build/default/debug/mcc_generated_files/rtcc.o
+ .debug_abbrev    0x0005c5        0x22b build/default/debug/mcc_generated_files/uart1.o
+ .debug_abbrev    0x0007f0        0x131 build/default/debug/mcc_generated_files/uart2.o
+ .debug_abbrev    0x000921         0x67 build/default/debug/mcc_generated_files/delay.o
+ .debug_abbrev    0x000988        0x18f build/default/debug/mcc_generated_files/tmr1.o
+ .debug_abbrev    0x000b17        0x18f build/default/debug/mcc_generated_files/tmr2.o
+ .debug_abbrev    0x000ca6         0xf0 build/default/debug/mcc_generated_files/ext_int.o
+ .debug_abbrev    0x000d96        0x18f build/default/debug/mcc_generated_files/tmr3.o
+ .debug_abbrev    0x000f25        0x125 build/default/debug/main.o
+ .debug_abbrev    0x00104a        0x1cf build/default/debug/ESP8266_handler.o
+ .debug_abbrev    0x001219         0x74 build/default/debug/flashInterface.o
+ .debug_abbrev    0x00128d         0xa0 build/default/debug/uart_buffer.o
+ .debug_abbrev    0x00132d         0x71 build/default/debug/settings.o
+ .debug_abbrev    0x00139e        0x18e build/default/debug/stateManager.o
+ .debug_abbrev    0x00152c        0x120 build/default/debug/interrupt_handlers.o
+ .debug_abbrev    0x00164c         0x88 build/default/debug/PIR_sensor_handler.o
+ .debug_abbrev    0x0016d4         0x88 build/default/debug/LED_handler.o
+ .debug_abbrev    0x00175c         0x14 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
 
-.debug_line       0x000000       0x19ad
+.debug_line       0x000000       0x1bee
  *(.debug_line)
  .debug_line      0x000000         0xf7 build/default/debug/mcc_generated_files/memory/flash.o
  .debug_line      0x0000f7        0x10d build/default/debug/mcc_generated_files/system.o
@@ -899,16 +915,18 @@ __CONFIG1
  .debug_line      0x000d95        0x14d build/default/debug/mcc_generated_files/tmr2.o
  .debug_line      0x000ee2        0x148 build/default/debug/mcc_generated_files/ext_int.o
  .debug_line      0x00102a        0x14d build/default/debug/mcc_generated_files/tmr3.o
- .debug_line      0x001177        0x1c3 build/default/debug/main.o
- .debug_line      0x00133a        0x1fd build/default/debug/ESP8266_handler.o
- .debug_line      0x001537         0x97 build/default/debug/flashInterface.o
- .debug_line      0x0015ce         0x9c build/default/debug/uart_buffer.o
- .debug_line      0x00166a         0x39 build/default/debug/settings.o
- .debug_line      0x0016a3        0x1a0 build/default/debug/stateManager.o
- .debug_line      0x001843        0x130 build/default/debug/interrupt_handlers.o
- .debug_line      0x001973         0x3a /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ .debug_line      0x001177        0x16a build/default/debug/main.o
+ .debug_line      0x0012e1        0x27d build/default/debug/ESP8266_handler.o
+ .debug_line      0x00155e         0x97 build/default/debug/flashInterface.o
+ .debug_line      0x0015f5         0x9d build/default/debug/uart_buffer.o
+ .debug_line      0x001692         0x39 build/default/debug/settings.o
+ .debug_line      0x0016cb        0x1a8 build/default/debug/stateManager.o
+ .debug_line      0x001873        0x12f build/default/debug/interrupt_handlers.o
+ .debug_line      0x0019a2        0x101 build/default/debug/PIR_sensor_handler.o
+ .debug_line      0x001aa3        0x111 build/default/debug/LED_handler.o
+ .debug_line      0x001bb4         0x3a /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
 
-.debug_frame      0x000000       0x11be
+.debug_frame      0x000000       0x124e
  *(.debug_frame)
  .debug_frame     0x000000         0x2e build/default/debug/mcc_generated_files/system.o
  .debug_frame     0x00002e         0x2e build/default/debug/mcc_generated_files/clock.o
@@ -923,15 +941,17 @@ __CONFIG1
  .debug_frame     0x00096e        0x18a build/default/debug/mcc_generated_files/tmr2.o
  .debug_frame     0x000af8         0x86 build/default/debug/mcc_generated_files/ext_int.o
  .debug_frame     0x000b7e        0x18a build/default/debug/mcc_generated_files/tmr3.o
- .debug_frame     0x000d08        0x132 build/default/debug/main.o
- .debug_frame     0x000e3a         0xca build/default/debug/ESP8266_handler.o
- .debug_frame     0x000f04         0x96 build/default/debug/flashInterface.o
- .debug_frame     0x000f9a         0x48 build/default/debug/uart_buffer.o
- .debug_frame     0x000fe2         0x2e build/default/debug/settings.o
- .debug_frame     0x001010        0x14c build/default/debug/stateManager.o
- .debug_frame     0x00115c         0x62 build/default/debug/interrupt_handlers.o
+ .debug_frame     0x000d08         0x62 build/default/debug/main.o
+ .debug_frame     0x000d6a         0xfe build/default/debug/ESP8266_handler.o
+ .debug_frame     0x000e68         0x96 build/default/debug/flashInterface.o
+ .debug_frame     0x000efe         0x48 build/default/debug/uart_buffer.o
+ .debug_frame     0x000f46         0x2e build/default/debug/settings.o
+ .debug_frame     0x000f74        0x118 build/default/debug/stateManager.o
+ .debug_frame     0x00108c         0x62 build/default/debug/interrupt_handlers.o
+ .debug_frame     0x0010ee         0x62 build/default/debug/PIR_sensor_handler.o
+ .debug_frame     0x001150         0xfe build/default/debug/LED_handler.o
 
-.debug_str        0x000000        0x3ba
+.debug_str        0x000000        0x3be
  *(.debug_str)
  .debug_str       0x000000          0xc build/default/debug/mcc_generated_files/system.o
  .debug_str       0x00000c         0x27 build/default/debug/mcc_generated_files/clock.o
@@ -945,11 +965,13 @@ __CONFIG1
  .debug_str       0x000235         0x32 build/default/debug/mcc_generated_files/tmr2.o
  .debug_str       0x000267         0x2a build/default/debug/mcc_generated_files/ext_int.o
  .debug_str       0x000291         0x32 build/default/debug/mcc_generated_files/tmr3.o
- .debug_str       0x0002c3         0x51 build/default/debug/main.o
- .debug_str       0x000314         0x3e build/default/debug/ESP8266_handler.o
- .debug_str       0x000352         0x1e build/default/debug/uart_buffer.o
- .debug_str       0x000370         0x2b build/default/debug/stateManager.o
- .debug_str       0x00039b         0x1f build/default/debug/interrupt_handlers.o
+ .debug_str       0x0002c3         0x3f build/default/debug/main.o
+ .debug_str       0x000302         0x45 build/default/debug/ESP8266_handler.o
+ .debug_str       0x000347         0x1e build/default/debug/uart_buffer.o
+ .debug_str       0x000365         0x21 build/default/debug/stateManager.o
+ .debug_str       0x000386         0x12 build/default/debug/interrupt_handlers.o
+ .debug_str       0x000398         0x13 build/default/debug/PIR_sensor_handler.o
+ .debug_str       0x0003ab         0x13 build/default/debug/LED_handler.o
 
 .debug_loc
  *(.debug_loc)
@@ -958,7 +980,7 @@ __CONFIG1
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0xda7
+                  0x000000        0xe08
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000         0x28 build/default/debug/mcc_generated_files/system.o
@@ -987,24 +1009,28 @@ __CONFIG1
  .debug_pubnames
                   0x000852        0x156 build/default/debug/mcc_generated_files/tmr3.o
  .debug_pubnames
-                  0x0009a8         0xe5 build/default/debug/main.o
+                  0x0009a8         0x36 build/default/debug/main.o
  .debug_pubnames
-                  0x000a8d         0xa2 build/default/debug/ESP8266_handler.o
+                  0x0009de         0xd1 build/default/debug/ESP8266_handler.o
  .debug_pubnames
-                  0x000b2f         0x63 build/default/debug/flashInterface.o
+                  0x000aaf         0x63 build/default/debug/flashInterface.o
  .debug_pubnames
-                  0x000b92         0x67 build/default/debug/uart_buffer.o
+                  0x000b12         0x67 build/default/debug/uart_buffer.o
  .debug_pubnames
-                  0x000bf9         0x36 build/default/debug/settings.o
+                  0x000b79         0x36 build/default/debug/settings.o
  .debug_pubnames
-                  0x000c2f         0xf6 build/default/debug/stateManager.o
+                  0x000baf         0xe0 build/default/debug/stateManager.o
  .debug_pubnames
-                  0x000d25         0x82 build/default/debug/interrupt_handlers.o
+                  0x000c8f         0x82 build/default/debug/interrupt_handlers.o
+ .debug_pubnames
+                  0x000d11         0x3b build/default/debug/PIR_sensor_handler.o
+ .debug_pubnames
+                  0x000d4c         0xbc build/default/debug/LED_handler.o
 
 .debug_ranges
  *(.debug_ranges)
 
-.debug_aranges    0x000000        0x218
+.debug_aranges    0x000000        0x248
  *(.debug_aranges)
  .debug_aranges
                   0x000000         0x18 build/default/debug/mcc_generated_files/memory/flash.o
@@ -1049,7 +1075,11 @@ __CONFIG1
  .debug_aranges
                   0x0001e8         0x18 build/default/debug/interrupt_handlers.o
  .debug_aranges
-                  0x000200         0x18 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+                  0x000200         0x18 build/default/debug/PIR_sensor_handler.o
+ .debug_aranges
+                  0x000218         0x18 build/default/debug/LED_handler.o
+ .debug_aranges
+                  0x000230         0x18 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -2319,148 +2349,156 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000218        0xa40
+                  0x000248        0xae0
  .debug_pubtypes
-                  0x000218         0x42 build/default/debug/mcc_generated_files/system.o
+                  0x000248         0x42 build/default/debug/mcc_generated_files/system.o
  .debug_pubtypes
-                  0x00025a         0x4c build/default/debug/mcc_generated_files/clock.o
+                  0x00028a         0x4c build/default/debug/mcc_generated_files/clock.o
  .debug_pubtypes
-                  0x0002a6        0x10b build/default/debug/mcc_generated_files/interrupt_manager.o
+                  0x0002d6        0x10b build/default/debug/mcc_generated_files/interrupt_manager.o
  .debug_pubtypes
-                  0x0003b1         0xe1 build/default/debug/mcc_generated_files/pin_manager.o
+                  0x0003e1         0xe1 build/default/debug/mcc_generated_files/pin_manager.o
  .debug_pubtypes
-                  0x000492         0x4e build/default/debug/mcc_generated_files/traps.o
+                  0x0004c2         0x4e build/default/debug/mcc_generated_files/traps.o
  .debug_pubtypes
-                  0x0004e0         0xe5 build/default/debug/mcc_generated_files/rtcc.o
+                  0x000510         0xe5 build/default/debug/mcc_generated_files/rtcc.o
  .debug_pubtypes
-                  0x0005c5         0xdc build/default/debug/mcc_generated_files/uart1.o
+                  0x0005f5         0xdc build/default/debug/mcc_generated_files/uart1.o
  .debug_pubtypes
-                  0x0006a1         0x6b build/default/debug/mcc_generated_files/uart2.o
+                  0x0006d1         0x6b build/default/debug/mcc_generated_files/uart2.o
  .debug_pubtypes
-                  0x00070c         0x1f build/default/debug/mcc_generated_files/delay.o
+                  0x00073c         0x1f build/default/debug/mcc_generated_files/delay.o
  .debug_pubtypes
-                  0x00072b         0xa4 build/default/debug/mcc_generated_files/tmr1.o
+                  0x00075b         0xa4 build/default/debug/mcc_generated_files/tmr1.o
  .debug_pubtypes
-                  0x0007cf         0xa4 build/default/debug/mcc_generated_files/tmr2.o
+                  0x0007ff         0xa4 build/default/debug/mcc_generated_files/tmr2.o
  .debug_pubtypes
-                  0x000873         0xa9 build/default/debug/mcc_generated_files/ext_int.o
+                  0x0008a3         0xa9 build/default/debug/mcc_generated_files/ext_int.o
  .debug_pubtypes
-                  0x00091c         0xa4 build/default/debug/mcc_generated_files/tmr3.o
+                  0x00094c         0xa4 build/default/debug/mcc_generated_files/tmr3.o
  .debug_pubtypes
-                  0x0009c0         0xcf build/default/debug/main.o
+                  0x0009f0         0xc4 build/default/debug/main.o
  .debug_pubtypes
-                  0x000a8f         0x9c build/default/debug/ESP8266_handler.o
+                  0x000ab4         0xa6 build/default/debug/ESP8266_handler.o
  .debug_pubtypes
-                  0x000b2b         0x2c build/default/debug/flashInterface.o
+                  0x000b5a         0x2c build/default/debug/flashInterface.o
  .debug_pubtypes
-                  0x000b57         0x1e build/default/debug/uart_buffer.o
+                  0x000b86         0x1e build/default/debug/uart_buffer.o
  .debug_pubtypes
-                  0x000b75         0x12 build/default/debug/settings.o
+                  0x000ba4         0x12 build/default/debug/settings.o
  .debug_pubtypes
-                  0x000b87         0x85 build/default/debug/stateManager.o
+                  0x000bb6         0x70 build/default/debug/stateManager.o
  .debug_pubtypes
-                  0x000c0c         0x4c build/default/debug/interrupt_handlers.o
+                  0x000c26         0x4c build/default/debug/interrupt_handlers.o
+ .debug_pubtypes
+                  0x000c72         0x5b build/default/debug/PIR_sensor_handler.o
+ .debug_pubtypes
+                  0x000ccd         0x5b build/default/debug/LED_handler.o
 
 __c30_signature
-                  0x000c58        0x126
+                  0x000d28        0x132
  __c30_signature
-                  0x000c58          0x6 build/default/debug/mcc_generated_files/system.o
+                  0x000d28          0x6 build/default/debug/mcc_generated_files/system.o
  __c30_signature
-                  0x000c5e          0x6 build/default/debug/mcc_generated_files/clock.o
+                  0x000d2e          0x6 build/default/debug/mcc_generated_files/clock.o
  __c30_signature
-                  0x000c64          0x6 build/default/debug/mcc_generated_files/interrupt_manager.o
+                  0x000d34          0x6 build/default/debug/mcc_generated_files/interrupt_manager.o
  __c30_signature
-                  0x000c6a          0x6 build/default/debug/mcc_generated_files/pin_manager.o
+                  0x000d3a          0x6 build/default/debug/mcc_generated_files/pin_manager.o
  __c30_signature
-                  0x000c70          0x6 build/default/debug/mcc_generated_files/traps.o
+                  0x000d40          0x6 build/default/debug/mcc_generated_files/traps.o
  __c30_signature
-                  0x000c76          0x6 build/default/debug/mcc_generated_files/mcc.o
+                  0x000d46          0x6 build/default/debug/mcc_generated_files/mcc.o
  __c30_signature
-                  0x000c7c          0x6 build/default/debug/mcc_generated_files/rtcc.o
+                  0x000d4c          0x6 build/default/debug/mcc_generated_files/rtcc.o
  __c30_signature
-                  0x000c82          0x6 build/default/debug/mcc_generated_files/uart1.o
+                  0x000d52          0x6 build/default/debug/mcc_generated_files/uart1.o
  __c30_signature
-                  0x000c88          0x6 build/default/debug/mcc_generated_files/uart2.o
+                  0x000d58          0x6 build/default/debug/mcc_generated_files/uart2.o
  __c30_signature
-                  0x000c8e          0x6 build/default/debug/mcc_generated_files/delay.o
+                  0x000d5e          0x6 build/default/debug/mcc_generated_files/delay.o
  __c30_signature
-                  0x000c94          0x6 build/default/debug/mcc_generated_files/tmr1.o
+                  0x000d64          0x6 build/default/debug/mcc_generated_files/tmr1.o
  __c30_signature
-                  0x000c9a          0x6 build/default/debug/mcc_generated_files/tmr2.o
+                  0x000d6a          0x6 build/default/debug/mcc_generated_files/tmr2.o
  __c30_signature
-                  0x000ca0          0x6 build/default/debug/mcc_generated_files/ext_int.o
+                  0x000d70          0x6 build/default/debug/mcc_generated_files/ext_int.o
  __c30_signature
-                  0x000ca6          0x6 build/default/debug/mcc_generated_files/tmr3.o
+                  0x000d76          0x6 build/default/debug/mcc_generated_files/tmr3.o
  __c30_signature
-                  0x000cac          0x6 build/default/debug/main.o
+                  0x000d7c          0x6 build/default/debug/main.o
  __c30_signature
-                  0x000cb2          0x6 build/default/debug/ESP8266_handler.o
+                  0x000d82          0x6 build/default/debug/ESP8266_handler.o
  __c30_signature
-                  0x000cb8          0x6 build/default/debug/flashInterface.o
+                  0x000d88          0x6 build/default/debug/flashInterface.o
  __c30_signature
-                  0x000cbe          0x6 build/default/debug/uart_buffer.o
+                  0x000d8e          0x6 build/default/debug/uart_buffer.o
  __c30_signature
-                  0x000cc4          0x6 build/default/debug/settings.o
+                  0x000d94          0x6 build/default/debug/settings.o
  __c30_signature
-                  0x000cca          0x6 build/default/debug/stateManager.o
+                  0x000d9a          0x6 build/default/debug/stateManager.o
  __c30_signature
-                  0x000cd0          0x6 build/default/debug/interrupt_handlers.o
+                  0x000da0          0x6 build/default/debug/interrupt_handlers.o
  __c30_signature
-                  0x000cd6          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(crt0_extended24.o)
+                  0x000da6          0x6 build/default/debug/PIR_sensor_handler.o
  __c30_signature
-                  0x000cdc          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(data_init_24.o)
+                  0x000dac          0x6 build/default/debug/LED_handler.o
  __c30_signature
-                  0x000ce2          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
+                  0x000db2          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(crt0_extended24.o)
  __c30_signature
-                  0x000ce8          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memset.DA_o)
+                  0x000db8          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(data_init_24.o)
  __c30_signature
-                  0x000cee          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(puts.DA_o)
+                  0x000dbe          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
  __c30_signature
-                  0x000cf4          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(stdout.DA_o)
+                  0x000dc4          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memset.DA_o)
  __c30_signature
-                  0x000cfa          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strstr.DA_o)
+                  0x000dca          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(puts.DA_o)
  __c30_signature
-                  0x000d00          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strtok.DA_o)
+                  0x000dd0          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(stdout.DA_o)
  __c30_signature
-                  0x000d06          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__out.DA_o)
+                  0x000dd6          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strstr.DA_o)
  __c30_signature
-                  0x000d0c          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__stdio_close.DA_o)
+                  0x000ddc          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strtok.DA_o)
  __c30_signature
-                  0x000d12          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(fputs.DA_o)
+                  0x000de2          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__out.DA_o)
  __c30_signature
-                  0x000d18          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(fwrite.DA_o)
+                  0x000de8          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__stdio_close.DA_o)
  __c30_signature
-                  0x000d1e          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memchr.DA_o)
+                  0x000dee          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(fputs.DA_o)
  __c30_signature
-                  0x000d24          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memcmp.DA_o)
+                  0x000df4          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(fwrite.DA_o)
  __c30_signature
-                  0x000d2a          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memcpy.DA_o)
+                  0x000dfa          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memchr.DA_o)
  __c30_signature
-                  0x000d30          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(putc.DA_o)
+                  0x000e00          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memcmp.DA_o)
  __c30_signature
-                  0x000d36          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strcspn.DA_o)
+                  0x000e06          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(memcpy.DA_o)
  __c30_signature
-                  0x000d3c          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strlen.DA_o)
+                  0x000e0c          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(putc.DA_o)
  __c30_signature
-                  0x000d42          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strspn.DA_o)
+                  0x000e12          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strcspn.DA_o)
  __c30_signature
-                  0x000d48          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strchrnul.DA_o)
+                  0x000e18          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strlen.DA_o)
  __c30_signature
-                  0x000d4e          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(putchar.DA_o)
+                  0x000e1e          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strspn.DA_o)
  __c30_signature
-                  0x000d54          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__io_init_needed.DA_lo)
+                  0x000e24          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strchrnul.DA_o)
  __c30_signature
-                  0x000d5a          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strchr.DA_lo)
+                  0x000e2a          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(putchar.DA_o)
  __c30_signature
-                  0x000d60          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__init_stdio.DA_o)
+                  0x000e30          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__io_init_needed.DA_lo)
  __c30_signature
-                  0x000d66          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__io_file_needed.DA_o)
+                  0x000e36          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(strchr.DA_lo)
  __c30_signature
-                  0x000d6c          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+                  0x000e3c          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__init_stdio.DA_o)
  __c30_signature
-                  0x000d72          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(lseekda.Meo)
+                  0x000e42          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-elf.a(__io_file_needed.DA_o)
  __c30_signature
-                  0x000d78          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(closeda.Meo)
+                  0x000e48          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(mulsi3.DA_o)
+ __c30_signature
+                  0x000e4e          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(lseekda.Meo)
+ __c30_signature
+                  0x000e54          0x6 /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(closeda.Meo)
 
 __xc_reference_data
                   0x000de4          0xa
@@ -2605,177 +2643,183 @@ __xc_reference_data
  .ivt._T3Interrupt
                   0x000024          0x2 build/default/debug/mcc_generated_files/tmr3.o
 
-.const              0x8de4        0x244 load address 0x000de4  
- .const             0x8de4        0x244 build/default/debug/ESP8266_handler.o
+.const              0x8de4        0x252 load address 0x000de4  
+ .const             0x8de4        0x252 build/default/debug/ESP8266_handler.o
 
-.text             0x001028       0x10d8
- .text            0x001028        0x5e2 build/default/debug/ESP8266_handler.o
-                  0x001028                  _setRTCCtimeFromServer
-                  0x00130e                  _connectedToWiFi
-                  0x0013e2                  _hardResetWifiModule
-                  0x0013f4                  _initESP8266
-                  0x0013fe                  _alarmTriggered
-                  0x00142c                  _connectToSocket
-                  0x001552                  _registerDevice
- .text            0x00160a        0x366 build/default/debug/mcc_generated_files/uart1.o
-                  0x00160a                  _UART1_Initialize
-                  0x00164a                  _UART1_SetTxInterruptHandler
-                  0x001662                  _UART1_Transmit_CallBack
-                  0x001668                  _UART1_SetRxInterruptHandler
-                  0x001680                  _UART1_Receive_CallBack
-                  0x001686                  _UART1_Read
-                  0x0016b2                  _UART1_Write
-                  0x0016dc                  _UART1_IsRxReady
-                  0x0016f2                  _UART1_IsTxReady
-                  0x00172e                  _UART1_IsTxDone
-                  0x0017cc                  _UART1_ReadBuffer
-                  0x00181a                  _UART1_WriteBuffer
-                  0x001868                  _UART1_TransferStatusGet
-                  0x0018b4                  _UART1_Peek
-                  0x0018d8                  _UART1_ReceiveBufferIsEmpty
-                  0x0018e8                  _UART1_TransmitBufferIsFull
-                  0x0018f8                  _UART1_StatusGet
-                  0x001900                  _UART1_TransmitBufferSizeGet
-                  0x00192e                  _UART1_ReceiveBufferSizeGet
-                  0x00195c                  _UART1_Enable
-                  0x001966                  _UART1_Disable
- .text            0x001970        0x32e build/default/debug/main.o
-                  0x001970                  _main
-                  0x0019e6                  _init
-                  0x001a86                  _initInerrupts
-                  0x001ab2                  _not_connected_to_socket_state
-                  0x001ac6                  _alarmState
-                  0x001ade                  _activeState
-                  0x001af2                  _not_active_state
-                  0x001b00                  _no_wifi_state
-                  0x001b14                  _lost_connection_state
-                  0x001b24                  _enterIdleMode
-                  0x001b2c                  _handleIncommingMessage
- .text            0x001c9e        0x2f4 build/default/debug/mcc_generated_files/rtcc.o
-                  0x001c9e                  _RTCC_Initialize
-                  0x001cf6                  _RTCC_TimeReset
-                  0x001d0c                  _RTCC_TimeGet
-                  0x001db2                  _RTCC_TimeSet
-                  0x001e42                  _RTCC_BCDTimeGet
-                  0x001ed0                  _RTCC_BCDTimeSet
-                  0x001f8a                  _RTCC_CallBack
- .text            0x001f92        0x16e build/default/debug/stateManager.o
-                  0x001f92                  _initStatusLED
-                  0x001fa8                  _setState
-                  0x002034                  _alarmActive
-                  0x0020b8                  _getState
-                  0x0020c0                  _turnOnRedLED
-                  0x0020c8                  _turnOnYellowLED
-                  0x0020d0                  _turnOnGreenLED
-                  0x0020d8                  _turnOnBlueLED
-                  0x0020e0                  _turnOffRedLED
-                  0x0020e8                  _turnOffYellowLED
-                  0x0020f0                  _turnOffGreenLED
-                  0x0020f8                  _turnOffBlueLED
+.text             0x001036       0x1238
+ .text            0x001036        0x90e build/default/debug/ESP8266_handler.o
+                  0x001036                  _setRTCCtimeFromServer
+                  0x001328                  _connectedToWiFi
+                  0x001402                  _hardResetWifiModule
+                  0x001414                  _initESP8266
+                  0x00141e                  _alarmTriggered
+                  0x00144c                  _connectToSocket
+                  0x001572                  _registerDevice
+                  0x00162a                  _getSocketStatus
+                  0x0017d2                  _handleIncommingMessage
+ .text            0x001944        0x366 build/default/debug/mcc_generated_files/uart1.o
+                  0x001944                  _UART1_Initialize
+                  0x001984                  _UART1_SetTxInterruptHandler
+                  0x00199c                  _UART1_Transmit_CallBack
+                  0x0019a2                  _UART1_SetRxInterruptHandler
+                  0x0019ba                  _UART1_Receive_CallBack
+                  0x0019c0                  _UART1_Read
+                  0x0019ec                  _UART1_Write
+                  0x001a16                  _UART1_IsRxReady
+                  0x001a2c                  _UART1_IsTxReady
+                  0x001a68                  _UART1_IsTxDone
+                  0x001b06                  _UART1_ReadBuffer
+                  0x001b54                  _UART1_WriteBuffer
+                  0x001ba2                  _UART1_TransferStatusGet
+                  0x001bee                  _UART1_Peek
+                  0x001c12                  _UART1_ReceiveBufferIsEmpty
+                  0x001c22                  _UART1_TransmitBufferIsFull
+                  0x001c32                  _UART1_StatusGet
+                  0x001c3a                  _UART1_TransmitBufferSizeGet
+                  0x001c68                  _UART1_ReceiveBufferSizeGet
+                  0x001c96                  _UART1_Enable
+                  0x001ca0                  _UART1_Disable
+ .text            0x001caa        0x2f4 build/default/debug/mcc_generated_files/rtcc.o
+                  0x001caa                  _RTCC_Initialize
+                  0x001d02                  _RTCC_TimeReset
+                  0x001d18                  _RTCC_TimeGet
+                  0x001dbe                  _RTCC_TimeSet
+                  0x001e4e                  _RTCC_BCDTimeGet
+                  0x001edc                  _RTCC_BCDTimeSet
+                  0x001f96                  _RTCC_CallBack
+ .text            0x001f9e        0x188 build/default/debug/stateManager.o
+                  0x001f9e                  _setState
+                  0x00202a                  _alarmActive
+                  0x0020a8                  _getState
+                  0x0020b0                  _not_connected_to_socket_state
+                  0x0020c4                  _alarmState
+                  0x0020dc                  _activeState
+                  0x0020f0                  _not_active_state
+                  0x0020fa                  _no_wifi_state
+                  0x00210e                  _lost_connection_state
+                  0x00211e                  _enterIdleMode
+ .text            0x002126        0x148 build/default/debug/main.o
+                  0x002126                  _main
+                  0x00219e                  _init
+                  0x002242                  _initInerrupts
 
-.NVM_flash        0x002100        0x12e
- .NVM_flash       0x002100        0x12e build/default/debug/mcc_generated_files/memory/flash.o
-                  0x002102                  _FLASH_Unlock
-                  0x00210c                  _FLASH_Lock
-                  0x002134                  _FLASH_ReadWord24
-                  0x002140                  _FLASH_ReadWord16
-                  0x00214c                  _FLASH_ErasePage
-                  0x002172                  _FLASH_WriteWord24
-                  0x002198                  _FLASH_WriteWord16
-                  0x0021c0                  _FLASH_WriteRow24
-                  0x0021ee                  _FLASH_WriteRow16
-                  0x00221e                  _FLASH_GetErasePageOffset
-                  0x002224                  _FLASH_GetErasePageAddress
+.NVM_flash        0x00226e        0x12e
+ .NVM_flash       0x00226e        0x12e build/default/debug/mcc_generated_files/memory/flash.o
+                  0x002270                  _FLASH_Unlock
+                  0x00227a                  _FLASH_Lock
+                  0x0022a2                  _FLASH_ReadWord24
+                  0x0022ae                  _FLASH_ReadWord16
+                  0x0022ba                  _FLASH_ErasePage
+                  0x0022e0                  _FLASH_WriteWord24
+                  0x002306                  _FLASH_WriteWord16
+                  0x00232e                  _FLASH_WriteRow24
+                  0x00235c                  _FLASH_WriteRow16
+                  0x00238c                  _FLASH_GetErasePageOffset
+                  0x002392                  _FLASH_GetErasePageAddress
 
-.text             0x00222e        0x39e
- .text            0x00222e         0xc4 build/default/debug/mcc_generated_files/uart2.o
-                  0x00222e                  _UART2_Initialize
-                  0x00224e                  _UART2_Read
-                  0x00226c                  _UART2_Write
-                  0x002284                  _UART2_IsRxReady
-                  0x00229c                  _UART2_IsTxReady
-                  0x0022be                  _UART2_IsTxDone
-                  0x0022d6                  _UART2_StatusGet
-                  0x0022de                  _UART2_Enable
-                  0x0022e8                  _UART2_Disable
- .text            0x0022f2         0xb8 build/default/debug/mcc_generated_files/tmr1.o
-                  0x0022f2                  _TMR1_Initialize
-                  0x002316                  _TMR1_Period16BitSet
-                  0x002328                  _TMR1_Period16BitGet
-                  0x002330                  _TMR1_Counter16BitSet
-                  0x002342                  _TMR1_Counter16BitGet
-                  0x00234a                  _TMR1_CallBack
-                  0x002350                  _TMR1_SetInterruptHandler
-                  0x002360                  _TMR1_Start
-                  0x002370                  _TMR1_Stop
-                  0x00237a                  _TMR1_GetElapsedThenClear
-                  0x002392                  _TMR1_SoftwareCounterGet
-                  0x00239e                  _TMR1_SoftwareCounterClear
- .text            0x0023aa         0xb8 build/default/debug/mcc_generated_files/tmr2.o
-                  0x0023aa                  _TMR2_Initialize
-                  0x0023ce                  _TMR2_Period16BitSet
-                  0x0023e0                  _TMR2_Period16BitGet
-                  0x0023e8                  _TMR2_Counter16BitSet
-                  0x0023fa                  _TMR2_Counter16BitGet
-                  0x002402                  _TMR2_CallBack
-                  0x002408                  _TMR2_SetInterruptHandler
-                  0x002418                  _TMR2_Start
-                  0x002428                  _TMR2_Stop
-                  0x002432                  _TMR2_GetElapsedThenClear
-                  0x00244a                  _TMR2_SoftwareCounterGet
-                  0x002456                  _TMR2_SoftwareCounterClear
- .text            0x002462         0xb8 build/default/debug/mcc_generated_files/tmr3.o
-                  0x002462                  _TMR3_Initialize
-                  0x002486                  _TMR3_Period16BitSet
-                  0x002498                  _TMR3_Period16BitGet
-                  0x0024a0                  _TMR3_Counter16BitSet
-                  0x0024b2                  _TMR3_Counter16BitGet
-                  0x0024ba                  _TMR3_CallBack
-                  0x0024c0                  _TMR3_SetInterruptHandler
-                  0x0024d0                  _TMR3_Start
-                  0x0024e0                  _TMR3_Stop
-                  0x0024ea                  _TMR3_GetElapsedThenClear
-                  0x002502                  _TMR3_SoftwareCounterGet
-                  0x00250e                  _TMR3_SoftwareCounterClear
- .text            0x00251a         0xb2 build/default/debug/interrupt_handlers.o
-                  0x00251a                  _RTCC_InterrurpHandler
-                  0x00256c                  _timer1_interrupt_handler
-                  0x0025c6                  _timer3_interrupt_handler
+.text             0x00239c        0x396
+ .text            0x00239c         0xc4 build/default/debug/mcc_generated_files/uart2.o
+                  0x00239c                  _UART2_Initialize
+                  0x0023bc                  _UART2_Read
+                  0x0023da                  _UART2_Write
+                  0x0023f2                  _UART2_IsRxReady
+                  0x00240a                  _UART2_IsTxReady
+                  0x00242c                  _UART2_IsTxDone
+                  0x002444                  _UART2_StatusGet
+                  0x00244c                  _UART2_Enable
+                  0x002456                  _UART2_Disable
+ .text            0x002460         0xb8 build/default/debug/mcc_generated_files/tmr1.o
+                  0x002460                  _TMR1_Initialize
+                  0x002484                  _TMR1_Period16BitSet
+                  0x002496                  _TMR1_Period16BitGet
+                  0x00249e                  _TMR1_Counter16BitSet
+                  0x0024b0                  _TMR1_Counter16BitGet
+                  0x0024b8                  _TMR1_CallBack
+                  0x0024be                  _TMR1_SetInterruptHandler
+                  0x0024ce                  _TMR1_Start
+                  0x0024de                  _TMR1_Stop
+                  0x0024e8                  _TMR1_GetElapsedThenClear
+                  0x002500                  _TMR1_SoftwareCounterGet
+                  0x00250c                  _TMR1_SoftwareCounterClear
+ .text            0x002518         0xb8 build/default/debug/mcc_generated_files/tmr2.o
+                  0x002518                  _TMR2_Initialize
+                  0x00253c                  _TMR2_Period16BitSet
+                  0x00254e                  _TMR2_Period16BitGet
+                  0x002556                  _TMR2_Counter16BitSet
+                  0x002568                  _TMR2_Counter16BitGet
+                  0x002570                  _TMR2_CallBack
+                  0x002576                  _TMR2_SetInterruptHandler
+                  0x002586                  _TMR2_Start
+                  0x002596                  _TMR2_Stop
+                  0x0025a0                  _TMR2_GetElapsedThenClear
+                  0x0025b8                  _TMR2_SoftwareCounterGet
+                  0x0025c4                  _TMR2_SoftwareCounterClear
+ .text            0x0025d0         0xb8 build/default/debug/mcc_generated_files/tmr3.o
+                  0x0025d0                  _TMR3_Initialize
+                  0x0025f4                  _TMR3_Period16BitSet
+                  0x002606                  _TMR3_Period16BitGet
+                  0x00260e                  _TMR3_Counter16BitSet
+                  0x002620                  _TMR3_Counter16BitGet
+                  0x002628                  _TMR3_CallBack
+                  0x00262e                  _TMR3_SetInterruptHandler
+                  0x00263e                  _TMR3_Start
+                  0x00264e                  _TMR3_Stop
+                  0x002658                  _TMR3_GetElapsedThenClear
+                  0x002670                  _TMR3_SoftwareCounterGet
+                  0x00267c                  _TMR3_SoftwareCounterClear
+ .text            0x002688         0xaa build/default/debug/interrupt_handlers.o
+                  0x002688                  _RTCC_InterrurpHandler
+                  0x0026da                  _timer1_interrupt_handler
+                  0x002724                  _timer3_interrupt_handler
 
-.dinit            0x0025cc         0xa6
- .dinit           0x0025cc         0xa6 data_init
+.dinit            0x002732         0xa6
+ .dinit           0x002732         0xa6 data_init
 
-.text             0x002672        0x250
- .text            0x002672         0x86 build/default/debug/mcc_generated_files/pin_manager.o
-                  0x002672                  _PIN_MANAGER_Initialize
- .text            0x0026f8         0x84 build/default/debug/flashInterface.o
-                  0x0026f8                  _deviceHasId
-                  0x00270e                  _getUserId
-                  0x00271a                  _getStartTime
-                  0x002726                  _getEndTime
-                  0x002732                  _setAlarmPeriod
- .text            0x00277c         0x62 build/default/debug/mcc_generated_files/interrupt_manager.o
-                  0x00277c                  _INTERRUPT_Initialize
- .text            0x0027de         0x56 build/default/debug/mcc_generated_files/delay.o
-                  0x0027de                  _DELAY_milliseconds
-                  0x002800                  _DELAY_microseconds
- .text            0x002834         0x52 build/default/debug/mcc_generated_files/clock.o
-                  0x002834                  _CLOCK_Initialize
- .text            0x002886         0x3c build/default/debug/uart_buffer.o
-                  0x002886                  _uart_interrupt_handler
-                  0x0028ac                  _clearUartBuffer
+.text             0x0027d8        0x2a6
+ .text            0x0027d8         0x86 build/default/debug/mcc_generated_files/pin_manager.o
+                  0x0027d8                  _PIN_MANAGER_Initialize
+ .text            0x00285e         0x84 build/default/debug/flashInterface.o
+                  0x00285e                  _deviceHasId
+                  0x002874                  _getUserId
+                  0x002880                  _getStartTime
+                  0x00288c                  _getEndTime
+                  0x002898                  _setAlarmPeriod
+ .text            0x0028e2         0x62 build/default/debug/mcc_generated_files/interrupt_manager.o
+                  0x0028e2                  _INTERRUPT_Initialize
+ .text            0x002944         0x56 build/default/debug/mcc_generated_files/delay.o
+                  0x002944                  _DELAY_milliseconds
+                  0x002966                  _DELAY_microseconds
+ .text            0x00299a         0x56 build/default/debug/LED_handler.o
+                  0x00299a                  _turnOnRedLED
+                  0x0029a2                  _turnOnYellowLED
+                  0x0029aa                  _turnOnGreenLED
+                  0x0029b2                  _turnOnBlueLED
+                  0x0029ba                  _turnOffRedLED
+                  0x0029c2                  _turnOffYellowLED
+                  0x0029ca                  _turnOffGreenLED
+                  0x0029d2                  _turnOffBlueLED
+                  0x0029da                  _initStatusLED
+ .text            0x0029f0         0x52 build/default/debug/mcc_generated_files/clock.o
+                  0x0029f0                  _CLOCK_Initialize
+ .text            0x002a42         0x3c build/default/debug/uart_buffer.o
+                  0x002a42                  _uart_interrupt_handler
+                  0x002a68                  _clearUartBuffer
 
-.init.delay32     0x0028c2         0x1c
- .init.delay32    0x0028c2         0x1c /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
-                  0x0028c2                  ___delay32
+.init.delay32     0x002a7e         0x1c
+ .init.delay32    0x002a7e         0x1c /opt/microchip/xc16/v2.00/bin/bin/../../lib/libc99-pic30-elf.a(delay32da.Meo)
+                  0x002a7e                  ___delay32
 
-.text             0x0028de         0x56
- .text            0x0028de         0x1a build/default/debug/mcc_generated_files/system.o
-                  0x0028de                  _SYSTEM_Initialize
- .text            0x0028f8         0x1a build/default/debug/mcc_generated_files/traps.o
-                  0x0028f8                  _TRAPS_halt_on_error
- .text            0x002912         0x1a build/default/debug/mcc_generated_files/ext_int.o
-                  0x002912                  _EX_INT1_CallBack
-                  0x002920                  _EXT_INT_Initialize
- .text            0x00292c          0x8 build/default/debug/settings.o
-                  0x00292c                  _getStoredAlarmPeriod
+.text             0x002a9a         0x6e
+ .text            0x002a9a         0x1a build/default/debug/mcc_generated_files/system.o
+                  0x002a9a                  _SYSTEM_Initialize
+ .text            0x002ab4         0x1a build/default/debug/mcc_generated_files/traps.o
+                  0x002ab4                  _TRAPS_halt_on_error
+ .text            0x002ace         0x1a build/default/debug/mcc_generated_files/ext_int.o
+                  0x002ace                  _EX_INT1_CallBack
+                  0x002adc                  _EXT_INT_Initialize
+ .text            0x002ae8         0x18 build/default/debug/PIR_sensor_handler.o
+                  0x002ae8                  _initPIR
+                  0x002af0                  _turnPIROn
+                  0x002af8                  _turnPIROff
+ .text            0x002b00          0x8 build/default/debug/settings.o
+                  0x002b00                  _getStoredAlarmPeriod

@@ -1,5 +1,5 @@
 #include <xc.h>
-#include "uart_buffer.h"
+#include "uart_handler.h"
 #include "mcc_generated_files/uart1.h"
 #include <stdio.h>
 #include <string.h>

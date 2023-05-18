@@ -9,32 +9,22 @@
 #include <xc.h>
 #include "stateManager.h"
 #include "flashInterface.h"
+#include "LED_handler.h"
+#include "mcc_generated_files/interrupt_manager.h"
+#include "mcc_generated_files/tmr1.h"
+#include "mcc_generated_files/tmr2.h"
+#include "mcc_generated_files/tmr3.h"
+#include "interrupt_handlers.h"
+#include "PIR_sensor_handler.h"
+#include "mcc_generated_files/ext_int.h"
+#include "mcc_generated_files/delay.h"
 
-void turnOnRedLED();
-void turnOnYellowLED();
-void turnOnGreenLED();
-void turnOnBlueLED();
-void turnOffRedLED();
-void turnOffYellowLED();
-void turnOffGreenLED();
-void turnOffBlueLED();
+void enterIdleMode();
+
 
 int globalState;
 
-void initStatusLED(){
-    
-    
-    _TRISB13 = 0;
-    _TRISB12 = 0;
-    _TRISB11 = 0;
-    _TRISB10 = 0;
-    
-    turnOffRedLED();
-    turnOffYellowLED();
-    turnOffGreenLED();
-    turnOffBlueLED();
-    
-}
+// Help function
 
 void setState(int state){
   
@@ -100,7 +90,6 @@ bool alarmActive(){
     int start = getStartTime();
     int end = getEndTime();
     int currentTimeConverted = 100*currentTime.tm_hour + currentTime.tm_min;
-    int k = 0;
     if(start > end){
         if( (currentTimeConverted >= start && currentTimeConverted >= end) || (currentTimeConverted <= start && currentTimeConverted <= end) ){
             return true;
@@ -123,28 +112,69 @@ int getState(){
     return globalState;
 }
 
-void turnOnRedLED(){
-    _LATB11 = 1;
+// State functions
+
+void not_connected_to_socket_state(){
+    TMR1_Start();
+    while(getState() == NOT_CONNECTED_TO_SOCKET){
+        enterIdleMode();
+    }
+    TMR1_Stop();
+   
 }
-void turnOnYellowLED(){
-    _LATB12 = 1;
+
+void alarmState(){    
+    turnOnRedLED();
+    alarmTriggered();
+    //setAlarm();
+    //INTERRUPT_GlobalDisable();
+    DELAY_milliseconds(10000);  //Change to some clear condition from app.
+    //enterIdleMode();
+    turnOffRedLED();
+    State state = ACTIVE;
+    setState(state);
 }
-void turnOnGreenLED(){
-    _LATB13 = 1;
+
+void activeState(){
+    turnOnGreenLED();
+    turnPIROn();
+    //TMR3_Start();
+    EX_INT1_InterruptEnable();
+        enterIdleMode();
+        handleIncommingMessage();  
+    EX_INT1_InterruptDisable();
+    //TMR3_Stop();
+    turnPIROff();
+    return;
 }
-void turnOnBlueLED(){
-    _LATB10 = 1;
+
+void not_active_state(){
+        //TMR3_Start();
+        enterIdleMode();
+        handleIncommingMessage();
+        //TMR3_Stop();        
 }
-void turnOffRedLED(){
-    _LATB11 = 0;
+
+void no_wifi_state(){
+    TMR1_Start();
+    while(getState() == NO_WIFI){
+        enterIdleMode();
+    }
+    TMR1_Stop();
+    return;
 }
-void turnOffYellowLED(){
-    _LATB12 = 0;
+
+void lost_connection_state(){
+    //TMR2_Start();
+    while(getState() == LOST_CONNECTION){
+        enterIdleMode();
+    }
+    //TMR2_Stop();
 }
-void turnOffGreenLED(){
-    _LATB13 = 0;
-}
-void turnOffBlueLED(){
-    _LATB10 = 0;
+
+void enterIdleMode(){
+    __asm__(
+        "PWRSAV #1\n"   //1=idle ; 0=sleep
+    );
 }
 

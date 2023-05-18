@@ -49,6 +49,7 @@
 */
 
 #include "rtcc.h"
+#include "../interrupt_handlers.h"
 
 /**
 * Section: Function Prototype

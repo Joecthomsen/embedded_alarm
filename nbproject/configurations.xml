@@ -24,15 +24,17 @@
         <itemPath>mcc_generated_files/tmr2.h</itemPath>
         <itemPath>mcc_generated_files/ext_int.h</itemPath>
         <itemPath>mcc_generated_files/tmr3.h</itemPath>
+        <itemPath>mcc_generated_files/uart3.h</itemPath>
       </logicalFolder>
-      <itemPath>PIR_Sensor.h</itemPath>
       <itemPath>ESP8266_handler.h</itemPath>
       <itemPath>definitions.h</itemPath>
       <itemPath>flashInterface.h</itemPath>
-      <itemPath>uart_buffer.h</itemPath>
-      <itemPath>timer_interrupt_handlers.h</itemPath>
       <itemPath>settings.h</itemPath>
       <itemPath>stateManager.h</itemPath>
+      <itemPath>PIR_sensor_handler.h</itemPath>
+      <itemPath>interrupt_handlers.h</itemPath>
+      <itemPath>LED_handler.h</itemPath>
+      <itemPath>uart_handler.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -64,6 +66,7 @@
         <itemPath>mcc_generated_files/tmr2.c</itemPath>
         <itemPath>mcc_generated_files/ext_int.c</itemPath>
         <itemPath>mcc_generated_files/tmr3.c</itemPath>
+        <itemPath>mcc_generated_files/uart3.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>ESP8266_handler.c</itemPath>
@@ -72,6 +75,8 @@
       <itemPath>settings.c</itemPath>
       <itemPath>stateManager.c</itemPath>
       <itemPath>interrupt_handlers.c</itemPath>
+      <itemPath>PIR_sensor_handler.c</itemPath>
+      <itemPath>LED_handler.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -124,6 +129,7 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <C30>
+        <property key="appendMe" value=""/>
         <property key="cast-align" value="false"/>
         <property key="code-model" value="default"/>
         <property key="const-model" value="default"/>
@@ -141,7 +147,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="expand-pragma-config" value="false"/>
         <property key="extra-include-directories" value=""/>
-        <property key="isolate-each-function" value="false"/>
+        <property key="isolate-each-function" value="true"/>
         <property key="keep-inline" value="false"/>
         <property key="oXC16gcc-align-arr" value="false"/>
         <property key="oXC16gcc-cnsts-mauxflash" value="false"/>
@@ -193,6 +199,7 @@
       </C30-CO>
       <C30-LD>
         <property key="additional-options-use-response-files" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="boot-eeprom" value="no_eeprom"/>
         <property key="boot-flash" value="no_flash"/>
         <property key="boot-ram" value="no_ram"/>
@@ -226,7 +233,7 @@
         <property key="oXC16ld-nostdlib" value="false"/>
         <property key="oXC16ld-stackguard" value="16"/>
         <property key="preprocessor-macros" value=""/>
-        <property key="remove-unused-sections" value="false"/>
+        <property key="remove-unused-sections" value="true"/>
         <property key="report-memory-usage" value="true"/>
         <property key="secure-eeprom" value="no_eeprom"/>
         <property key="secure-flash" value="no_flash"/>

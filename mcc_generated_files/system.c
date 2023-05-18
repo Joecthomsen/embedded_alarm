@@ -88,17 +88,18 @@
 #include "pin_manager.h"
 #include "clock.h"
 #include "system.h"
-#include "interrupt_manager.h"
-#include "traps.h"
+#include "tmr2.h"
+#include "uart2.h"
+#include "tmr1.h"
+#include "uart1.h"
+#include "tmr3.h"
+#include "memory/flash.h"
 #include "ext_int.h"
 #include "rtcc.h"
-#include "uart2.h"
-#include "uart1.h"
-#include "memory/flash.h"
-#include "tmr1.h"
-#include "tmr2.h"
-#include "tmr3.h"
 #include "delay.h"
+#include "uart3.h"
+#include "interrupt_manager.h"
+#include "traps.h"
 
 void SYSTEM_Initialize(void)
 {
@@ -107,11 +108,12 @@ void SYSTEM_Initialize(void)
     CLOCK_Initialize();
     UART2_Initialize();
     UART1_Initialize();
+    UART3_Initialize();
     TMR3_Initialize();
     TMR2_Initialize();
+    TMR1_Initialize();
     EXT_INT_Initialize();
     RTCC_Initialize();
-    TMR1_Initialize();
 }
 
 /**

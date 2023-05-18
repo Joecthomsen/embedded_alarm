@@ -17,7 +17,7 @@
 #include "mcc_generated_files/uart2.h"
 #include <time.h>
 #include "mcc_generated_files/rtcc.h"
-#include "uart_buffer.h"
+#include "uart_handler.h"
 #include "stateManager.h"
 #include "flashInterface.h"
 #include "settings.h"
@@ -151,30 +151,15 @@ void setRTCCtimeFromServer(){
     time.tm_yday=1;
     RTCC_TimeSet(&time);    
     
-//    struct tm getTimeStruct;
-//    RTCC_TimeGet(&getTimeStruct);
-//    int k = 0;
+    struct tm getTimeStruct;
+    RTCC_TimeGet(&getTimeStruct);
+    int k = 0;
     clearUartBuffer();
     
 }
 
 bool connectedToWiFi(){
     
-//    char plus[] = "+++";
-//    char cipMode0[] = "AT+CIPMODE=0\r\n";
-//    char cipMode1[] = "AT+CIPMODE=1\r\n";
-//    char cipSend[] = "AT+CIPSEND\r\n";
-//    
-//    if(getState() == CONNECTED_TO_SOCKET || getState() == ACTIVE || getState() == NOT_ACTIVE){     
-//        for(size_t i = 0 ; i < sizeof(plus) ; i++){
-//            UART1_Write(plus[i]);
-//        }
-//        
-//        for(size_t i = 0 ; i < sizeof(cipMode0) ; i++){
-//            UART1_Write(cipMode0[i]);
-//        }                    
-//    }
-//    DELAY_milliseconds(50); 
     clearUartBuffer();
     uint8_t AT_status_cmd[] = "AT+CIPSTATUS\r\n";
     if(UART1_IsTxReady()){
@@ -204,7 +189,8 @@ bool connectedToWiFi(){
 //                    for(size_t i = 0 ; i < sizeof(cipSend) ; i++){
 //                        UART1_Write(cipSend[i]);
 //                    }                 
-//                }           
+//                }     
+            int i = 0;
             return true;
         }
         else{
@@ -230,13 +216,11 @@ void initESP8266(){
 bool alarmTriggered(){
     
     char alarmRequest[] = "{\"request\":\"alarm\",\"owner\":\"4321\"}\r\n";
-    char response[512];// = "\0";
-    
     for(size_t i = 0 ; i < sizeof(alarmRequest) ; i++){
         UART1_Write(alarmRequest[i]);
     }
-    
     int k = 0;
+    
     return true;
     
     // snprintf(request, sizeof(request), "POST /alarm/%d HTTP/1.0\r\nHost: 65.109.143.74\r\n\r\n\r\n", getUserId());
@@ -326,4 +310,90 @@ bool registerDevice(){
     }
     clearUartBuffer();
     return true;
+}
+
+bool getSocketStatus(){
+    
+    char plus[] = "+++";
+    char cipMode0[] = "AT+CIPMODE=0\r\n";
+    char cipMode1[] = "AT+CIPMODE=1\r\n";
+    char cipSend[] = "AT+CIPSEND\r\n";
+    char cipStatus[] = "AT+CIPSTATUS\r\n";
+    
+    int state = getState();
+    
+    if(state == CONNECTED_TO_SOCKET || state == ACTIVE || state== NOT_ACTIVE){     
+        for(size_t i = 0 ; i < sizeof(plus) - 1 ; i++){
+            UART1_Write(plus[i]);
+        }
+        DELAY_milliseconds(500); 
+        for(size_t i = 0 ; i < sizeof(cipMode0) ; i++){
+            UART1_Write(cipMode0[i]);
+        }
+        DELAY_milliseconds(50); 
+        for(size_t i = 0 ; i < sizeof(cipStatus) ; i++){
+            UART1_Write(cipStatus[i]);
+        }  
+    }
+    char response[256];  
+    DELAY_milliseconds(50);   //Wait for wifi-module to respond
+    
+    for(int i = 0 ; i < sizeof(response); i++){
+        response[i] = *(uart_buffer+i);
+    }
+    int k = 0;
+    char * token = strtok(response, ":");    //Make a pointer to the first value ":" buffer and tokenize it. 
+    token = strtok(NULL, ":");
+    
+    
+    while(token != NULL){
+        if(*(token) == '2' || *(token) == '1'){
+            clearUartBuffer();
+            for(size_t i = 0 ; i < sizeof(cipMode1) ; i++){
+                UART1_Write(cipMode1[i]);
+            }
+            DELAY_milliseconds(25);
+            for(size_t i = 0 ; i < sizeof(cipSend) ; i++){
+                UART1_Write(cipSend[i]);
+            }
+            return true;
+        }
+        else{
+            token = strtok(NULL, ":");}
+    }
+    int test = 0;
+    clearUartBuffer();
+    return false;;
+}
+
+void handleIncommingMessage(){
+        char message[256];
+        DELAY_milliseconds(1000);   //Give time for the UART message to arrive
+        for(size_t i = 0 ; i < sizeof(message) ; i++){
+            message[i] = uart_buffer[i];
+        }
+        char *ptr_to_search_result;
+        char needle[] = "setPeriod";
+        ptr_to_search_result = strstr(uart_buffer, needle);
+        if(ptr_to_search_result != NULL){
+            //get new startTime
+            char needleStart[] = "startTime";    //12 fremme er tiden
+            char needleEnd[] = "endTime";    //10 fremme er tiden
+            ptr_to_search_result = strstr(message, needleStart);
+            int startTime = (*(ptr_to_search_result+12)-48)*1000 + (*(ptr_to_search_result+13)-48)*100 + (*(ptr_to_search_result + 14)-48)*10 + (*(ptr_to_search_result+15)-48);
+            //get new endTime
+            ptr_to_search_result = strstr(message, needleEnd);
+            int endTime = (*(ptr_to_search_result+10)-48)*1000 + (*(ptr_to_search_result+11)-48)*100 + (*(ptr_to_search_result + 12)-48)*10 + (*(ptr_to_search_result+13)-48);
+            setAlarmPeriod(startTime, endTime);
+            if(alarmActive()){
+                State state = ACTIVE;
+                setState(state);
+            }
+            else{
+                State state = NOT_ACTIVE;
+                setState(state);
+            }
+            memset(message, '\0', sizeof(message));
+            clearUartBuffer();
+        }
 }

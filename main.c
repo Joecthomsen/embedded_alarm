@@ -1,3 +1,4 @@
+ 
 
 #include "mcc_generated_files/system.h"
 #include <stdio.h>
@@ -7,15 +8,17 @@
 #include "stateManager.h"
 #include "ESP8266_handler.h"
 #include "mcc_generated_files/memory/flash.h"
-#include "uart_buffer.h"
+#include "uart_handler.h"
 #include "flashInterface.h"
 #include "mcc_generated_files/tmr1.h"
 #include "mcc_generated_files/tmr2.h"
 #include "mcc_generated_files/tmr3.h"
-#include "timer_interrupt_handlers.h"
+#include "interrupt_handlers.h"
+#include "LED_handler.h"
 #include "mcc_generated_files/ext_int.h"
 #include "mcc_generated_files/interrupt_manager.h"
 #include "mcc_generated_files/delay.h"
+#include "PIR_sensor_handler.h"
 #include <string.h>
 
 
@@ -25,14 +28,6 @@ void init();
 void initInerrupts();
 void enterIdleMode();
 void handleIncommingMessage();
-
-//States
-void alarmState();
-void no_wifi_state();
-void activeState();
-void lost_connection_state();
-void not_active_state();
-void not_connected_to_socket_state();
 
 int main(void)
 {   
@@ -59,6 +54,7 @@ int main(void)
         switch (state){
             case ALARM: 
                 alarmState();
+                break;
             case ACTIVE:
                 activeState();
                 break;
@@ -135,6 +131,8 @@ void init(){
         setState(currentState);
         TMR3_Start();
     }
+    initPIR();
+    turnPIROff();
     T2CONbits.TSIDL = 0;    //continue timer operation during idle mode. 
     DSCONbits.DSEN = 0; // Set the power saving mode to "Normal Sleep on execution of PWRSAV #0"
     //turnOffYellowLED();
@@ -160,98 +158,3 @@ void initInerrupts(){
     TMR3_SetInterruptHandler(timer3_active_state_handler_ptr);
     TMR3_Stop();
 }
-
-void not_connected_to_socket_state(){
-    TMR1_Start();
-    while(getState() == NOT_CONNECTED_TO_SOCKET){
-        enterIdleMode();
-    }
-    TMR1_Stop();
-   
-}
-
-void alarmState(){    
-    turnOnRedLED();
-    alarmTriggered();
-    //setAlarm();
-    //INTERRUPT_GlobalDisable();
-    DELAY_milliseconds(10000);  //Change to some clear condition from app.
-    //enterIdleMode();
-    turnOffRedLED();
-    State state = ACTIVE;
-    setState(state);
-}
-
-void activeState(){
-    turnOnGreenLED();
-    TMR3_Start();
-    EX_INT1_InterruptEnable();
-        enterIdleMode();
-        handleIncommingMessage();  
-    EX_INT1_InterruptDisable();
-    TMR3_Stop();
-    return;
-}
-
-void not_active_state(){
-        TMR3_Start();
-        enterIdleMode();
-        handleIncommingMessage();
-        TMR3_Stop();        
-}
-
-void no_wifi_state(){
-    TMR1_Start();
-    while(getState() == NO_WIFI){
-        enterIdleMode();
-    }
-    TMR1_Stop();
-    return;
-}
-
-void lost_connection_state(){
-    //TMR2_Start();
-    while(getState() == LOST_CONNECTION){
-        enterIdleMode();
-    }
-    //TMR2_Stop();
-}
-
-void enterIdleMode(){
-    __asm__(
-        "PWRSAV #1\n"   //1=idle ; 0=sleep
-    );
-}
-
-void handleIncommingMessage(){
-        char message[256];
-        DELAY_milliseconds(1000);   //Give time for the UART message to arrive
-        for(size_t i = 0 ; i < sizeof(message) ; i++){
-            message[i] = uart_buffer[i];
-        }
-        char *ptr_to_search_result;
-        char needle[] = "setPeriod";
-        ptr_to_search_result = strstr(uart_buffer, needle);
-        if(ptr_to_search_result != NULL){
-            //get new startTime
-            char needleStart[] = "startTime";    //12 fremme er tiden
-            char needleEnd[] = "endTime";    //10 fremme er tiden
-            ptr_to_search_result = strstr(message, needleStart);
-            int startTime = (*(ptr_to_search_result+12)-48)*1000 + (*(ptr_to_search_result+13)-48)*100 + (*(ptr_to_search_result + 14)-48)*10 + (*(ptr_to_search_result+15)-48);
-            //get new endTime
-            ptr_to_search_result = strstr(message, needleEnd);
-            int endTime = (*(ptr_to_search_result+10)-48)*1000 + (*(ptr_to_search_result+11)-48)*100 + (*(ptr_to_search_result + 12)-48)*10 + (*(ptr_to_search_result+13)-48);
-            setAlarmPeriod(startTime, endTime);
-            if(alarmActive()){
-                State state = ACTIVE;
-                setState(state);
-            }
-            else{
-                State state = NOT_ACTIVE;
-                setState(state);
-            }
-            memset(message, '\0', sizeof(message));
-            clearUartBuffer();
-        }
-}
-

@@ -41,45 +41,54 @@ void RTCC_InterrurpHandler(){
 //run every 4 second
 void timer1_interrupt_handler() {
     
-    if(getState() == NOT_CONNECTED_TO_SOCKET){
-        turnOnGreenLED();
-        DELAY_milliseconds(50);
-        turnOffGreenLED();
-        if(connectToSocket()){
-            State currentState = CONNECTED_TO_SOCKET;
-            setState(currentState);
-        }
-
-        else if(!connectedToWiFi()){
-            State state = NO_WIFI;
-            setState(state);
-        }
-    }
-    else if(getState() == NO_WIFI){
+    int state = getState();
+    
+//    if(state == NOT_CONNECTED_TO_SOCKET){
+//        turnOnGreenLED();
+//        DELAY_milliseconds(50);
+//        turnOffGreenLED();
+//        if(connectToSocket()){
+//            State currentState = CONNECTED_TO_SOCKET;
+//            setState(currentState);
+//        }
+//
+//        else if(!connectedToWiFi()){
+//            State state = NO_WIFI;
+//            setState(state);
+//        }
+//        hardResetWifiModule();
+//        State state = NO_WIFI;
+//        setState(state);
+//    }
+//    else if(state == NO_WIFI){
         turnOnGreenLED();
         DELAY_milliseconds(50);
         turnOffGreenLED();
         hardResetWifiModule(); 
+        DELAY_milliseconds(50);
         if(connectedToWiFi()){
             State state = CONNECTED_TO_WIFI;
-            setState(CONNECTED_TO_WIFI);
+            setState(state);
+            if(connectToSocket()){
+                State state = CONNECTED_TO_SOCKET;
+                setState(state);
+            }
         }
-    }
+        else{
+            State state = NO_WIFI;
+            setState(state);
+        }
+//    }
+//    int k = 0;
     return;
 }
 
 void timer3_interrupt_handler(){
-//    turnOnBlueLED();
-//    DELAY_milliseconds(50);
-//    turnOffBlueLED();   
-//    if(!connectedToWiFi()){       
-//        State state = NO_WIFI;
-//        setState(state);
-//        
-//    }
-//    if(!connectToSocket()){
-//        State state = NOT_CONNECTED_TO_SOCKET;
-//        setState(state);
+    turnOnBlueLED();
+    DELAY_milliseconds(50);
+    turnOffBlueLED();
+//    if(!getSocketStatus()){
+//        int k = 0;
 //    }
 }
 

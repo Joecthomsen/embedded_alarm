@@ -52,7 +52,7 @@
 #pragma config DSSWEN = ON    //DSEN Bit Enable->Deep Sleep is controlled by the register bit DSEN
 #pragma config PLLDIV = PLL4X    //USB 96 MHz PLL Prescaler Select bits->4x PLL selected
 #pragma config I2C1SEL = DISABLE    //Alternate I2C1 enable bit->I2C1 uses SCL1 and SDA1 pins
-#pragma config IOL1WAY = ON    //PPS IOLOCK Set Only Once Enable bit->Once set, the IOLOCK bit cannot be cleared
+#pragma config IOL1WAY = OFF    //PPS IOLOCK Set Only Once Enable bit->The IOLOCK bit can be set and cleared using the unlock sequence
 
 // CONFIG3
 #pragma config WPFP = WPFP127    //Write Protection Flash Page Segment Boundary->Page 127 (0x1FC00)
@@ -88,18 +88,17 @@
 #include "pin_manager.h"
 #include "clock.h"
 #include "system.h"
-#include "tmr2.h"
-#include "uart2.h"
-#include "tmr1.h"
-#include "uart1.h"
-#include "tmr3.h"
 #include "memory/flash.h"
-#include "ext_int.h"
-#include "rtcc.h"
+#include "uart1.h"
 #include "delay.h"
-#include "uart3.h"
+#include "ext_int.h"
 #include "interrupt_manager.h"
 #include "traps.h"
+#include "uart2.h"
+#include "rtcc.h"
+#include "tmr1.h"
+#include "tmr2.h"
+#include "tmr3.h"
 
 void SYSTEM_Initialize(void)
 {
@@ -108,12 +107,11 @@ void SYSTEM_Initialize(void)
     CLOCK_Initialize();
     UART2_Initialize();
     UART1_Initialize();
-    UART3_Initialize();
     TMR3_Initialize();
     TMR2_Initialize();
-    TMR1_Initialize();
     EXT_INT_Initialize();
     RTCC_Initialize();
+    TMR1_Initialize();
 }
 
 /**
